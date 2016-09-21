@@ -29,14 +29,14 @@ test_that("maxLikelihood.Guilds: use", {
   
   J = 20000
   
-  theta = 50
+  theta = 100
   alpha_x = 0.1
   alpha_y = 0.001
   
   simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
-  LL <- maxLikelihood.Guilds( initVals = c(50, 0.1, 0.001), 
+  LL <- maxLikelihood.Guilds( initVals = c(theta, alpha_x, alpha_y), 
                               model="D1", method="simplex",
                               SADX = simul_data$guildX, 
                               SADY = simul_data$guildY, verbose = FALSE)
