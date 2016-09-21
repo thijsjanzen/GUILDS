@@ -1,0 +1,5 @@
+useDynLib(GUILDS)
+import(pracma)
+import(subplex)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)

@@ -1,0 +1,18 @@
+Package: GUILDS
+Type: Package
+Title: Implementation of Sampling Formulas for the Unified Neutral
+        Model of Biodiversity and Biogeography, with or without Guild
+        Structure
+Version: 1.2.1
+Date: 2015-04-21
+Author: Thijs Janzen
+Maintainer: Thijs Janzen <thijsjanzen@gmail.com>
+Description: The GUILDS package combines a range of sampling formulas for the unified neutral model of biogeography and biodiversity. Alongside the sampling formulas, it includes methods to perform maximum likelihood optimization of the sampling formulas, methods to generate data given the neutral model, and methods to estimate the expected species abundance distribution. Sampling formulas included in the GUILDS package are the Etienne Sampling Formula (Etienne 2005), the guild sampling formula, where guilds are assumed to differ in dispersal ability (Janzen et al. 2015), and  the guilds sampling formula conditioned on guild size (Janzen et al. 2015).
+License: GPL-2
+Depends: R (>= 3.0.2)
+Imports: Rcpp (>= 0.11.0), pracma, subplex
+LinkingTo: Rcpp
+Packaged: 2015-04-21 14:27:07 UTC; janzen
+NeedsCompilation: yes
+Repository: CRAN
+Date/Publication: 2015-04-21 17:42:25
