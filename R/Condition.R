@@ -1,39 +1,43 @@
 evaluateCondLik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
-  nx = v
-  ny = 1 - nx
-  J = Nx + Ny
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  nx <- v
+  ny <- 1 - nx
+  J <- Nx + Ny
+  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  a = lgamma(J + 1)
-  b = rep(0, length(I_X))
-  poch_X = rep(0, length(I_X))
-  poch_Y = rep(0, length(I_X))
+  a <- lgamma(J + 1)
+  b <- rep(0, length(I_X))
+  poch_X <- rep(0, length(I_X))
+  poch_Y <- rep(0, length(I_X))
   
   for(cnt in 1:length(I_X)) {
-    b[cnt] = lgamma(I_X[cnt] + I_Y[cnt] + J) - lgamma(I_X[cnt] + I_Y[cnt]);
-	poch_X[cnt] = lgamma(I_X[cnt] + Nx) - lgamma(I_X[cnt]);
-	poch_Y[cnt] = lgamma(I_Y[cnt] + Ny) - lgamma(I_Y[cnt]);
+    b[cnt] = lgamma(I_X[cnt] + I_Y[cnt] + J) - lgamma(I_X[cnt] + I_Y[cnt])
+    poch_X[cnt] = lgamma(I_X[cnt] + Nx) - lgamma(I_X[cnt])
+    poch_Y[cnt] = lgamma(I_Y[cnt] + Ny) - lgamma(I_Y[cnt])
   }
   
-  c = a - b
+  c <- a - b
   
-  h = poch_X + poch_Y - (lgamma(Nx+1) + lgamma(Ny+1))
+  h <- poch_X + poch_Y - (lgamma(Nx+1) + lgamma(Ny+1))
    
-  k  =  lgamma((theta_x/2) + (theta_y/2)) - (lgamma(theta_x/2) + lgamma(theta_y/2))
-  l  = ((theta_x/2) - 1) * log(nx) + ((theta_y/2) - 1) * log(ny)
+  k  <-  lgamma( (theta_x / 2) + (theta_y / 2) ) - 
+          (lgamma(theta_x / 2) + lgamma(theta_y / 2) )
+  l  <- ((theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
   
-  result = c + h + k + l
-  return(result);
+  result <- c + h + k + l
+  return(result)
 }
 
 
 calcConditional <- function(v, model, Nx, Ny) {
-  incorrectLength <- 0;
-  if(model == "D0" && length(v) != 2) incorrectLength <- 1;
-  if(model == "D1" && length(v) != 3) incorrectLength <- 1;
+  incorrectLength <- 0
+  if(model == "D0" && length(v) != 2) incorrectLength <- 1
+  if(model == "D1" && length(v) != 3) incorrectLength <- 1
   
-  if(incorrectLength == 1) { cat("Input vector is of incorrect length\n"); return; };
+  if(incorrectLength == 1) { 
+    stop("calcConditional:",
+         "Input vector is of incorrect length\n")
+  }
   
   theta_x <- v[1] * 2
   theta_y <- v[1] * 2
@@ -52,40 +56,48 @@ calcConditional <- function(v, model, Nx, Ny) {
      alpha_y>(1-(1e-8))
   ) return(-Inf)
   
-  thrs <- 10;
+  thrs <- 10
  
   f <- function(x) {
-    return( -1 * evaluateCondLik(x,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny) );
+    return( -1 * evaluateCondLik(x, theta_x, theta_y, 
+                                 alpha_x, alpha_y,
+                                 Nx, Ny) )
   }
   
-  maxes <- pracma::fminbnd(f,0,1,maxiter=500,tol=1e-4);
+  maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4 )
 
- ymax = -1 * maxes$fmin;
- xmax = maxes$xmin;
- xlft = 0;
- xrgt = 1;
- eps = .Machine$double.eps; 
+ ymax = -1 * maxes$fmin
+ xmax = maxes$xmin
+ xlft = 0
+ xrgt = 1
+ eps = .Machine$double.eps
 
- checkLeftX  = evaluateCondLik(eps,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny)  - ymax + thrs;
- checkRightX = evaluateCondLik(1-eps,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny)  - ymax + thrs;
-
+ checkLeftX  = evaluateCondLik(eps, theta_x, theta_y, 
+                               alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
+ checkRightX = evaluateCondLik(1 - eps, theta_x, theta_y,
+                               alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
 
  if(checkLeftX < 0) {
      g <- function(x) {
-        return(evaluateCondLik(x,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny) - ymax + thrs);
+        return(evaluateCondLik(x, theta_x, theta_y, 
+                               alpha_x, alpha_y, Nx, Ny) - ymax + thrs)
      }
-     xlft <- (uniroot(g,c(eps,xmax)))$root
+     xlft <- (uniroot(g, c(eps,xmax)))$root
  }
 
  if(checkRightX < 0) {
      h <- function(x) {
-        return(evaluateCondLik(x,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny) - ymax + thrs)
+        return(evaluateCondLik(x, theta_x, theta_y,
+                               alpha_x, alpha_y,
+                               Nx, Ny) - ymax + thrs)
      }
-     xrgt <- (uniroot(h,c(xmax,1-eps)))$root
+     xrgt <- (uniroot( h,c( xmax, 1 - eps)))$root
  }
 
  calcLLEXP <- function(x) {
-   out <- exp(evaluateCondLik(x,theta_x,theta_y,alpha_x,alpha_y,Nx,Ny)-ymax)
+   out <- exp(evaluateCondLik(x, theta_x, theta_y,
+                              alpha_x, alpha_y,
+                              Nx, Ny) - ymax)
    return(out)
  }
 
@@ -109,7 +121,7 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
   Ny = sum(SADY)
   J = Nx + Ny
   
-  LL <- -Inf;
+  LL <- -Inf
 
   if(verbose == TRUE) {
    cat("Chosen model: ", model, "\n")
@@ -122,12 +134,12 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
    if(model == "D1") cat("Theta X =", x2[1], 
                          " Theta Y =", "Theta X",
                          "\t Alpha X =", x2[2],
-                         " Alpha Y =", x2[3]    ,"\n"); 
+                         " Alpha Y =", x2[3]    ,"\n");
 
    flush.console();
   }
    
-  LL <- logLikelihood.Guilds(parameters, model, SADX, SADY, verbose);
+  LL <- logLikelihood.Guilds(parameters, model, SADX, SADY, verbose)
   
   #conditional part:
   conditional_part <- calcConditional(parameters, model, Nx, Ny)
@@ -206,6 +218,3 @@ maxLikelihood.Guilds.Conditional <- function(initVals, model,
   }
   return(x)
 }
-
-
-

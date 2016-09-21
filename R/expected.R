@@ -1,33 +1,44 @@
 prestonSort <- function(A) {
-	output <- rep(0,20);
-
-	for(k in 1:length(output)) {
-	  start <- 2^(k-1);
-	  end <- -1 + 2^(k);
-	  if(end > length(A)) {
-		end <- length(A);
-		X <- sum(A[start:end]);
-		output[k] <- X; 
-		break;
-	  }
-	  X <- sum(A[start:end]);
-	  output[k] <- X;
-	}
-	toRemove <- c();
-	for(k in length(output):1) {
-		if(output[k] < 1e-6) toRemove <- c(toRemove,k);
-		if(output[k] > 1e-6) break;
-	}
-	output <- output[-toRemove];	
-
-	return(output);
+  output <- rep(0,13);
+  
+  for(k in 1:length(output)) {
+    start <- 2^(k-1);
+    end <- -1 + 2^(k);
+    if(end > length(A)) {
+      end <- length(A);
+      X <- sum(A[start:end]);
+      output[k] <- X; 
+      break;
+    }
+    X <- sum(A[start:end]);
+    output[k] <- X;
+  }
+  return(output);
 }
 
-expected.SAD <- function(theta,m,J) {
+
+expected.SAD <- function(theta, m, J) {
+  if(theta < 1) {
+    stop("expected.SAD: ",
+         "theta can not be below one")
+  }
+  if(m < 0) {
+    stop("expected.SAD: ",
+         "m can not be below zero")
+  }
+  if(m > 1) {
+    stop("expected.SAD: ",
+         "m can not be above 1")
+  }
+  if(J < 0) {
+    stop("expected.SAD: ",
+         "J can not be below zero")
+  }
+  
   I = (J-1)* m / (1-m)
-  aux <- pm_sad(theta,I,J);
-  SAD <- prestonSort(aux);
-  return(SAD);  
+  aux <- pm_sad(theta, I, J)
+  SAD <- prestonSort(aux)
+  return(SAD); 
 }
 
 expected.SAD.Guilds <- function(theta,alpha_x,alpha_y,J,n_replicates=100) {

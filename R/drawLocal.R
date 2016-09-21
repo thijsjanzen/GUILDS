@@ -1,4 +1,3 @@
-
 pm_sad <- function(th,I,j) {
 
 	k1 = unique(round(10^seq(0,log10(j-1),len=1000)))     #k1=unique(round(logspace(0,log10(j-1),1000)));
@@ -82,12 +81,6 @@ pm_sadaux <- function(x,I,th,j,k) {
 	y[idxp] = aux;
     return(y);
 }
-
-	
-	
-
-
-
 
 drawLocalCond <- function(theta,alpha_x,alpha_y,JX,JY) {
     #make two SADs

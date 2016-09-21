@@ -2,7 +2,7 @@ context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
   initParams <- c(20, 0.1); #Initial parameters for the D0 model, c(theta,alpha)
-  maxLikelihood.Guilds.Conditional(initParams,model="D0", method="simplex",
+  maxLikelihood.Guilds.Conditional(initParams,model="D0", method="subplex",
                                    SADX = 1:20, SADY = 1:20, verbose = TRUE)
   
   
@@ -14,7 +14,7 @@ test_that("maxLikelihood.GuildsConditional: use", {
   theta = 100
   alpha_x = 0.1
   
-  simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, J)
   
   #initial parameters for the D0 model c(theta,alpha)
   LL <- maxLikelihood.Guilds.Conditional( initVals = c(theta, alpha_x), 
@@ -39,7 +39,7 @@ test_that("maxLikelihood.GuildsConditional: use", {
   alpha_x = 0.1
   alpha_y = 0.001
   
-  simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, J)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds( initVals = c(30, 0.1, 0.001), 
