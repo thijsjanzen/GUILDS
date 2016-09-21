@@ -15,4 +15,4 @@ Packaged: 2015-04-21 14:27:07 UTC; janzen
 NeedsCompilation: yes
 Repository: CRAN
 URL: https://github.com/thijsjanzen/GUILDS
-BugReports: https://github.com/thijsjanzen/GUILDS
+BugReports: https://github.com/thijsjanzen/GUILDS/issues
