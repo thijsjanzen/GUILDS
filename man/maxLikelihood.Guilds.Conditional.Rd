@@ -1,4 +1,4 @@
-\name{maxLikelihood.GuildsConditional}
+\name{maxLikelihood.Guilds.Conditional}
 \alias{maxLikelihood.Guilds.Conditional}
 
 \title{

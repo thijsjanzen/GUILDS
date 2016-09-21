@@ -11,6 +11,9 @@ Description: The GUILDS package combines a range of sampling formulas for the un
 License: GPL-2
 Depends: R (>= 3.0.2)
 Imports: Rcpp (>= 0.11.0), pracma, subplex
+Suggests: testthat,
+    knitr,
+    rmarkdown 
 LinkingTo: Rcpp
 Packaged: 2015-04-21 14:27:07 UTC; janzen
 NeedsCompilation: yes

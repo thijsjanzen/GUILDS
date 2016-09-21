@@ -83,23 +83,22 @@ getPX <- function(theta,alpha_x,alpha_y,JX,JY) {
 
 generate.Guilds.Cond <- function(theta,alpha_x,alpha_y,JX,JY) {
 
-  J = JX + JY;
-  SADX <- c();
-  SADY <- c();
+  J = JX + JY
+  SADX <- c()
+  SADY <- c()
 
-  nx = getPX(theta,alpha_x,alpha_y,JX,JY);
-  ny = 1 - nx; 
+  nx = getPX(theta, alpha_x, alpha_y, JX, JY)
+  ny = 1 - nx
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny); #update I_X and I_Y accordingly
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny);
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) #update I_X and I_Y accordingly
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  SADX = generate.ZSM(theta,I_X,JX);
-  SADY = generate.ZSM(theta,I_Y,JY);
+  SADX = generate.ZSM(theta,I_X,JX)
+  SADY = generate.ZSM(theta,I_Y,JY)
 
-  output <- list( guildX = SADX,guildY = SADY);
+  output <- list( guildX = SADX,guildY = SADY)
   
-  return(output);
-
+  return(output)
 }
 
 
@@ -108,41 +107,64 @@ generate.ZSM <- function(theta,I,J) {
   #based on urn.gp code by Rampal Etienne available as a supplementary
   #online appendix for his 2005 paper in Ecology Letters
 
-  if(is.infinite(I)) I = .Machine$double.xmax
+  if ( is.infinite(I) ) {
+    I <- .Machine$double.xmax
+  }
 
-  anc_ct=0; spec_ct=0;
-  ancestor=rep(NaN,J);
-  species=rep(NaN,J);
-  ancestor_species=rep(NaN,J);
+  anc_ct <- 0 
+  spec_ct <- 0
+  ancestor <- rep(NaN, J)
+  species <- rep(NaN, J)
+  ancestor_species <- rep(NaN, J)
 
-  for(j in 1:J) { #loop over each invidual 
-     if( runif(1,0,1) <= I/(I+j-1) ) { #ancestor not previously encountered
-        anc_ct = anc_ct + 1;
-        ancestor[j] = anc_ct;
-        if( runif(1,0,1) <= theta / (theta+anc_ct - 1)) {#new ancestor is a new species
-            spec_ct = spec_ct + 1;
-            species[j] = spec_ct;
-            ancestor_species[anc_ct] = spec_ct;
-         } else { #new ancestor is an existing species but new migration into local community
-            prior_lineage = ceil(runif(1,0,1) * (anc_ct-1));
-            s = ancestor_species[prior_lineage];
-            species[j] = s;
-            ancestor_species[anc_ct] = s;
+  for (j in 1:J) { #loop over each invidual 
+     if ( runif(1,0,1) <= I / (I + j - 1) ) { #ancestor not previously encountered
+        anc_ct <- anc_ct + 1;
+        ancestor[j] <- anc_ct;
+        #new ancestor is a new species
+        if ( runif(1,0,1) <= theta / (theta + anc_ct - 1)) { 
+            spec_ct <- spec_ct + 1
+            species[j] <- spec_ct
+            ancestor_species[anc_ct] <- spec_ct
+         } else { 
+           # new ancestor is an existing species but
+           # new migration into local community
+            prior_lineage = ceil( runif(1, 0, 1) * (anc_ct - 1))
+            s = ancestor_species[prior_lineage]
+            species[j] <- s
+            ancestor_species[anc_ct] <- s
          }
      } else { #descendant of existing individual
-        descend_from = ceil(runif(1,0,1) * (j-1)); #select one individual at random
-        ancestor[j] = ancestor[descend_from];
-        species[j] = species[descend_from];
+       #select one individual at random
+        descend_from = ceil( runif(1, 0, 1) * (j - 1)) 
+        ancestor[j] = ancestor[descend_from]
+        species[j] = species[descend_from]
      }
   }
   
-  x <- c(table(species));
-  abund <- c();
-  for(i in 1:length(x))  abund[i] <- x[[i]];
-  abund=sort(abund,decreasing=T);
-  return(abund);
+  x <- c( table( species))
+  abund <- c()
+  for (i in 1:length(x)) {
+     abund[i] <- x[[i]]
+  }
+  abund <- sort( abund, decreasing = TRUE)
+  return(abund)
 }
 
 generate.ESF <- function(theta,I,J) {
-  return(generate.ZSM(theta,I,J));
+  if(theta < 0) {
+    stop("generate.ESF: ",
+         "theta can not be below zero")
+  }
+  if(I < 0) {
+    stop("generate.ESF: ",
+         "I can not be below zero")
+  }
+  
+  if(J < 0) {
+    stop("generate.ESF: ",
+         "J can not be below zero")
+  }
+  
+  return( generate.ZSM( theta, I, J) )
 }

@@ -1,11 +1,16 @@
-logLikguilds <- function(theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y,prefactor1,prefactor2,verbose=TRUE) {
+logLikguilds <- function(theta_x, theta_y,
+                         alpha_x, alpha_y,
+                         J, Sx, Sy, Nx, Ny,
+                         KDA_X, KDA_Y,
+                         prefactor1, prefactor2,
+                         verbose=TRUE) {
  thrs <- 10;
  
  f <- function(x) {
    return( -1 * evaluateLogLik(x,theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y) );
  }
 
- maxes <- fminbnd(f,0,1,maxiter=500,tol=1e-4);
+ maxes <- pracma::fminbnd(f,0,1,maxiter=500,tol=1e-4);
 
  ymax = -1 * maxes$fmin;
  xmax = maxes$xmin;
@@ -39,83 +44,132 @@ logLikguilds <- function(theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA
 
  y = ymax + log(aux$value) + prefactor1 + Sx * log(theta_x/2) + prefactor2 + Sy * log(theta_y/2) + lgamma((theta_x/2) + (theta_y/2)) - (lgamma(theta_x/2) + lgamma(theta_y/2));
  
- if(verbose==TRUE) cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",theta_x,theta_y,alpha_x,alpha_y,y));flush.console(); 
+ #if(verbose==TRUE) cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",theta_x,theta_y,alpha_x,alpha_y,y));flush.console(); 
  
  return(y);
 }
 
 
-maxLikelihood.Guilds <- function(initVals,model,method,SADX,SADY,verbose=TRUE) {
-  KDA_X <- calcKDA(SADX);
-  KDA_Y <- calcKDA(SADY);
+maxLikelihood.Guilds <- function(initVals, model, 
+                                 method, SADX, SADY, 
+                                 verbose = TRUE) {
+  if(initVals[1] < 0) {
+    stop("maxLikelihood.Guilds: ",
+         "initial theta can not be below zero")
+  }
+  if(initVals[2] < 0) {
+    stop("maxLikelihood.Guilds: ",
+         "initial alpha can not be below zero")
+  }
+  if(initVals[2] > 1) {
+    stop("maxLikelihood.Guilds: ",
+         "initial alpha can not be above 1")
+  }
+  if(model == "D1") {
+    if(initVals[2] < 0 ) {
+      stop("maxLikelihood.Guilds: ",
+           "initial alpha_y can not be below 0")
+    }
+    if(initVals[2] > 1 ) {
+      stop("maxLikelihood.Guilds: ",
+           "initial alpha_y can not be above 1")
+    }
+  }
+  
+  KDA_X <- calcKDA(SADX)
+  KDA_Y <- calcKDA(SADY)
     
-  x <- c(table(SADX));
-  freq_x <- c();
-  for(i in 1:length(x)) freq_x[i] <- x[[i]];
-  prefactor1 = -( sum(log(SADX)) + sum(lgamma(1+freq_x)) );
+  x <- c(table(SADX))
+  freq_x <- c()
+  for(i in 1:length(x) ) freq_x[i] <- x[[i]]
+  prefactor1 = -( sum(log(SADX)) + sum(lgamma(1 + freq_x)) )
   
-  x2 <- c(table(SADY));
-  freq_y <- c();
-  for(i in 1:length(x2)) freq_y[i] <- x2[[i]];
-  prefactor2 = -( sum(log(SADY)) + sum(lgamma(1+freq_y)) );
+  x2 <- c(table(SADY))
+  freq_y <- c()
+  for(i in 1:length(x2)) freq_y[i] <- x2[[i]]
+  prefactor2 = -( sum(log(SADY)) + sum(lgamma(1 + freq_y)) )
 
-  Sx = length(SADX);
-  Sy = length(SADY);
-  Nx = sum(SADX);
-  Ny = sum(SADY);
-  J = Nx + Ny;
+  Sx = length(SADX)
+  Sy = length(SADY)
+  Nx = sum(SADX)
+  Ny = sum(SADY)
+  J = Nx + Ny
   
-  loglikverbose <- verbose;
-  if(method == "simplex") loglikverbose <- FALSE;
+  loglikverbose <- verbose
+  if(method == "simplex") loglikverbose <- FALSE
 
+  incorrectLength <- 0
+  if (model == "D0" && length(initVals) != 2) incorrectLength <- 1
+  if (model == "D1" && length(initVals) != 3) incorrectLength <- 1
+  
+  if (incorrectLength == 1) { 
+    stop("maxLikelihood.Guilds: ",
+         "Input vector is of incorrect length\n"); 
+  }
+  
   g <- function(v) {  
-  	incorrectLength <- 0;
-  	if(model == "D0" && length(v) != 2) incorrectLength <- 1;
-  	if(model == "D1" && length(v) != 3) incorrectLength <- 1;
+    
+    theta_x <- v[1] * 2
+    theta_y <- v[1] * 2
+    alpha_x <- v[2]
+    alpha_y <- v[2]
+    
+    if(model == "D1") {
+      alpha_y <- v[3]
+    }
+
+    y <- 0;
+  	if (alpha_x < 0 || 
+  	    alpha_y < 0 || 
+  	    theta_x < 1 || 
+  	    theta_y < 1  ||
+  	    alpha_x > (1 - ( 1e-8)) ||
+  	    alpha_y > (1 - ( 1e-8))
+  	    ) {
+  	  y <- -Inf;
+  	}
+  	if(!is.infinite(y)) {
+  	  y = logLikguilds(theta_x, theta_y, alpha_x, alpha_y,
+  	                 J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y,
+  	                 prefactor1, prefactor2, verbose)
+  	}
+  	return(-y)
+  }
+
+
+  x
+  if (method == "simplex") {
+    	x <- simplex(initVals,g,verbose)
+  }
+  if (method == "subplex") {
+	  x <- subplex::subplex(initVals,g)
+  }
   
-  	if(incorrectLength == 1) { cat("Input vector is of incorrect length\n"); return; };
-
-  	if(model == "D0") { theta_x = v[1]; theta_y = v[1]; alpha_x = v[2]; alpha_y = v[2];}
-  	if(model == "D1") { theta_x = v[1]; theta_y = v[1]; alpha_x = v[2]; alpha_y = v[3];}
-	
-  	if(alpha_x<0||alpha_y<0||theta_x<1||theta_y<1) return(-Inf)
-  	if(alpha_x>(1-(1e-8))||alpha_y>(1-(1e-8))) return(-Inf)
-  
-  	y = logLikguilds(theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y,prefactor1,prefactor2,verbose);
-  	return(y);
-  }
-
-
-  x;
-  if(method == "simplex") {
-    	x <- simplex(initVals,g,verbose);
-  }
-  if(method == "subplex") {
-	x <- subplex(initVals,g);
-  }
-  return(x);
+  return(x)
 }
 
-logLikelihood.Guilds <- function(parameters,model,SADX,SADY,verbose=TRUE) {
+logLikelihood.Guilds <- function(parameters, model, 
+                                 SADX, SADY, 
+                                 verbose=TRUE) {
 
-  KDA_X <- calcKDA(SADX);
-  KDA_Y <- calcKDA(SADY);
+  KDA_X <- calcKDA(SADX)
+  KDA_Y <- calcKDA(SADY)
   
-  x <- c(table(SADX));
-  freq_x <- c();
-  for(i in 1:length(x)) freq_x[i] <- x[[i]];
-  prefactor1 = -( sum(log(SADX)) + sum(lgamma(1+freq_x)) );
+  x <- c(table(SADX))
+  freq_x <- c()
+  for(i in 1:length(x)) freq_x[i] <- x[[i]]
+  prefactor1 = -( sum(log(SADX)) + sum(lgamma(1+freq_x)) )
   
-  x2 <- c(table(SADY));
-  freq_y <- c();
+  x2 <- c(table(SADY))
+  freq_y <- c()
   for(i in 1:length(x2)) freq_y[i] <- x2[[i]];
-  prefactor2 = -( sum(log(SADY)) + sum(lgamma(1+freq_y)) );
+  prefactor2 = -( sum(log(SADY)) + sum(lgamma(1+freq_y)) )
 
-  Sx = length(SADX);
-  Sy = length(SADY);
-  Nx = sum(SADX);
-  Ny = sum(SADY);
-  J = Nx + Ny;
+  Sx = length(SADX)
+  Sy = length(SADY)
+  Nx = sum(SADX)
+  Ny = sum(SADY)
+  J = Nx + Ny
   
   
   if(model == "D0") { theta_x = parameters[1]; theta_y = parameters[1]; alpha_x = parameters[2]; alpha_y = parameters[2];}
@@ -123,14 +177,14 @@ logLikelihood.Guilds <- function(parameters,model,SADX,SADY,verbose=TRUE) {
 
   LL <- -Inf;
   
-  if(verbose==TRUE) {
-   cat("Chosen model: ",model,"\n");
-   cat("Now starting to calculate likelihood of: \n"); x2 <- parameters;
-   if(model == "D0") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =","Alpha X" ,"\n");
-   if(model == "D1") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =", alpha_y    ,"\n"); 
-
-   flush.console();
-  }
+ # if(verbose==TRUE) {
+#   cat("Chosen model: ",model,"\n");
+ #  cat("Now starting to calculate likelihood of: \n"); x2 <- parameters;
+  # if(model == "D0") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =","Alpha X" ,"\n");
+  # if(model == "D1") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =", alpha_y    ,"\n"); 
+#
+ #  flush.console();
+#  }
   
 
 
