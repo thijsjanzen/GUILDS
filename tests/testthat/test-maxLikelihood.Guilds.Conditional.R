@@ -1,9 +1,10 @@
 context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
+  set.seed(42)
   initParams <- c(20, 0.1); #Initial parameters for the D0 model, c(theta,alpha)
   maxLikelihood.Guilds.Conditional(initParams,model="D0", method="subplex",
-                                   SADX = 1:20, SADY = 1:20, verbose = TRUE)
+                                   SADX = 1:20, SADY = 1:20, verbose = FALSE)
   
   
   
@@ -14,13 +15,13 @@ test_that("maxLikelihood.GuildsConditional: use", {
   theta = 100
   alpha_x = 0.1
   
-  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, J)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, JX = 10000, JY = 10000)
   
   #initial parameters for the D0 model c(theta,alpha)
   LL <- maxLikelihood.Guilds.Conditional( initVals = c(theta, alpha_x), 
                               model="D0", method="simplex",
                               SADX = simul_data$guildX, 
-                              SADY = simul_data$guildY, verbose = TRUE)
+                              SADY = simul_data$guildY, verbose = FALSE)
   expect_equal(
     theta, 
     LL$par[1],
@@ -33,13 +34,11 @@ test_that("maxLikelihood.GuildsConditional: use", {
   )
   
   
-  J = 20000
-  
   theta = 30
   alpha_x = 0.1
   alpha_y = 0.001
   
-  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, J)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, JX = 10000, JY = 10000)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds( initVals = c(30, 0.1, 0.001), 
