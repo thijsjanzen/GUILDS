@@ -42,7 +42,7 @@ test_that("maxLikelihood.ESF: abuse", {
   expect_error(
     LL <- maxLikelihood.ESF(initVals = c(100, 100),
                             Abund = v, verbose = FALSE),
-    "initial m can not be above 1 (did you mean to enter I?)"
+    "initial m can not be above 1"
   )
   
   expect_error(
