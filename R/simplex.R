@@ -1,4 +1,4 @@
-  simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
+simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
                    reltolx = 1e-4, reltolf = 1e-4,
                    maxiter = 200 * length(initpars))
 {

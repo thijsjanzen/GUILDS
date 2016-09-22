@@ -21,18 +21,9 @@ test_that("expected.SAD.Guilds: abuse", {
   expect_error(
     SAD <- expected.SAD.Guilds(theta = 200, 
                                alpha_x = 1.0,
-                               alpha_y = 0.01,
-                               J = 1000,
-                               n_replicates = 10),
-    "alpha_x is 1 or close to one, and leads to I_x = Inf"
-  )
-  
-  expect_error(
-    SAD <- expected.SAD.Guilds(theta = 200, 
-                               alpha_x = 0.01,
                                alpha_y = 1.0,
                                J = 1000,
                                n_replicates = 10),
-    "alpha_y is 1 or close to one, and leads to I_y = Inf"
+    "alpha_x and alpha_y are both one"
   )
 })

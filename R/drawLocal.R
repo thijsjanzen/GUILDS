@@ -112,11 +112,7 @@ draw_local <- function(theta, alpha_x, alpha_y, J) {
   
   if (is.infinite(I_X)) {
     stop("draw_local: ",
-         "alpha_x is 1 or close to one, and leads to I_x = Inf")
-  }
-  if (is.infinite(I_Y)) {
-    stop("draw_local: ",
-         "alpha_y is 1 or close to one, and leads to I_y = Inf")
+         "alpha_x and alpha_y are both one, leading to I_x = I_y = Inf")
   }
   
   probs <- c()
