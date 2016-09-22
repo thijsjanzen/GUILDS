@@ -24,9 +24,9 @@
 \examples{
   theta = 10
   m = 0.1
-  I = m * (J - 1) / (1 - m)
   J = 1000
-
+  I = m * (J - 1) / (1 - m)
+  
   abund <- generate.ESF(theta, I, J)
   par(mfrow = c(1,2))
   preston_plot(abund)

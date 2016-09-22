@@ -1,0 +1,56 @@
+---
+title: "GUILDS Vignette"
+author: "Thijs Janzen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Guilds Vignette
+
+Welcome to the vignette of GUILDS. GUILDS is an R package aimed at providing the user with easy to use functions that help dealing with the Unified Neutral Theory of Biodiversity and Biogeography. More specifically, the package bundles together the sampling functions for the Neutral Model including multiple guilds that differ in dispersal ability (Janzen et al. 2015), and the Etienne sampling formula for the standard neutral model. Furthermore, the package contains functions to generate artificial datasets, and to calculate the expected abundances.
+
+## The standard neutral model
+To generate data with the standard neutral model, we can make use of the function ```generate.ESF```, where ESF stands for the Etienne Sampling Formula. generate.ESF makes use of the urn scheme described in Etienne (2005), where the avid reader can also find more details on the Etienne Sampling Formula. The ESF combines the universal biodiversity number theta, and the universal dispersal number I. Typically, the migration rate is a bit easier to interpret, so we will make use of that first, then convert it to I, and then generate the data:
+```{r}
+library(GUILDS)
+set.seed(42)
+theta = 100
+m <- 0.1
+J <- 10000
+I <- m * (J-1) / (1 - m)
+abund <- generate.ESF(theta, I, J)
+abund
+```
+The package has now generated a nice species abundance distribution. Using the function ```preston_plot`` we can visualize our abundance distribution
+```{r}
+preston_plot(abund)
+```
+
+We can even do better, using the function ```expected.SAD``` we can calculate the expected number of individuals per species. Furthermore, we can easily add this to our plot:
+```{r}
+abund.expect <- expected.SAD(theta, m, J)
+preston_plot(abund, abund.expect)
+```
+
+We can clearly see that the simulated abundance distribution closely matches the expected distribution, although the stochastic nature of the simulation has caused some small deviations. Using the Etienne Sampling Formula we can now estimate theta and m, using maximum likelihood. Because we already know the real values (those are the values that we used to simulate the data), we can nicely crosscheck whether the Etienne Sampling Formula yields good results. We start the maximum likelihood at three different starting points, to compare convergence.
+```{r}
+LL1 <- maxLikelihood.ESF(init_vals = c(theta, m),
+                         abund, verbose = FALSE)
+LL2 <- maxLikelihood.ESF(init_vals = c(1000, 0.001),
+                         abund, verbose = FALSE)
+LL3 <- maxLikelihood.ESF(init_vals = c(10, 0.9),
+                         abund, verbose = FALSE)
+LL1$par
+LL2$par
+LL3$par
+```
+
+Regardless of the starting point, we recover the same parameter estimates that are close to the real values theta = 100 and m = 0.1 .
+
+## Dispersal Guilds
+
+
