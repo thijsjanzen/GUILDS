@@ -152,7 +152,7 @@ maxLikelihood.Guilds <- function(initVals, model,
 
 logLikelihood.Guilds <- function(parameters, model, 
                                  SADX, SADY, 
-                                 verbose=TRUE) {
+                                 verbose = TRUE) {
 
   KDA_X <- calcKDA(SADX)
   KDA_Y <- calcKDA(SADY)
@@ -160,12 +160,12 @@ logLikelihood.Guilds <- function(parameters, model,
   x <- c(table(SADX))
   freq_x <- c()
   for(i in 1:length(x)) freq_x[i] <- x[[i]]
-  prefactor1 = -( sum(log(SADX)) + sum(lgamma(1+freq_x)) )
+  prefactor1 = -1 * ( sum(log(SADX)) + sum(lgamma(1 + freq_x)) )
   
   x2 <- c(table(SADY))
   freq_y <- c()
-  for(i in 1:length(x2)) freq_y[i] <- x2[[i]];
-  prefactor2 = -( sum(log(SADY)) + sum(lgamma(1+freq_y)) )
+  for(i in 1:length(x2)) freq_y[i] <- x2[[i]]
+  prefactor2 = -1 * ( sum(log(SADY)) + sum(lgamma(1 + freq_y)) )
 
   Sx = length(SADX)
   Sy = length(SADY)
@@ -174,21 +174,18 @@ logLikelihood.Guilds <- function(parameters, model,
   J = Nx + Ny
   
   
-  if(model == "D0") { theta_x = parameters[1]; theta_y = parameters[1]; alpha_x = parameters[2]; alpha_y = parameters[2];}
-  if(model == "D1") { theta_x = parameters[1]; theta_y = parameters[1]; alpha_x = parameters[2]; alpha_y = parameters[3];}
-
-  LL <- -Inf;
-  
- # if(verbose==TRUE) {
-#   cat("Chosen model: ",model,"\n");
- #  cat("Now starting to calculate likelihood of: \n"); x2 <- parameters;
-  # if(model == "D0") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =","Alpha X" ,"\n");
-  # if(model == "D1") cat("Theta X =",theta_x," Theta Y =","Theta X","\t Alpha X =", alpha_x," Alpha Y =", alpha_y    ,"\n"); 
-#
- #  flush.console();
-#  }
-  
-
+  if (model == "D0") { 
+    theta_x = parameters[1]
+    theta_y = parameters[1] 
+    alpha_x = parameters[2] 
+    alpha_y = parameters[2]
+  }
+  if(model == "D1") {
+    theta_x = parameters[1]
+    theta_y = parameters[1]
+    alpha_x = parameters[2]
+    alpha_y = parameters[3]
+  }
 
   LL <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
                      Sx, Sy, Nx, Ny, KDA_X, KDA_Y, prefactor1,

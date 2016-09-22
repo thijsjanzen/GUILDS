@@ -56,7 +56,10 @@ test_that("logLikelihood.Guilds: use", {
   expect_equal(a, TRUE)
   expect_equal(b, TRUE)
   
-  
+  LL1 <- logLikelihood.Guilds(parameters=c(theta, alpha_x, alpha_y), 
+                              model = "D1", 
+                              simul_data$guildX, simul_data$guildY,
+                              verbose = TRUE)
   
   
 })

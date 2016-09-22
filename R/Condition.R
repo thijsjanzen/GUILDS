@@ -114,6 +114,9 @@ calcConditional <- function(v, model, Nx, Ny) {
 logLikelihood.Guilds.Conditional <- function(parameters, model,
                                              SADX, SADY,
                                              verbose = TRUE) {
+  Nx <- sum(SADX)
+  Ny <- sum(SADY)
+  
   LL <- -Inf
 
   if (verbose == TRUE) {
