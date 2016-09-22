@@ -10,7 +10,7 @@ evaluateCondLik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
   poch_X <- rep(0, length(I_X))
   poch_Y <- rep(0, length(I_X))
 
-  for(cnt in 1:length(I_X)) {
+  for (cnt in 1:length(I_X)) {
     b[cnt] <- lgamma(I_X[cnt] + I_Y[cnt] + J) - lgamma(I_X[cnt] + I_Y[cnt])
     poch_X[cnt] <- lgamma(I_X[cnt] + Nx) - lgamma(I_X[cnt])
     poch_Y[cnt] <- lgamma(I_Y[cnt] + Ny) - lgamma(I_Y[cnt])
@@ -20,9 +20,9 @@ evaluateCondLik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
 
   h <- poch_X + poch_Y - (lgamma(Nx + 1) + lgamma(Ny + 1))
 
-  k  <-  lgamma((theta_x / 2) + (theta_y / 2)) - 
+  k  <-  lgamma( (theta_x / 2) + (theta_y / 2)) - 
         (lgamma(theta_x / 2) + lgamma(theta_y / 2))
-  l  <- ( (theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
+  l  <- ((theta_x / 2) - 1) * log(nx) + ( (theta_y / 2) - 1) * log(ny)
 
   result <- c + h + k + l
   return(result)
@@ -42,11 +42,11 @@ calcConditional <- function(v, model, Nx, Ny) {
   theta_y <- v[1] * 2
   alpha_x <- v[2]
   alpha_y <- v[2]
-  
+
   if (model == "D1") {
     alpha_y <- v[3]
   }
- 
+
   if (alpha_x < 0 ||
       alpha_y < 0 ||
       theta_x < 1 ||
@@ -56,9 +56,9 @@ calcConditional <- function(v, model, Nx, Ny) {
      ) {
     return(-Inf)
   }
-  
+
   f <- function(x) {
-    return( -1 * evaluateCondLik(x, theta_x, theta_y, 
+    return( -1 * evaluateCondLik(x, theta_x, theta_y,
                                  alpha_x, alpha_y,
                                  Nx, Ny) )
   }
@@ -113,21 +113,21 @@ calcConditional <- function(v, model, Nx, Ny) {
 
 
 logLikelihood.Guilds.Conditional <- function(parameters, model,
-                                             SADX, SADY,
+                                             sadx, sady,
                                              verbose = TRUE) {
-  Nx <- sum(SADX)
-  Ny <- sum(SADY)
-  
+  Nx <- sum(sadx)
+  Ny <- sum(sady)
+
   LL <- -Inf
 
   if (verbose == TRUE) {
    cat("Chosen model: ", model, "\n")
-   cat("Now starting to calculate likelihood of: \n") 
+   cat("Now starting to calculate likelihood of: \n")
    x2 <- parameters
    if (model == "D0") cat("Theta X =", x2[1],
                          " Theta Y =", "Theta X",
                          "\t Alpha X =", x2[2],
-                         " Alpha Y =", "Alpha X","\n")
+                         " Alpha Y =", "Alpha X", "\n")
    if (model == "D1") cat("Theta X =", x2[1],
                          " Theta Y =", "Theta X",
                          "\t Alpha X =", x2[2],
@@ -136,7 +136,7 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
    flush.console();
   }
 
-  LL <- logLikelihood.Guilds(parameters, model, SADX, SADY, verbose)
+  LL <- logLikelihood.Guilds(parameters, model, sadx, sady, verbose)
 
   #conditional part:
   conditional_part <- calcConditional(parameters, model, Nx, Ny)
@@ -145,18 +145,18 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
   return(output)
 }
 
-conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y,
+conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
                                prefactor1, prefactor2, verbose = TRUE) {
 
   theta_x <- v[1] * 2
   theta_y <- v[1] * 2
   alpha_x <- v[2]
   alpha_y <- v[2]
-  
+
   if (model == "D1") {
     alpha_y <- v[3]
   }
-  
+
   if (alpha_x < 0 ||
      alpha_y < 0 ||
      theta_x < 1 ||
@@ -166,7 +166,7 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y,
      ) return(-Inf)
 
   LL <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
-                     Sx, Sy, Nx, Ny, KDA_X, KDA_Y,
+                     Sx, Sy, Nx, Ny, kda_x, kda_y,
                      prefactor1, prefactor2, verbose)
 
   cond_LL <- calcConditional(v, model, Nx, Ny)
@@ -174,44 +174,44 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y,
   return(out)
 }
 
-maxLikelihood.Guilds.Conditional <- function(initVals, model,
+maxLikelihood.Guilds.Conditional <- function(init_vals, model,
                                              method,
-                                             SADX, SADY,
+                                             sadx, sady,
                                              verbose = TRUE) {
-  KDA_X <- calcKDA(SADX)
-  KDA_Y <- calcKDA(SADY)
+  kda_x <- calcKDA(sadx)
+  kda_y <- calcKDA(sady)
 
-  x <- c(table(SADX))
+  x <- c(table(sadx))
   freq_x <- c()
   for (i in seq_along(x)) freq_x[i] <- x[[i]]
 
-  prefactor1 <- -1 * ( sum(log(SADX)) + sum(lgamma(1 + freq_x)) )
+  prefactor1 <- -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
 
-  x2 <- c(table(SADY))
+  x2 <- c(table(sady))
   freq_y <- c();
   for (i in seq_along(x2)) freq_y[i] <- x2[[i]]
 
-  prefactor2 <- -1 * ( sum(log(SADY)) + sum(lgamma(1 + freq_y)) )
+  prefactor2 <- -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
 
-  Sx <- length(SADX)
-  Sy <- length(SADY)
-  Nx <- sum(SADX)
-  Ny <- sum(SADY)
+  Sx <- length(sadx)
+  Sy <- length(sady)
+  Nx <- sum(sadx)
+  Ny <- sum(sady)
   J  <- Nx + Ny
 
   g <- function(x) {
     out <- -1 * conditional.LogLik(x, model, J, Sx, Sy, Nx, Ny,
-                                   KDA_X, KDA_Y, prefactor1,
+                                   kda_x, kda_y, prefactor1,
                                    prefactor2, verbose)
     return(out)
   }
 
   x
   if (method == "simplex") {
-    x <- simplex(initVals, g, verbose)
-  } 
+    x <- simplex(init_vals, g, verbose)
+  }
   if (method == "subplex") {
-    x <- subplex(initVals, g)
+    x <- subplex(init_vals, g)
   }
   return(x)
 }
