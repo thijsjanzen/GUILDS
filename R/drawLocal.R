@@ -107,14 +107,14 @@ draw_local <- function(theta, alpha_x, alpha_y, J) {
   nx <- rbeta(1, theta, theta)
   ny <- 1 - nx
 
-  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
-  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_Y <- alpha_y * ny * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
   
-  if (is.finite(I_X)) {
+  if (is.infinite(I_X)) {
     stop("draw_local: ",
          "alpha_x is 1 or close to one, and leads to I_x = Inf")
   }
-  if (is.finite(I_Y)) {
+  if (is.infinite(I_Y)) {
     stop("draw_local: ",
          "alpha_y is 1 or close to one, and leads to I_y = Inf")
   }
