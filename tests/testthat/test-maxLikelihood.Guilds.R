@@ -10,10 +10,10 @@ test_that("maxLikelihood.Guilds: use", {
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
   
   #initial parameters for the D0 model c(theta,alpha)
-  LL <- maxLikelihood.Guilds( initVals = c(50, 0.1), 
+  LL <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
                              model="D0", method="simplex",
-                             SADX = simul_data$guildX, 
-                             SADY = simul_data$guildY, verbose = FALSE)
+                             sadx = simul_data$guildX, 
+                             sady = simul_data$guildY, verbose = FALSE)
    
   expect_equal(
     theta, 
@@ -36,10 +36,10 @@ test_that("maxLikelihood.Guilds: use", {
   simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
-  LL <- maxLikelihood.Guilds( initVals = c(theta, alpha_x, alpha_y), 
+  LL <- maxLikelihood.Guilds( init_vals = c(theta, alpha_x, alpha_y), 
                               model="D1", method="simplex",
-                              SADX = simul_data$guildX, 
-                              SADY = simul_data$guildY, verbose = FALSE)
+                              sadx = simul_data$guildX, 
+                              sady = simul_data$guildY, verbose = FALSE)
   expect_equal(
     theta, 
     LL$par[1],
@@ -56,18 +56,18 @@ test_that("maxLikelihood.Guilds: use", {
     tolerance = 0.0005, scale = 1
   )
   
-  LL1 <- maxLikelihood.Guilds( initVals = c(50, 0.1), 
+  LL1 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
                               model="D0", method="simplex",
-                              SADX = 1:20, 
-                              SADY = 1:20, verbose = TRUE)
-  LL2 <- maxLikelihood.Guilds( initVals = c(50, 0.1), 
+                              sadx = 1:20, 
+                              sady = 1:20, verbose = TRUE)
+  LL2 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
                               model="D0", method="subplex",
-                              SADX = 1:20, 
-                              SADY = 1:20, verbose = TRUE)
-  LL3 <- maxLikelihood.Guilds( initVals = c(50, 0.1), 
+                              sadx = 1:20, 
+                              sady = 1:20, verbose = TRUE)
+  LL3 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
                               model="D0", method="simplex",
-                              SADX = 1:20, 
-                              SADY = 1:20, verbose = FALSE)
+                              sadx = 1:20, 
+                              sady = 1:20, verbose = FALSE)
   
   a <- LL1$par
   b <- LL2$par
@@ -91,58 +91,58 @@ test_that("maxLikelihood.Guilds: abuse", {
   
   #initial parameters for the D0 model c(theta,alpha)
   expect_error(
-    maxLikelihood.Guilds( initVals = c(-50, 0.1), 
+    maxLikelihood.Guilds( init_vals = c(-50, 0.1), 
                               model="D0", method="simplex",
-                              SADX = simul_data$guildX, 
-                              SADY = simul_data$guildY, verbose = FALSE),
+                              sadx = simul_data$guildX, 
+                              sady = simul_data$guildY, verbose = FALSE),
     "initial theta can not be below one"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, -0.1), 
+    maxLikelihood.Guilds( init_vals = c(50, -0.1), 
                           model="D0", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be below zero"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, 1.1), 
+    maxLikelihood.Guilds( init_vals = c(50, 1.1), 
                           model="D0", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be above 1"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, 0.1, -0.1), 
+    maxLikelihood.Guilds( init_vals = c(50, 0.1, -0.1), 
                           model="D1", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be below 0"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, 0.1, 1.1), 
+    maxLikelihood.Guilds( init_vals = c(50, 0.1, 1.1), 
                           model="D1", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be above 1"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, 0.1, 1.1), 
+    maxLikelihood.Guilds( init_vals = c(50, 0.1, 1.1), 
                           model="D0", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"
   )
   
   expect_error(
-    maxLikelihood.Guilds( initVals = c(50, 0.1), 
+    maxLikelihood.Guilds( init_vals = c(50, 0.1), 
                           model="D1", method="simplex",
-                          SADX = simul_data$guildX, 
-                          SADY = simul_data$guildY, verbose = FALSE),
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"
   )
 })

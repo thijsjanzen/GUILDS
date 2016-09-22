@@ -9,8 +9,8 @@ test_that("maxLikelihood.ESF: use", {
   I = m * (J-1) / (1 - m)
   
   v <- generate.ESF(theta, I, J)  
-  LL <- maxLikelihood.ESF(initVals = c(100, 0.1),
-                          Abund = c(v), verbose = FALSE)
+  LL <- maxLikelihood.ESF(init_vals = c(100, 0.1),
+                          abund = c(v), verbose = FALSE)
   m_est <- LL$par[2]
   
   expect_equal(m, 
@@ -30,24 +30,24 @@ test_that("maxLikelihood.ESF: abuse", {
   
   v <- generate.ESF(theta, I, J)  
   expect_error(
-    LL <- maxLikelihood.ESF(initVals = c(-100, 0.1),
-                            Abund = v , verbose = FALSE),
+    LL <- maxLikelihood.ESF(init_vals = c(-100, 0.1),
+                            abund = v , verbose = FALSE),
     "initial theta can not be below one"
   )
   expect_error(
-    LL <- maxLikelihood.ESF(initVals = c(100, -0.1),
-                            Abund = v, verbose = FALSE),
+    LL <- maxLikelihood.ESF(init_vals = c(100, -0.1),
+                            abund = v, verbose = FALSE),
     "initial m can not be below zero"
   )
   expect_error(
-    LL <- maxLikelihood.ESF(initVals = c(100, 100),
-                            Abund = v, verbose = FALSE),
+    LL <- maxLikelihood.ESF(init_vals = c(100, 100),
+                            abund = v, verbose = FALSE),
     "initial m can not be above 1"
   )
   
   expect_error(
-    LL <- maxLikelihood.ESF(initVals = c(100, 0.1),
-                            Abund = c(1), verbose = FALSE),
+    LL <- maxLikelihood.ESF(init_vals = c(100, 0.1),
+                            abund = c(1), verbose = FALSE),
     "Need more than 1 species in the dataset"
   )
 })

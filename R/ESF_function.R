@@ -1,4 +1,4 @@
-logLikelihood.ESF <- function(theta, m, Abund) {
+logLikelihood.ESF <- function(theta, m, abund) {
   if(theta < 1 || 
      m > (1-.Machine$double.eps) ||
      m <= 0
@@ -6,28 +6,28 @@ logLikelihood.ESF <- function(theta, m, Abund) {
      return(-Inf)
   }
 
-  J = sum(Abund)
-  S = length(Abund)
+  J = sum(abund)
+  S = length(abund)
   I = m * (J-1) / (1 - m)
 
-  KDA = calcKDA(Abund)  #confirmed in PARI
+  kda = calcKDA(abund)  #confirmed in PARI
 
-  sumKDA = calcSumKDA2(S, J, I, theta, KDA)  
+  sumkda = calc_sum_kda(S, J, I, theta, kda)  
  
-  x <- c(table(Abund))
+  x <- c(table(abund))
   freq_x <- c()
   for(i in 1:length(x)) freq_x[i] <- x[[i]]
-  prefactor1 = -( sum(log(Abund)) + sum(lgamma(1+freq_x)) )
+  prefactor1 = -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
   
   factor1 <- lgamma(J+1) + prefactor1  #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
   
   factor2 = S*log(theta)   -  (lgamma(I + J) - lgamma(I))
   
-  LogLikelihood <- factor1 + factor2 + sumKDA
-  return(LogLikelihood)
+  ll <- factor1 + factor2 + sumkda
+  return(ll)
 }
 
-ESF_local <- function(v, Abund, prefactor, KDA) {
+esf_local <- function(v, abund, prefactor, kda) {
   theta = v[1]
   m = v[2]
   if(theta < 1 || 
@@ -36,50 +36,50 @@ ESF_local <- function(v, Abund, prefactor, KDA) {
     return(-Inf)
   }
  
-  J = sum(Abund)
-  S = length(Abund)
+  J = sum(abund)
+  S = length(abund)
   I = m * (J-1) / (1 - m)
 
-  sumKDA = calcSumKDA2(S, J, I, theta, KDA);  
+  sumkda = calc_sum_kda(S, J, I, theta, kda)
  
-  factor2 = S*log(theta)   -  (lgamma(I + J) - lgamma(I));
+  factor2 = S*log(theta)   -  (lgamma(I + J) - lgamma(I))
   
-  LogLikelihood <- prefactor + factor2 + sumKDA;
-  return(LogLikelihood);
+  ll <- prefactor + factor2 + sumkda
+  return(ll)
 }
 
-maxLikelihood.ESF <- function(initVals, Abund, verbose=TRUE) {
-  if (initVals[1] < 1) {
+maxLikelihood.ESF <- function(init_vals, abund, verbose=TRUE) {
+  if (init_vals[1] < 1) {
      stop("maxLikelihood.ESF: ",
           "initial theta can not be below one")
    }
-  if (initVals[2] < 0) {
+  if (init_vals[2] < 0) {
     stop("maxLikelihood.ESF: ",
          "initial m can not be below zero")
   }
-  if (initVals[2] > 1) {
+  if (init_vals[2] > 1) {
     stop("maxLikelihood.ESF: ",
          "initial m can not be above 1 (did you mean to enter I?)")
   }
-  if (length(Abund) < 2) {
+  if (length(abund) < 2) {
     stop("maxLikelihood.ESF: ",
          "Need more than 1 species in the dataset")
   }
 
-  KDA = calcKDA(Abund)  #confirmed in PARI
+  kda = calcKDA(abund)  #confirmed in PARI
 
-  J = sum( Abund)
-  S = length( Abund)
-  x <- c( table( Abund))
+  J = sum(abund)
+  S = length(abund)
+  x <- c( table(abund))
   freq_x <- c()
   for (i in 1:length(x)) freq_x[i] <- x[[i]]
-  prefactor = lgamma(J+1) -( sum(log(Abund)) + sum(lgamma(1+freq_x)) )
+  prefactor = lgamma(J+1) -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
    
   g <- function(x) {
-	  out <- -1 * ESF_local(x, Abund, prefactor, KDA)
+	  out <- -1 * esf_local(x, abund, prefactor, kda)
 		return(out)
   }  
   
-  optimum <- simplex(initVals, g, verbose)
+  optimum <- simplex(init_vals, g, verbose)
   return(optimum)
 }

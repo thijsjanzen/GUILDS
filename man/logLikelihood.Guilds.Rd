@@ -6,7 +6,7 @@
 \description{ This function calculates the likelihood of the guilds model, provided abundance data and parameter values.
 }
 \usage{
-logLikelihood.Guilds(parameters, model, SADX, SADY, verbose = TRUE)
+logLikelihood.Guilds(parameters, model, sadx, sady, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
  \arguments{
@@ -18,8 +18,8 @@ logLikelihood.Guilds(parameters, model, SADX, SADY, verbose = TRUE)
 		-  "D0" \cr
 		-  "D1" \cr
 	}
-  \item{SADX}{ The Species Abundance Distribution of guild X}
-  \item{SADY}{ The Species Abundance Distribution of guild Y} 
+  \item{sadx}{ The Species Abundance Distribution of guild X}
+  \item{sady}{ The Species Abundance Distribution of guild Y} 
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
 
@@ -32,8 +32,8 @@ logLikelihood.Guilds(parameters, model, SADX, SADY, verbose = TRUE)
 
 
 \examples{
-data(exampleData);
+data(exampleData)
 parametervals <- c(200, 0.005, 0.001) #theta = 200, alpha X = 0.005, alpha Y = 0.001
-LL = logLikelihood.Guilds(parametervals, model="D1",
-			  exampleData$guildX, exampleData$guildY, verbose=TRUE);
+LL = logLikelihood.Guilds(parametervals, model = "D1",
+			  exampleData$guildX, exampleData$guildY, verbose = TRUE)
 }

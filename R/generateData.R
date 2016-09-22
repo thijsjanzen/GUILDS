@@ -64,7 +64,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
 PolyaEggenberger <- function(theta_x,theta_y,J,N) {
   a = lgamma(J + 1) #J!
   b = lgamma(theta_x + theta_y + J) - 
-    lgamma(theta_x + theta_y) #(theta_x + theta_y)_J pochhammer
+      lgamma(theta_x + theta_y) #(theta_x + theta_y)_J pochhammer
   
   c1 = lgamma(theta_x + N) - lgamma(theta_x) #(theta_x)_Nx  pochhammer
   c2 = lgamma(theta_y + J - N) - lgamma(theta_y) #(theta_y)_Ny  pochhammer

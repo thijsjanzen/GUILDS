@@ -8,7 +8,7 @@
 	This function calculates the likelihood of the Etienne Sampling Formula, provided abundance data and parameter values.
 }
 \usage{
-	logLikelihood.ESF(theta, m, Abund)
+	logLikelihood.ESF(theta, m, abund)
 }
 
 \arguments{
@@ -16,7 +16,7 @@
 
   \item{m}{Parameter value for migration}
 
-  \item{Abund}{Vector containing abundance data}
+  \item{abund}{Vector containing abundance data}
 }
 \value{Returns the LogLikelihood}
 
@@ -24,12 +24,11 @@
 	Etienne, R.S. (2005). A new sampling formula for neutral biodiversity. Ecology Letters, 8(3), 253-260.
 }
 
-
 \author{
 	Thijs Janzen
 }
 
 \examples{
 	A <- c(1,1,1,3,5,8); #Artificial abundance dataset
-	LL <- logLikelihood.ESF(theta = 7,m = 0.1,Abund = A)
+	LL <- logLikelihood.ESF(theta = 7, m = 0.1, abund = A)
 }

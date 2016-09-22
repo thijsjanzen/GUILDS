@@ -7,16 +7,16 @@
 \alias{localComm}
 \alias{getPX}
 \alias{evaluateLogLik}
-\alias{ESF_local}
+\alias{esf_local}
 \alias{conditional.LogLik}
-\alias{calcSumKDA2}
-\alias{calcConditional}
-\alias{evaluateCondLik}
+\alias{calc_sum_kda}
+\alias{calc_conditional}
+\alias{evaluate_cond_lik}
 \alias{calcKDA}
 \alias{pm_sad}
 \alias{pm_sadaux}
-\alias{drawLocalCond}
-\alias{drawLocal}
+\alias{draw_local_cond}
+\alias{draw_local}
 \alias{prestonSort}
 \alias{generate.ZSM}
 

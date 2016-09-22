@@ -8,7 +8,7 @@ Likelihood of the Guilds sampling formula, conditional on guild size
 This function calculates the likelihood of the guilds model, conditional on guild size; provided abundance data and parameter values.
 }
 \usage{
-logLikelihood.Guilds.Conditional(parameters, model, SADX, SADY, verbose = TRUE)
+logLikelihood.Guilds.Conditional(parameters, model, sadx, sady, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
  \arguments{
@@ -20,8 +20,8 @@ logLikelihood.Guilds.Conditional(parameters, model, SADX, SADY, verbose = TRUE)
 		-  "D0" \cr
 		-  "D1" \cr
 	}
-  \item{SADX}{ The Species Abundance Distribution of guild X}
-  \item{SADY}{ The Species Abundance Distribution of guild Y} 
+  \item{sadx}{ The Species Abundance Distribution of guild X}
+  \item{sady}{ The Species Abundance Distribution of guild Y} 
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
 \value{returns the LogLikelihood}

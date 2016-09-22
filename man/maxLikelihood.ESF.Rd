@@ -8,13 +8,13 @@ Maximization of the loglikelihood given the standard Neutral Model, using the Et
  This function computes the maximum likelihood estimates of the parameters of the Neutral model, using the Etienne Sampling Formula
 }
 \usage{
-maxLikelihood.ESF(initVals, Abund, verbose = TRUE)
+maxLikelihood.ESF(init_vals, abund, verbose = TRUE)
 }
 
 \arguments{
-  \item{initVals}{A vector of initial starting values, of the format c(theta,m)}
+  \item{init_vals}{A vector of initial starting values, of the format c(theta,m)}
 
-  \item{Abund}{Vector containing a record of the number of individuals per species}
+  \item{abund}{Vector containing a record of the number of individuals per species}
 
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
@@ -34,6 +34,6 @@ maxLikelihood.ESF(initVals, Abund, verbose = TRUE)
 
 \examples{
 	A <- c(1,1,1,3,5,8)
-	maxLikelihood.ESF(c(7,0.1),Abund = A)
+	maxLikelihood.ESF( c(7,0.1), abund = A)
 }
 

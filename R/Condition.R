@@ -1,4 +1,4 @@
-evaluateCondLik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
+evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
   nx <- v
   ny <- 1 - nx
   J <- Nx + Ny
@@ -28,7 +28,7 @@ evaluateCondLik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
   return(result)
 }
 
-calcConditional <- function(v, model, Nx, Ny) {
+calc_conditional <- function(v, model, Nx, Ny) {
   incorrectlength <- 0
   if (model == "D0" && length(v) != 2) incorrectlength <- 1
   if (model == "D1" && length(v) != 3) incorrectlength <- 1
@@ -58,7 +58,7 @@ calcConditional <- function(v, model, Nx, Ny) {
   }
 
   f <- function(x) {
-    return( -1 * evaluateCondLik(x, theta_x, theta_y,
+    return( -1 * evaluate_cond_lik(x, theta_x, theta_y,
                                  alpha_x, alpha_y,
                                  Nx, Ny) )
   }
@@ -72,14 +72,14 @@ calcConditional <- function(v, model, Nx, Ny) {
  eps <- .Machine$double.eps
  thrs <- 10
  
- check_left_x  <- evaluateCondLik(eps, theta_x, theta_y,
+ check_left_x  <- evaluate_cond_lik(eps, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
- check_right_x <- evaluateCondLik(1 - eps, theta_x, theta_y,
+ check_right_x <- evaluate_cond_lik(1 - eps, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
 
  if (check_left_x < 0) {
      g <- function(x) {
-        return(evaluateCondLik(x, theta_x, theta_y,
+        return(evaluate_cond_lik(x, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny) - ymax + thrs)
      }
      xlft <- (uniroot(g, c(eps, xmax)))$root
@@ -87,7 +87,7 @@ calcConditional <- function(v, model, Nx, Ny) {
 
  if (check_right_x < 0) {
      h <- function(x) {
-        return(evaluateCondLik(x, theta_x, theta_y,
+        return(evaluate_cond_lik(x, theta_x, theta_y,
                                alpha_x, alpha_y,
                                Nx, Ny) - ymax + thrs)
      }
@@ -95,7 +95,7 @@ calcConditional <- function(v, model, Nx, Ny) {
  }
 
  calc_ll_exp <- function(x) {
-   out <- exp(evaluateCondLik(x, theta_x, theta_y,
+   out <- exp(evaluate_cond_lik(x, theta_x, theta_y,
                               alpha_x, alpha_y,
                               Nx, Ny) - ymax)
    return(out)
@@ -136,12 +136,12 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
    flush.console();
   }
 
-  LL <- logLikelihood.Guilds(parameters, model, sadx, sady, verbose)
+  ll <- logLikelihood.Guilds(parameters, model, sadx, sady, verbose)
 
   #conditional part:
-  conditional_part <- calcConditional(parameters, model, Nx, Ny)
+  conditional_part <- calc_conditional(parameters, model, Nx, Ny)
 
-  output <- LL - conditional_part
+  output <- ll - conditional_part
   return(output)
 }
 
@@ -165,12 +165,12 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
      alpha_y > (1 - (1e-8))
      ) return(-Inf)
 
-  LL <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
+  ll <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
                      Sx, Sy, Nx, Ny, kda_x, kda_y,
                      prefactor1, prefactor2, verbose)
 
-  cond_LL <- calcConditional(v, model, Nx, Ny)
-  out <- LL - cond_LL
+  cond_ll <- calc_conditional(v, model, Nx, Ny)
+  out <- ll - cond_ll
   return(out)
 }
 
@@ -188,7 +188,7 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   prefactor1 <- -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
 
   x2 <- c(table(sady))
-  freq_y <- c();
+  freq_y <- c()
   for (i in seq_along(x2)) freq_y[i] <- x2[[i]]
 
   prefactor2 <- -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )

@@ -16,8 +16,8 @@ evaluateLogLik <- function(v, theta_x, theta_y, alpha_x, alpha_y,
 
   l <- ((theta_x/2) - 1) * log(nx) + ((theta_y/2) - 1) * log(ny)
 
-  s <- calcSumKDA2(Sx, Nx, I_X, (theta_x/2), KDA_X)
-  z <- calcSumKDA2(Sy, Ny, I_Y, (theta_y/2), KDA_Y)
+  s <- calc_sum_kda(Sx, Nx, I_X, (theta_x/2), KDA_X)
+  z <- calc_sum_kda(Sy, Ny, I_Y, (theta_y/2), KDA_Y)
   
   result <- c(c + l + s + z)
   output <- rep(-Inf, length(v))

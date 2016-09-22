@@ -47,7 +47,7 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   meanY <- rep(0, J)
 
   for (r in 1:n_replicates) {
-		M <- drawLocal(theta, alpha_x, alpha_y, J)
+		M <- draw_local(theta, alpha_x, alpha_y, J)
 		for (m in 1:length(M$guildX)) {
 			meanX[m] <- meanX[m] + M$guildX[m]
 		}
@@ -75,7 +75,7 @@ expected.SAD.Guilds.Conditional <- function(theta,
   meanY <- rep(0,Jy)
 
   for (r in 1:n_replicates) {
-		M <- drawLocalCond(theta, alpha_x, alpha_y, Jx, Jy)
+		M <- draw_local_cond(theta, alpha_x, alpha_y, Jx, Jy)
 		for (m in 1:length(M$guildX)) {
 			meanX[m] <- meanX[m] + M$guildX[m]
 		}
