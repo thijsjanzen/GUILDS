@@ -9,9 +9,9 @@
 
 using namespace std;
 using namespace Rcpp;
-
-//after Jerome Chave
-// this code is from the Tetame package
+//// Base of this code by 
+//   J. Chave and F. Jabot
+///  last update 05-23-2008
 
 void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std::vector<int> Abund)
 {           
