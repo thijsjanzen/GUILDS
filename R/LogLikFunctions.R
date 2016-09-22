@@ -101,12 +101,12 @@ maxLikelihood.Guilds <- function(init_vals, model,
     
   x <- c(table(sadx))
   freq_x <- c()
-  for(i in 1:length(x) ) freq_x[i] <- x[[i]]
+  for(i in seq_along(x) ) freq_x[i] <- x[[i]]
   prefactor1 = -( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
   
   x2 <- c(table(sady))
   freq_y <- c()
-  for(i in 1:length(x2)) freq_y[i] <- x2[[i]]
+  for(i in seq_along(x2)) freq_y[i] <- x2[[i]]
   prefactor2 = -( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
 
   Sx = length(sadx)
@@ -165,12 +165,12 @@ logLikelihood.Guilds <- function(parameters, model,
   
   x <- c(table(sadx))
   freq_x <- c()
-  for(i in 1:length(x)) freq_x[i] <- x[[i]]
+  for(i in seq_along(x)) freq_x[i] <- x[[i]]
   prefactor1 = -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
   
   x2 <- c(table(sady))
   freq_y <- c()
-  for(i in 1:length(x2)) freq_y[i] <- x2[[i]]
+  for(i in seq_along(x2)) freq_y[i] <- x2[[i]]
   prefactor2 = -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
 
   Sx = length(sadx)

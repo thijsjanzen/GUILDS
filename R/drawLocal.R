@@ -21,7 +21,7 @@ pm_sad <- function(th, I, j) {
     x1 <- (xmax + 1) / 2
     y1 <- pm_sadaux(x1, I, th, j, k)
     while(ymax < (y1 + 1)) {
-      x1 <- (x1 + 1) / 2;
+      x1 <- (x1 + 1) / 2
       y1 <- pm_sadaux(x1, I, th, j, k)
 		}
 		f <- function(x) {
@@ -44,7 +44,10 @@ pm_sad <- function(th, I, j) {
 	#the original algorithm had 1:j, but at the interp1 algorithm 
 	# does not evaluate at the ends.
 	k2 <- 1:(j - 1)  
-	kesk <- pracma::interp1(x = log2(k1), y = k1 * res, xi = log2(k2), method = "spline")
+	kesk <- pracma::interp1(x = log2(k1), 
+	                        y = k1 * res, 
+	                        xi = log2(k2), 
+	                        method = "spline")
 	k2 <- c(k2, j)
 	kesk <- c(kesk, 0)
 	esk <- kesk / k2
@@ -101,7 +104,7 @@ draw_local_cond <- function(theta, alpha_x, alpha_y, JX, JY) {
 
 draw_local <- function(theta, alpha_x, alpha_y, J) {
   nx <- rbeta(1, theta, theta)
-  ny <- 1 - nx;
+  ny <- 1 - nx
 
   I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
   I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)

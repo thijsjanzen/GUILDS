@@ -8,7 +8,7 @@ prestonsort <- function(A) {
       end <- length(A)
       X <- sum(A[start:end])
       output[k] <- X
-      break;
+      break
     }
     X <- sum(A[start:end])
     output[k] <- X
@@ -34,7 +34,7 @@ expected.SAD <- function(theta, m, J) {
          "J can not be below zero")
   }
 
-  I = (J - 1) * m / (1 - m)
+  I <- (J - 1) * m / (1 - m)
   aux <- pm_sad(theta, I, J)
   sad <- prestonsort(aux)
   return(sad)

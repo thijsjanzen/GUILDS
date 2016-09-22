@@ -29,61 +29,61 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   SADY <- c()
 
   #first draw nx and ny from a beta distribution
-  nx = rbeta(1, theta, theta)
-  ny = 1 - nx; 
+  nx <- rbeta(1, theta, theta)
+  ny <- 1 - nx
 
   #update I_X and I_Y accordingly
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
   probs <- c()
   allN <- 0:J
   if(is.infinite(I_X) && is.infinite(I_Y)) {
-     probs = exp( lgamma(J+1) - 
+     probs <- exp( lgamma(J+1) - 
                  (lgamma(allN + 1) + 
                   lgamma(J - allN + 1)) + 
                   allN * log(nx) + 
                  (J-allN) * log(ny))
   } else {
     #set up a probability vector
-    probs = polyaeggenberger(I_X, I_Y, J, allN) 
+    probs <- polyaeggenberger(I_X, I_Y, J, allN) 
   }
 
-  NX = sample(0:J, 1, replace = TRUE, prob = probs)
-  NY = J - NX
+  NX <- sample(0:J, 1, replace = TRUE, prob = probs)
+  NY <- J - NX
 
-  SADX = generate.ZSM(theta, I_X, NX)
-  SADY = generate.ZSM(theta, I_Y, NY)
+  sadx <- generate.ZSM(theta, I_X, NX)
+  sady <- generate.ZSM(theta, I_Y, NY)
 
-  output <- list( guildX = SADX, guildY = SADY);
+  output <- list( guildX = sadx, guildY = sady)
   
   return(output)
 }
 
 
 polyaeggenberger <- function(theta_x,theta_y,J,N) {
-  a = lgamma(J + 1) #J!
-  b = lgamma(theta_x + theta_y + J) - 
+  a <- lgamma(J + 1) #J!
+  b <- lgamma(theta_x + theta_y + J) - 
       lgamma(theta_x + theta_y) #(theta_x + theta_y)_J pochhammer
   
-  c1 = lgamma(theta_x + N) - lgamma(theta_x) #(theta_x)_Nx  pochhammer
-  c2 = lgamma(theta_y + J - N) - lgamma(theta_y) #(theta_y)_Ny  pochhammer
-  d = lgamma(N + 1) + lgamma(J-N+1)
+  c1 <- lgamma(theta_x + N) - lgamma(theta_x) #(theta_x)_Nx  pochhammer
+  c2 <- lgamma(theta_y + J - N) - lgamma(theta_y) #(theta_y)_Ny  pochhammer
+  d <- lgamma(N + 1) + lgamma(J-N+1)
   
   return( exp(a - b + c1 + c2 - d))
 }
 
 localComm <- function(alpha_x, alpha_y, Jx, Jy, px) {
-  J = Jx + Jy
+  J <- Jx + Jy
 
-  nx = px
-  ny = 1 - nx
+  nx <- px
+  ny <- 1 - nx
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
  if(is.infinite(I_X) && is.infinite(I_Y)) {
-     output = exp( lgamma(J+1) - 
+     output <- exp( lgamma(J+1) - 
                   (lgamma(Jx + 1) + 
                    lgamma(J - Jx + 1)) +
                     Jx * log(nx) + 
@@ -102,7 +102,7 @@ rho <- function(theta,px) {
 }
 
 getpx <- function(theta, alpha_x, alpha_y, JX, JY) {
-  px = (1:(1000-1)) / 1000
+  px <- (1:(1000-1)) / 1000
   calcLocal <- function(x) {
     a <- localComm(alpha_x, alpha_y, JX, JY, x) * 
                rho(theta,x)
@@ -120,20 +120,18 @@ getpx <- function(theta, alpha_x, alpha_y, JX, JY) {
 
 generate.Guilds.Cond <- function(theta, alpha_x, alpha_y, JX, JY) {
 
-  J = JX + JY
-  SADX <- c()
-  SADY <- c()
+  J <- JX + JY
 
-  nx = getpx(theta, alpha_x, alpha_y, JX, JY)
-  ny = 1 - nx
+  nx <- getpx(theta, alpha_x, alpha_y, JX, JY)
+  ny <- 1 - nx
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  SADX = generate.ZSM(theta, I_X, JX)
-  SADY = generate.ZSM(theta, I_Y, JY)
+  sadx <- generate.ZSM(theta, I_X, JX)
+  sady <- generate.ZSM(theta, I_Y, JY)
 
-  output <- list( guildX = SADX,guildY = SADY)
+  output <- list( guildX = sadx, guildY = sady)
   
   return(output)
 }
@@ -181,7 +179,7 @@ generate.ZSM <- function(theta,I,J) {
   
   x <- c( table( species))
   abund <- c()
-  for (i in 1:length(x)) {
+  for (i in seq_along(x)) {
      abund[i] <- x[[i]]
   }
   abund <- sort( abund, decreasing = TRUE)
