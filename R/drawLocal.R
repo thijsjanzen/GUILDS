@@ -1,58 +1,58 @@
-pm_sad <- function(th,I,j) {
-
-	k1 = unique(round(10^seq(0,log10(j-1),len=1000)))     #k1=unique(round(logspace(0,log10(j-1),1000)));
-	res=rep(0,length(k1))  								  #res=zeros(1,length(k1));
-	for(cnt in 1:length(k1)) {
-		k = k1[cnt];
+pm_sad <- function(th, I, j) {
+ 	k1 <- unique( round( 10^seq( 0, log10(j - 1), len = 1000)))    
+	res <- rep(0, length(k1))
+	
+	for (cnt in 1:length(k1)) {
+		k <- k1[cnt]
 		f <- function(x) {
-			return(-1 * pm_sadaux(x,I,th,j,k));
+			return(-1 * pm_sadaux(x, I, th, j, k))
 		}
-		xmax = optimize(f,c(0,1))$minimum
-		ymax = pm_sadaux(xmax,I,th,j,k)
-		y0 = pm_sadaux(0,I,th,j,k);
-		if(ymax<(y0+1)) {
-			xmin = 0;
+		xmax <- optimize(f, c(0,1))$minimum
+		ymax <- pm_sadaux(xmax, I, th, j, k)
+		y0 <- pm_sadaux(0, I, th, j, k)
+		if(ymax < (y0 + 1)) {
+			xmin <- 0
 		} else {
 			f <- function(x) {
-				return(pm_sadaux(x,I,th,j,k) - ymax + 1);
+				return(pm_sadaux(x, I, th, j, k) - ymax + 1)
 			}
-			#xL = f(1e-10);
-			#xR = f(xmax);
-			#cat(cnt,xL,xR,"\n"); flush.console();
-			xmin = uniroot(f,c(1e-10,xmax))$root;
+			xmin <- uniroot(f, c(1e-10, xmax))$root
 		}
-		x1 = (xmax+1)/2;
-		y1 = pm_sadaux(x1,I,th,j,k);
-		while(ymax < (y1+1)) {
-			x1 = (x1 + 1) / 2;
-			y1 = pm_sadaux(x1,I,th,j,k);
+		x1 <- (xmax + 1) / 2
+		y1 <- pm_sadaux(x1, I, th, j, k)
+		while(ymax < (y1 + 1)) {
+			x1 <- (x1 + 1) / 2;
+			y1 <- pm_sadaux(x1, I, th, j, k)
 		}
 		f <- function(x) {
-				return(pm_sadaux(x,I,th,j,k)-ymax+1);
+				return(pm_sadaux(x, I, th, j, k)- ymax + 1)
 		}
 		
-		xplu = uniroot(f,c(xmax,x1),tol=eps())$root;
-		xlft = xmax - 10 * (xmax - xmin); xlft = max(0,xlft);
-		xrgt = xmax + 10 * (xplu - xmax); xrgt = min(1,xrgt);
+		xplu <- uniroot(f, c(xmax, x1), tol=eps())$root
+		xlft <- xmax - 10 * (xmax - xmin) 
+		xlft <- max(0, xlft)
+		xrgt <- xmax + 10 * (xplu - xmax)
+		xrgt <- min(1, xrgt)
 		
 		f <- function(x) {
-		    return( exp(pm_sadaux(x,I,th,j,k)));
+		    return( exp( pm_sadaux(x, I, th, j, k)))
 		}
 		
-		res[cnt] = integrate(f,xlft,xrgt,abs.tol=1e-9)$val  #checked!!!!!1
+		res[cnt] = integrate(f, xlft, xrgt, abs.tol=1e-9)$val  #checked!!!!!1
 	}
 
-	k2 = 1:(j-1);  #the original algorithm had 1:j, but at the interp1 algorithm does not evaluate at the ends.
-	kesk = interp1(x=log2(k1),y=k1*res,xi=log2(k2),method="spline"); 	#kesk = spline(log2(k1),k1.*res,log2(k2));
-	k2 <- c(k2,j);
-	kesk <- c(kesk,0);
-	esk = kesk / k2;
-	esk[esk<eps()] = eps();
-	return(esk);
+	#the original algorithm had 1:j, but at the interp1 algorithm 
+	# does not evaluate at the ends.
+	k2 <- 1:(j - 1)  
+	kesk <- interp1(x = log2(k1), y = k1 * res, xi = log2(k2), method = "spline")
+	k2 <- c(k2, j)
+	kesk <- c(kesk, 0)
+	esk <- kesk / k2
+	esk[esk < eps()] <- eps()
+	return(esk)
 }
 
-pm_sadaux <- function(x,I,th,j,k) {
-    #cat(x,I,th,j,k,"\n"); flush.console();
+pm_sadaux <- function(x, I, th, j, k) {
 	y = matrix(0,nrow=size(x)[1],ncol=size(x)[2]);
 	idx0=which(x==0);
 	if(length(idx0)) {
