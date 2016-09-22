@@ -10,9 +10,8 @@ test_that("maxLikelihood.GuildsConditional: use", {
   
   
   set.seed(42)
-  J = 20000
   
-  theta = 100
+  theta = 50
   alpha_x = 0.1
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, JX = 10000, JY = 10000)
@@ -33,28 +32,28 @@ test_that("maxLikelihood.GuildsConditional: use", {
     tolerance = 0.05, scale = 1
   )
   
-  
+  set.seed(666)
   theta = 30
-  alpha_x = 0.1
+  alpha_x = 0.01
   alpha_y = 0.001
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, JX = 10000, JY = 10000)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
-  LL <- maxLikelihood.Guilds( initVals = c(30, 0.1, 0.001), 
-                              model="D1", method="simplex",
-                              SADX = simul_data$guildX, 
-                              SADY = simul_data$guildY, verbose = FALSE)
+  LL <- maxLikelihood.Guilds.Conditional( initVals = c(30, 0.1, 0.001), 
+                                          model="D1", method="simplex",
+                                          SADX = simul_data$guildX, 
+                                          SADY = simul_data$guildY, verbose = FALSE)
   
   expect_equal(
     theta, 
     LL$par[1],
-    tolerance = 5, scale = 1
+    tolerance = 7, scale = 1
   )
   expect_equal(
     alpha_x,
     LL$par[2],
-    tolerance = 0.05, scale = 1
+    tolerance = 0.01, scale = 1
   )
   expect_equal(
     alpha_y,
