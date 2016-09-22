@@ -8,7 +8,7 @@ evaluateLogLik <- function(v, theta_x, theta_y, alpha_x, alpha_y,
   a <- lgamma(J + 1)
   b <- rep(0, length(I_X))
 
-  for(cnt in 1:length(I_X)) {
+  for(cnt in seq_along(I_X)) {
     b[cnt] <- lgamma(I_X[cnt] + I_Y[cnt] + J) - lgamma(I_X[cnt] + I_Y[cnt])
   }
   c <- a - b
@@ -21,6 +21,6 @@ evaluateLogLik <- function(v, theta_x, theta_y, alpha_x, alpha_y,
   
   result <- c(c + l + s + z)
   output <- rep(-Inf, length(v))
-  for (i in 1:length(v)) output[i] <- result[i]
+  for (i in seq_along(v)) output[i] <- result[i]
   return(output)
 }

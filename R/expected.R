@@ -1,19 +1,19 @@
 prestonSort <- function(A) {
-  output <- rep(0,13);
+  output <- rep(0,13)
   
   for(k in 1:length(output)) {
-    start <- 2^(k-1);
-    end <- -1 + 2^(k);
+    start <- 2^(k-1)
+    end <- -1 + 2^(k)
     if(end > length(A)) {
-      end <- length(A);
-      X <- sum(A[start:end]);
-      output[k] <- X; 
+      end <- length(A)
+      X <- sum(A[start:end])
+      output[k] <- X
       break;
     }
-    X <- sum(A[start:end]);
-    output[k] <- X;
+    X <- sum(A[start:end])
+    output[k] <- X
   }
-  return(output);
+  return(output)
 }
 
 
@@ -38,7 +38,7 @@ expected.SAD <- function(theta, m, J) {
   I = (J-1)* m / (1-m)
   aux <- pm_sad(theta, I, J)
   SAD <- prestonSort(aux)
-  return(SAD); 
+  return(SAD)
 }
 
 expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
@@ -62,7 +62,7 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   gY <- prestonSort(meanY)
   
   output <- list( guildX = gX, guildY = gY)
-  return(output);
+  return(output)
 }
 
 expected.SAD.Guilds.Conditional <- function(theta,

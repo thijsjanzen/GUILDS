@@ -46,7 +46,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
                  (J-allN) * log(ny))
   } else {
     #set up a probability vector
-    probs = PolyaEggenberger(I_X, I_Y, J, allN) 
+    probs = polyaeggenberger(I_X, I_Y, J, allN) 
   }
 
   NX = sample(0:J, 1, replace = TRUE, prob = probs)
@@ -61,7 +61,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
 }
 
 
-PolyaEggenberger <- function(theta_x,theta_y,J,N) {
+polyaeggenberger <- function(theta_x,theta_y,J,N) {
   a = lgamma(J + 1) #J!
   b = lgamma(theta_x + theta_y + J) - 
       lgamma(theta_x + theta_y) #(theta_x + theta_y)_J pochhammer
@@ -89,7 +89,7 @@ localComm <- function(alpha_x, alpha_y, Jx, Jy, px) {
                     Jx * log(nx) + 
                     (J-Jx) * log(ny))
  } else {
-  output <- PolyaEggenberger(I_X, I_Y, J, Jx)
+  output <- polyaeggenberger(I_X, I_Y, J, Jx)
  }
   return(output)
 }
@@ -101,8 +101,8 @@ rho <- function(theta,px) {
   return(output)
 }
 
-getPX <- function(theta, alpha_x, alpha_y, JX, JY) {
-  px = (1:(1000-1))/1000
+getpx <- function(theta, alpha_x, alpha_y, JX, JY) {
+  px = (1:(1000-1)) / 1000
   calcLocal <- function(x) {
     a <- localComm(alpha_x, alpha_y, JX, JY, x) * 
                rho(theta,x)
@@ -111,7 +111,7 @@ getPX <- function(theta, alpha_x, alpha_y, JX, JY) {
   divider <- integrate(f = calcLocal,
                        lower = 0,
                        upper = 1,
-                       abs.tol=1e-9)$value
+                       abs.tol = 1e-9)$value
   
   probs <- calcLocal(px) / divider
 
@@ -124,7 +124,7 @@ generate.Guilds.Cond <- function(theta, alpha_x, alpha_y, JX, JY) {
   SADX <- c()
   SADY <- c()
 
-  nx = getPX(theta, alpha_x, alpha_y, JX, JY)
+  nx = getpx(theta, alpha_x, alpha_y, JX, JY)
   ny = 1 - nx
 
   I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
@@ -154,9 +154,10 @@ generate.ZSM <- function(theta,I,J) {
   ancestor_species <- rep(NaN, J)
 
   for (j in 1:J) { #loop over each invidual 
-     if ( runif(1,0,1) <= I / (I + j - 1) ) { #ancestor not previously encountered
-        anc_ct <- anc_ct + 1;
-        ancestor[j] <- anc_ct;
+    #ancestor not previously encountered
+     if ( runif(1,0,1) <= I / (I + j - 1) ) { 
+        anc_ct <- anc_ct + 1
+        ancestor[j] <- anc_ct
         #new ancestor is a new species
         if ( runif(1,0,1) <= theta / (theta + anc_ct - 1)) { 
             spec_ct <- spec_ct + 1
@@ -165,14 +166,14 @@ generate.ZSM <- function(theta,I,J) {
          } else { 
            # new ancestor is an existing species but
            # new migration into local community
-            prior_lineage = ceil( runif(1, 0, 1) * (anc_ct - 1))
+            prior_lineage = pracma::ceil( runif(1, 0, 1) * (anc_ct - 1))
             s = ancestor_species[prior_lineage]
             species[j] <- s
             ancestor_species[anc_ct] <- s
          }
      } else { #descendant of existing individual
        #select one individual at random
-        descend_from = ceil( runif(1, 0, 1) * (j - 1)) 
+        descend_from = pracma::ceil( runif(1, 0, 1) * (j - 1)) 
         ancestor[j] = ancestor[descend_from]
         species[j] = species[descend_from]
      }

@@ -2,10 +2,10 @@
 \title{Internal Guilds functions}
 \alias{simplex}
 \alias{rho}
-\alias{PolyaEggenberger}
+\alias{polyaeggenberger}
 \alias{logLikguilds}
 \alias{localComm}
-\alias{getPX}
+\alias{getpx}
 \alias{evaluateLogLik}
 \alias{esf_local}
 \alias{conditional.LogLik}

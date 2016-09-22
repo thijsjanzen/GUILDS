@@ -10,7 +10,7 @@ evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
   poch_X <- rep(0, length(I_X))
   poch_Y <- rep(0, length(I_X))
 
-  for (cnt in 1:length(I_X)) {
+  for (cnt in seq_along(I_X)) {
     b[cnt] <- lgamma(I_X[cnt] + I_Y[cnt] + J) - lgamma(I_X[cnt] + I_Y[cnt])
     poch_X[cnt] <- lgamma(I_X[cnt] + Nx) - lgamma(I_X[cnt])
     poch_Y[cnt] <- lgamma(I_Y[cnt] + Ny) - lgamma(I_Y[cnt])
@@ -20,9 +20,9 @@ evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
 
   h <- poch_X + poch_Y - (lgamma(Nx + 1) + lgamma(Ny + 1))
 
-  k  <-  lgamma( (theta_x / 2) + (theta_y / 2)) - 
+  k  <-  lgamma((theta_x / 2) + (theta_y / 2)) -
         (lgamma(theta_x / 2) + lgamma(theta_y / 2))
-  l  <- ((theta_x / 2) - 1) * log(nx) + ( (theta_y / 2) - 1) * log(ny)
+  l  <- ( (theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
 
   result <- c + h + k + l
   return(result)
@@ -71,7 +71,7 @@ calc_conditional <- function(v, model, Nx, Ny) {
  xrgt <- 1
  eps <- .Machine$double.eps
  thrs <- 10
- 
+
  check_left_x  <- evaluate_cond_lik(eps, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
  check_right_x <- evaluate_cond_lik(1 - eps, theta_x, theta_y,
@@ -118,8 +118,6 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
   Nx <- sum(sadx)
   Ny <- sum(sady)
 
-  LL <- -Inf
-
   if (verbose == TRUE) {
    cat("Chosen model: ", model, "\n")
    cat("Now starting to calculate likelihood of: \n")
@@ -133,7 +131,7 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
                          "\t Alpha X =", x2[2],
                          " Alpha Y =", x2[3], "\n")
 
-   flush.console();
+   flush.console()
   }
 
   ll <- logLikelihood.Guilds(parameters, model, sadx, sady, verbose)
@@ -211,7 +209,7 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
     x <- simplex(init_vals, g, verbose)
   }
   if (method == "subplex") {
-    x <- subplex(init_vals, g)
+    x <- subplex::subplex(init_vals, g)
   }
   return(x)
 }

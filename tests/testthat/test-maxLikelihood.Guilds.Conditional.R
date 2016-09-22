@@ -2,20 +2,18 @@ context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
   set.seed(42)
-  initParams <- c(20, 0.1); #Initial parameters for the D0 model, c(theta,alpha)
-  maxLikelihood.Guilds.Conditional(initParams, model ="D0", 
+  maxLikelihood.Guilds.Conditional(init_vals = c(20, 0.1), model ="D0", 
                                    method = "subplex",
-                                   sadx = 1:20, sady = 1:20, verbose = FALSE)
-  
-  
-  
+                                   sadx = c(1:20), 
+                                   sady = c(1:20), verbose = FALSE)
   
   set.seed(42)
   
   theta = 50
   alpha_x = 0.1
   
-  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, JX = 10000, JY = 10000)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, 
+                                     JX = 10000, JY = 10000)
   
   #initial parameters for the D0 model c(theta,alpha)
   LL <- maxLikelihood.Guilds.Conditional( init_vals = c(theta, alpha_x), 
@@ -38,13 +36,17 @@ test_that("maxLikelihood.GuildsConditional: use", {
   alpha_x = 0.01
   alpha_y = 0.001
   
-  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, JX = 10000, JY = 10000)
+  simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, 
+                                     JX = 10000, JY = 10000)
   
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
-  LL <- maxLikelihood.Guilds.Conditional( init_vals = c(30, 0.1, 0.001), 
-                                          model="D1", method="simplex",
+  LL <- maxLikelihood.Guilds.Conditional( init_vals = 
+                                            c(30, 0.1, 0.001), 
+                                          model="D1", 
+                                          method="simplex",
                                           sadx = simul_data$guildX, 
-                                          sady = simul_data$guildY, verbose = FALSE)
+                                          sady = simul_data$guildY, 
+                                          verbose = FALSE)
   
   expect_equal(
     theta, 

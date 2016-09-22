@@ -6,43 +6,45 @@ logLikelihood.ESF <- function(theta, m, abund) {
      return(-Inf)
   }
 
-  J = sum(abund)
-  S = length(abund)
-  I = m * (J-1) / (1 - m)
+  J <- sum(abund)
+  S <- length(abund)
+  I <- m * (J-1) / (1 - m)
 
-  kda = calcKDA(abund)  #confirmed in PARI
+  kda <- calcKDA(abund)  #confirmed in PARI
 
-  sumkda = calc_sum_kda(S, J, I, theta, kda)  
+  sumkda <- calc_sum_kda(S, J, I, theta, kda)  
  
   x <- c(table(abund))
   freq_x <- c()
-  for(i in 1:length(x)) freq_x[i] <- x[[i]]
-  prefactor1 = -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
+  for(i in seq_along(x)) freq_x[i] <- x[[i]]
+  prefactor1 <- -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
   
-  factor1 <- lgamma(J+1) + prefactor1  #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
+  #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
+  factor1 <- lgamma(J+1) + prefactor1  
   
-  factor2 = S*log(theta)   -  (lgamma(I + J) - lgamma(I))
+  factor2 <- S*log(theta)   -  (lgamma(I + J) - lgamma(I))
   
   ll <- factor1 + factor2 + sumkda
   return(ll)
 }
 
 esf_local <- function(v, abund, prefactor, kda) {
-  theta = v[1]
-  m = v[2]
+  theta <- v[1]
+  m <- v[2]
+
   if(theta < 1 || 
      m <= 0 || 
      m > (1-.Machine$double.eps)) {
     return(-Inf)
   }
  
-  J = sum(abund)
-  S = length(abund)
-  I = m * (J-1) / (1 - m)
+  J <- sum(abund)
+  S <- length(abund)
+  I <- m * (J-1) / (1 - m)
 
-  sumkda = calc_sum_kda(S, J, I, theta, kda)
+  sumkda <- calc_sum_kda(S, J, I, theta, kda)
  
-  factor2 = S*log(theta)   -  (lgamma(I + J) - lgamma(I))
+  factor2 <- S*log(theta)   -  (lgamma(I + J) - lgamma(I))
   
   ll <- prefactor + factor2 + sumkda
   return(ll)
@@ -66,14 +68,14 @@ maxLikelihood.ESF <- function(init_vals, abund, verbose=TRUE) {
          "Need more than 1 species in the dataset")
   }
 
-  kda = calcKDA(abund)  #confirmed in PARI
+  kda <- calcKDA(abund)  #confirmed in PARI
 
-  J = sum(abund)
-  S = length(abund)
+  J <- sum(abund)
+  S <- length(abund)
   x <- c( table(abund))
   freq_x <- c()
-  for (i in 1:length(x)) freq_x[i] <- x[[i]]
-  prefactor = lgamma(J+1) -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
+  for (i in seq_along(x)) freq_x[i] <- x[[i]]
+  prefactor <- lgamma(J+1) -( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
    
   g <- function(x) {
 	  out <- -1 * esf_local(x, abund, prefactor, kda)

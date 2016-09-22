@@ -53,7 +53,9 @@ logLikguilds <- function(theta_x, theta_y,
    prefactor2 + Sy * log(theta_y / 2) + lgamma((theta_x / 2) + (theta_y / 2)) - 
    (lgamma(theta_x/2) + lgamma(theta_y / 2))
  
- #if(verbose==TRUE) cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",theta_x,theta_y,alpha_x,alpha_y,y));flush.console(); 
+ #if(verbose==TRUE) 
+ # cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",
+ #  theta_x, theta_y, alpha_x, alpha_y, y)); flush.console(); 
  
  return(y)
 }

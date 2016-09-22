@@ -10,10 +10,11 @@
 using namespace std;
 using namespace Rcpp;
 
-
+//after Jerome Chave
+// this code is from the Tetame package
 
 void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std::vector<int> Abund)
-{           //after Jerome Chave
+{           
    
     if(Abund.size() < 1) return;
    

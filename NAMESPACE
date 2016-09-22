@@ -1,9 +1,24 @@
 useDynLib(GUILDS)
-import(pracma)
-import(subplex)
 importFrom("stats", "integrate", "optimize", "rbeta", "runif",
              "uniroot")
 importFrom("utils", "flush.console")
 importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
+
+export(generate.ESF)
+export(generate.Guilds)
+export(generate.Guilds.Cond)
+
+
+export(expected.SAD.Guilds.Conditional)
+export(expected.SAD.Guilds)
+export(expected.SAD)
+
+
+export(logLikelihood.ESF)
+export(logLikelihood.Guilds)
+export(logLikelihood.Guilds.Conditional)
+
+export(maxLikelihood.ESF)
+export(maxLikelihood.Guilds)
+export(maxLikelihood.Guilds.Conditional)
 
