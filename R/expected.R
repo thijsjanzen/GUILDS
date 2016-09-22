@@ -41,48 +41,54 @@ expected.SAD <- function(theta, m, J) {
   return(SAD); 
 }
 
-expected.SAD.Guilds <- function(theta,alpha_x,alpha_y,J,n_replicates=100) {
-  meanX <- rep(0,J);
-  meanY <- rep(0,J);
+expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
+                                J, n_replicates = 100) {
+  meanX <- rep(0, J)
+  meanY <- rep(0, J)
 
-  for(r in 1:n_replicates) {
-		M <- drawLocal(theta,alpha_x,alpha_y,J);
-		for(m in 1:length(M$guildX)) {
-			meanX[m] <- meanX[m] + M$guildX[m];
+  for (r in 1:n_replicates) {
+		M <- drawLocal(theta, alpha_x, alpha_y, J)
+		for (m in 1:length(M$guildX)) {
+			meanX[m] <- meanX[m] + M$guildX[m]
 		}
-		for(m in 1:length(M$guildY)) {
-			meanY[m] <- meanY[m] + M$guildY[m];
+		for (m in 1:length(M$guildY)) {
+			meanY[m] <- meanY[m] + M$guildY[m]
 		}
   }
-  meanX <- meanX / n_replicates;
-  meanY <- meanY / n_replicates;
+  meanX <- meanX / n_replicates
+  meanY <- meanY / n_replicates
 
-  gX <- prestonSort(meanX);
-  gY <- prestonSort(meanY);
+  gX <- prestonSort(meanX)
+  gY <- prestonSort(meanY)
   
-  output <- list( guildX = gX,guildY = gY);
+  output <- list( guildX = gX, guildY = gY)
   return(output);
 }
 
-expected.SAD.Guilds.Conditional <- function(theta,alpha_x,alpha_y,Jx,Jy,n_replicates=100) {
-  meanX <- rep(0,Jx);
-  meanY <- rep(0,Jy);
+expected.SAD.Guilds.Conditional <- function(theta,
+                                            alpha_x,
+                                            alpha_y,
+                                            Jx,
+                                            Jy,
+                                            n_replicates = 100) {
+  meanX <- rep(0,Jx)
+  meanY <- rep(0,Jy)
 
-  for(r in 1:n_replicates) {
-		M <- drawLocalCond(theta,alpha_x,alpha_y,Jx,Jy);
-		for(m in 1:length(M$guildX)) {
-			meanX[m] <- meanX[m] + M$guildX[m];
+  for (r in 1:n_replicates) {
+		M <- drawLocalCond(theta, alpha_x, alpha_y, Jx, Jy)
+		for (m in 1:length(M$guildX)) {
+			meanX[m] <- meanX[m] + M$guildX[m]
 		}
-		for(m in 1:length(M$guildY)) {
-			meanY[m] <- meanY[m] + M$guildY[m];
+		for (m in 1:length(M$guildY)) {
+			meanY[m] <- meanY[m] + M$guildY[m]
 		}
   }
-  meanX <- meanX / n_replicates;
-  meanY <- meanY / n_replicates;
+  meanX <- meanX / n_replicates
+  meanY <- meanY / n_replicates
 
-  gX <- prestonSort(meanX);
-  gY <- prestonSort(meanY);
+  gX <- prestonSort(meanX)
+  gY <- prestonSort(meanY)
   
-  output <- list( guildX = gX,guildY = gY);
-  return(output);
+  output <- list( guildX = gX, guildY = gY)
+  return(output)
 }

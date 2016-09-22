@@ -82,52 +82,53 @@ pm_sadaux <- function(x, I, th, j, k) {
     return(y);
 }
 
-drawLocalCond <- function(theta,alpha_x,alpha_y,JX,JY) {
+drawLocalCond <- function(theta, alpha_x, alpha_y, JX, JY) {
     #make two SADs
-  J = JX + JY;
-  SADX <- c();
-  SADY <- c();
+  J = JX + JY
+  SADX <- c()
+  SADY <- c()
 
-  nx = getPX(theta,alpha_x,alpha_y,JX,JY);
-  ny = 1 - nx; 
+  nx = getPX(theta, alpha_x, alpha_y, JX, JY)
+  ny = 1 - nx;
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny); #update I_X and I_Y accordingly
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny);
+  #update I_X and I_Y accordingly
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  SADX = pm_sad(theta, I_X, JX);
-  SADY = pm_sad(theta, I_Y, JY);
+  SADX = pm_sad(theta, I_X, JX)
+  SADY = pm_sad(theta, I_Y, JY)
 
-  output <- list( guildX = SADX,guildY = SADY);
-  
-  return(output);
+  output <- list( guildX = SADX,guildY = SADY)
+
+  return(output)
 }
 
-drawLocal <- function(theta,alpha_x,alpha_y,J) {
+drawLocal <- function(theta, alpha_x, alpha_y, J) {
     #make two SADs
-  SADX <- c();
-  SADY <- c();
+  SADX <- c()
+  SADY <- c()
 
-  nx = rbeta(1,theta,theta);
-  ny = 1 - nx; 
+  nx = rbeta(1,theta,theta)
+  ny = 1 - nx;
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny); #update I_X and I_Y accordingly
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny);
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny) #update I_X and I_Y accordingly
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny)
 
-  probs <- c();
-  allN <- 0:J;
+  probs <- c()
+  allN <- 0:J
   if(is.infinite(I_X) && is.infinite(I_Y)) {
      probs = exp( lgamma(J+1) - (lgamma(allN + 1) + lgamma(J - allN + 1)) + allN * log(nx) + (J-allN) * log(ny));
   } else {
-    probs = PolyaEggenberger(I_X,I_Y,J,allN); #set up a probability vector
+    probs = PolyaEggenberger(I_X, I_Y, J, allN) #set up a probability vector
   }
 
-  NX = sample(0:J,1,replace=TRUE,prob=probs);
+  NX = sample(0:J,1,replace=TRUE,prob=probs)
   NY = J - NX;
 
-  SADX = pm_sad(theta, I_X, NX);
-  SADY = pm_sad(theta, I_Y, NY);
+  SADX = pm_sad(theta, I_X, NX)
+  SADY = pm_sad(theta, I_Y, NY)
 
-  output <- list( guildX = SADX,guildY = SADY);
-  
-  return(output);
+  output <- list( guildX = SADX,guildY = SADY)
+
+  return(output)
 }
