@@ -9,8 +9,7 @@
 		parsoptff <- 1.05 * initpars[i]/(1 - initpars[i])
 		trparsoptff <- parsoptff/(1 + parsoptff)
 		fac = trparsoptff/initpars[i]
-		if(v[i, i + 1] == 0)
-		{
+		if (v[i, i + 1] == 0)  {
 		   v[i, i + 1] = 0.00025
 		} else {
 		   v[i, i + 1] = v[i, i + 1] * min(1.05, fac)
@@ -29,7 +28,7 @@
 	   string <- paste(string,v[i,1],sep=" ")
 	}
 	string <- paste(string, -fv[1], how, "\n", sep = " ")
-	if(verbose) cat(string)
+	if (verbose) cat(string)
 	flush.console()
 
 	tmp <- order(fv)
@@ -85,8 +84,7 @@
 				  ## Calculate outside contraction point
 				  xco <- (1 + ps * rh) * xbar - ps * rh * v[,numpar + 1]
 				  fxco <- evalfunc(xco);
-				  if (fxco <= fxr)
-				  {
+				  if (fxco <= fxr) {
 					 v[,numpar + 1] <- xco
 					 fv[numpar + 1] <- fxco            
 					 how <- "contract outside"
@@ -97,8 +95,7 @@
 				  ## Calculate inside contraction point
 				  xci <- (1 - ps) * xbar + ps * v[,numpar + 1]
 				  fxci <- evalfunc(xci)
-				  if(fxci < fv[numpar + 1])
-				  {  
+				  if(fxci < fv[numpar + 1]) {  
 					 v[,numpar + 1] <- xci
 					 fv[numpar + 1] <- fxci
 					 how <- "contract inside"
@@ -130,10 +127,10 @@
 	   if (verbose) cat(string); flush.console()
 	   v2 <- t(matrix(rep(v[, 1], each = numpar + 1), nrow = numpar + 1))
 	}
-	if(itercount < maxiter) {
+	if (itercount < maxiter) {
 	   if(verbose) cat("Optimization has terminated successfully.", "\n")
 	} else {
-	   if(verbose) cat("Maximum number of iterations has been exceeded.", "\n")
+	   if (verbose) cat("Maximum number of iterations has been exceeded.", "\n")
 	}
 	out <- list(par = v[,1], 
 	           fvalues = -fv[1], 

@@ -103,23 +103,26 @@ draw_local_cond <- function(theta, alpha_x, alpha_y, JX, JY) {
 }
 
 draw_local <- function(theta, alpha_x, alpha_y, J) {
+
   nx <- rbeta(1, theta, theta)
   ny <- 1 - nx
 
   I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
   I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-
+  
+  if (is.finite(I_X)) {
+    stop("draw_local: ",
+         "alpha_x is 1 or close to one, and leads to I_x = Inf")
+  }
+  if (is.finite(I_Y)) {
+    stop("draw_local: ",
+         "alpha_y is 1 or close to one, and leads to I_y = Inf")
+  }
+  
   probs <- c()
   allN <- 0:J
-  if(is.infinite(I_X) && is.infinite(I_Y)) {
-     probs <- exp( lgamma(J+1) - 
-                  (lgamma(allN + 1) + 
-                  lgamma(J - allN + 1)) + 
-                    allN * log(nx) + 
-                    (J-allN) * log(ny))
-  } else {
-    probs <- polyaeggenberger(I_X, I_Y, J, allN)
-  }
+
+  probs <- polyaeggenberger(I_X, I_Y, J, allN)
 
   NX <- sample(0:J, 1, replace = TRUE, prob = probs)
   NY <- J - NX
