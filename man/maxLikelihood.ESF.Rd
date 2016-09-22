@@ -12,16 +12,16 @@ maxLikelihood.ESF(init_vals, abund, verbose = TRUE)
 }
 
 \arguments{
-  \item{init_vals}{A vector of initial starting values, of the format c(theta,m)}
+  \item{init_vals}{A vector of initial starting values, of the format c(theta, m)}
 
   \item{abund}{Vector containing a record of the number of individuals per species}
 
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
 \value{the output is a list containing the following:
-	\item{par}{a vector containing the parameter values at the maximum likelihood}
-	\item{fvalues}{the likelihood at the corresponding parameter values}
-	\item{conv}{gives a message on convergence of optimization; conv = 0 means convergence} \cr
+	\item{par}{ a vector containing the parameter values at the maximum likelihood c(theta, m)}
+	\item{fvalues}{ the likelihood at the corresponding parameter values}
+	\item{conv}{ gives a message on convergence of optimization; conv = 0 means convergence} \cr
 
 }
 \references{

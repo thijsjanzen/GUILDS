@@ -17,10 +17,11 @@
 \alias{pm_sadaux}
 \alias{draw_local_cond}
 \alias{draw_local}
-\alias{prestonSort}
+\alias{sort_aux}
 \alias{generate.ZSM}
-
-
+\alias{octave_index}
+\alias{preston_sort}
+\alias{preston_plot}
 \description{Internal Guilds functions}
 \details{These are not to be called by the user}
 \keyword{internal}

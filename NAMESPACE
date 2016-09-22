@@ -22,3 +22,6 @@ export(maxLikelihood.ESF)
 export(maxLikelihood.Guilds)
 export(maxLikelihood.Guilds.Conditional)
 
+export(preston_plot)
+export(calcKDA)
+

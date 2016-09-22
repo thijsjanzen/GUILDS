@@ -1,4 +1,4 @@
-prestonsort <- function(A) {
+sort_aux <- function(A) {
   output <- rep(0,13)
 
   for (k in seq_along(output)) {
@@ -36,7 +36,7 @@ expected.SAD <- function(theta, m, J) {
 
   I <- (J - 1) * m / (1 - m)
   aux <- pm_sad(theta, I, J)
-  sad <- prestonsort(aux)
+  sad <- sort_aux(aux)
   return(sad)
 }
 
@@ -57,8 +57,8 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   meanx <- meanx / n_replicates
   meany <- meany / n_replicates
 
-  gx <- prestonsort(meanx)
-  gy <- prestonsort(meany)
+  gx <- sort_aux(meanx)
+  gy <- sort_aux(meany)
   
   output <- list( guildX = gx, guildY = gy)
   return(output)
@@ -85,8 +85,8 @@ expected.SAD.Guilds.Conditional <- function(theta,
   meanx <- meanx / n_replicates
   meany <- meany / n_replicates
 
-  gx <- prestonsort(meanx)
-  gy <- prestonsort(meany)
+  gx <- sort_aux(meanx)
+  gy <- sort_aux(meany)
   
   output <- list( guildX = gx, guildY = gy)
   return(output)
