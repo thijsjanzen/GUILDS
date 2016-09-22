@@ -32,19 +32,19 @@ preston_plot <- function(abund, expected) {
     maxy <- max(maxy,max(expected))
   }
   
-  df.bar <- barplot(v, names.arg = 0:(length(v)-1), 
+  df.bar <- graphics::barplot(v, names.arg = 0:(length(v)-1), 
                                       cex.names = 0.7, 
                                       space = 0, 
                                       ylim = c(0,maxy))
   if(plot_expected) {
     xx <- c()
     yy <- 1:length(df.bar)
-    lmmm <- lm(df.bar~yy)
+    lmmm <- stats::lm(df.bar~yy)
     slope <- lmmm$coefficients[[2]]
     intercept <- lmmm$coefficients[[1]]
     xvals <- 1:length(expected)
     xvals <- xvals * slope + intercept
-    lines(expected~xvals, lwd = 2)
+    graphics::lines(expected~xvals, lwd = 2)
   }
 }
 
