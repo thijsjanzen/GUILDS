@@ -1,7 +1,8 @@
 useDynLib(GUILDS)
-importFrom("stats", "integrate", "optimize", "rbeta", "runif",
+importFrom("stats", "integrate", "optimize", "rbeta", "runif", "lm",
              "uniroot")
 importFrom("utils", "flush.console")
+importFrom("graphics", "barplot", "lines")
 importFrom(Rcpp, evalCpp)
 
 export(generate.ESF)
