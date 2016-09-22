@@ -1,33 +1,63 @@
-generate.Guilds <- function(theta,alpha_x, alpha_y, J) {
-
+generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
+  if(theta < 1) {
+    stop("generate.Guilds: ",
+         "theta can not be below one")
+  }
+  if(alpha_x < 0) {
+    stop("generate.ESF: ",
+         "alpha_x can not be below zero")
+  }
+  if(alpha_y < 0) {
+    stop("generate.ESF: ",
+         "alpha_y can not be below zero")
+  }
+  if(alpha_x > 1) {
+    stop("generate.ESF: ",
+         "alpha_x can not be above one")
+  }
+  if(alpha_y > 1) {
+    stop("generate.ESF: ",
+         "alpha_y can not be above one")
+  }
+  
+  if(J < 0) {
+    stop("generate.ESF: ",
+         "J can not be below zero")
+  }
   #make two SADs
-  SADX <- c();
-  SADY <- c();
+  SADX <- c()
+  SADY <- c()
 
   #first draw nx and ny from a beta distribution
-  nx = rbeta(1,theta,theta);
+  nx = rbeta(1, theta, theta)
   ny = 1 - nx; 
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny); #update I_X and I_Y accordingly
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny);
+  #update I_X and I_Y accordingly
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny) 
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny)
 
-  probs <- c();
-  allN <- 0:J;
+  probs <- c()
+  allN <- 0:J
   if(is.infinite(I_X) && is.infinite(I_Y)) {
-     probs = exp( lgamma(J+1) - (lgamma(allN + 1) + lgamma(J - allN + 1)) + allN * log(nx) + (J-allN) * log(ny));
+     probs = exp( lgamma(J+1) - 
+                 (lgamma(allN + 1) + 
+                  lgamma(J - allN + 1)) + 
+                  allN * log(nx) + 
+                 (J-allN) * log(ny))
   } else {
-    probs = PolyaEggenberger(I_X,I_Y,J,allN); #set up a probability vector
+    #set up a probability vector
+    probs = PolyaEggenberger(I_X, I_Y, J, allN) 
   }
 
-  NX = sample(0:J,1,replace=TRUE,prob=probs);
-  NY = J - NX;
+  NX = sample(0:J, 1, replace = TRUE, prob = probs)
+  NY = J - NX
 
-  SADX = generate.ZSM(theta,I_X,NX);
-  SADY = generate.ZSM(theta,I_Y,NY);
+  SADX = generate.ZSM(theta, I_X, NX)
+  SADY = generate.ZSM(theta, I_Y, NY)
 
-  output <- list( guildX = SADX,guildY = SADY);
+  output <- list( guildX = SADX, guildY = SADY);
   
-  return(output);
+  return(output)
 }
 
 
@@ -106,7 +136,6 @@ generate.ZSM <- function(theta,I,J) {
 
   #based on urn.gp code by Rampal Etienne available as a supplementary
   #online appendix for his 2005 paper in Ecology Letters
-
   if ( is.infinite(I) ) {
     I <- .Machine$double.xmax
   }
@@ -152,9 +181,9 @@ generate.ZSM <- function(theta,I,J) {
 }
 
 generate.ESF <- function(theta,I,J) {
-  if(theta < 0) {
+  if(theta < 1) {
     stop("generate.ESF: ",
-         "theta can not be below zero")
+         "theta can not be below one")
   }
   if(I < 0) {
     stop("generate.ESF: ",
