@@ -16,7 +16,6 @@ test_that("logLikelihood.Guilds.Conditional: use", {
                               verbose = FALSE)
   
   a <- LL1[[1]] > LL2[[1]]
-  b <- LL1[[1]] > LL3[[1]]
   expect_equal(a, TRUE)
   
   set.seed(42+666)
