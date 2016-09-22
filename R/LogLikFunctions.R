@@ -188,9 +188,13 @@ logLikelihood.Guilds <- function(parameters, model,
   
 
 
-  LL <- logLikguilds(theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y,prefactor1,prefactor2,verbose=);
+  LL <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
+                     Sx, Sy, Nx, Ny, KDA_X, KDA_Y, prefactor1,
+                     prefactor2, verbose)
   
-  if(verbose==TRUE) cat("Likelihood is ",LL,"\n");
+  if ( verbose == TRUE ) {
+    cat("Likelihood is ",LL,"\n")
+  }
   
-  return(LL);
+  return(LL)
 }
