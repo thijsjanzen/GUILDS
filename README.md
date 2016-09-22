@@ -14,6 +14,6 @@ Janzen, T., Haegeman B., Etienne, R.S. (2015) A sampling formula for communities
 
 Etienne, R.S. (2005). A new sampling formula for neutral biodiversity. Ecology Letters, 8(3), 253-260.
 
-Jabot, F., Etienne, R., & chave, J. (2008). Reconciling neutral community models and environmental filtering: theory and an empirical test. Oikos 117: 1308-1320
+Jabot, F., Etienne, R.S., & Chave, J. (2008). Reconciling neutral community models and environmental filtering: theory and an empirical test. Oikos 117: 1308-1320
 
 
