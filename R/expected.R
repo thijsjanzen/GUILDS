@@ -60,7 +60,7 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   gx <- prestonsort(meanx)
   gy <- prestonsort(meany)
   
-  output <- list( guildx = gX, guildY = gy)
+  output <- list( guildx = gx, guildY = gy)
   return(output)
 }
 
