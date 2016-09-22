@@ -53,9 +53,18 @@ logLikguilds <- function(theta_x, theta_y,
 maxLikelihood.Guilds <- function(initVals, model, 
                                  method, SADX, SADY, 
                                  verbose = TRUE) {
-  if(initVals[1] < 0) {
+  incorrectLength <- 0
+  if (model == "D0" && length(initVals) != 2) incorrectLength <- 1
+  if (model == "D1" && length(initVals) != 3) incorrectLength <- 1
+  
+  if (incorrectLength == 1) { 
     stop("maxLikelihood.Guilds: ",
-         "initial theta can not be below zero")
+         "Input vector is of incorrect length\n"); 
+  }
+  
+  if(initVals[1] < 1) {
+    stop("maxLikelihood.Guilds: ",
+         "initial theta can not be below one")
   }
   if(initVals[2] < 0) {
     stop("maxLikelihood.Guilds: ",
@@ -66,11 +75,11 @@ maxLikelihood.Guilds <- function(initVals, model,
          "initial alpha can not be above 1")
   }
   if(model == "D1") {
-    if(initVals[2] < 0 ) {
+    if(initVals[3] < 0 ) {
       stop("maxLikelihood.Guilds: ",
            "initial alpha_y can not be below 0")
     }
-    if(initVals[2] > 1 ) {
+    if(initVals[3] > 1 ) {
       stop("maxLikelihood.Guilds: ",
            "initial alpha_y can not be above 1")
     }
@@ -98,14 +107,7 @@ maxLikelihood.Guilds <- function(initVals, model,
   loglikverbose <- verbose
   if(method == "simplex") loglikverbose <- FALSE
 
-  incorrectLength <- 0
-  if (model == "D0" && length(initVals) != 2) incorrectLength <- 1
-  if (model == "D1" && length(initVals) != 3) incorrectLength <- 1
   
-  if (incorrectLength == 1) { 
-    stop("maxLikelihood.Guilds: ",
-         "Input vector is of incorrect length\n"); 
-  }
   
   g <- function(v) {  
     
