@@ -48,15 +48,15 @@ calcConditional <- function(v, model, Nx, Ny) {
   }
  
   if (alpha_x < 0 ||
-     alpha_y < 0 ||
-     theta_x < 1 ||
-     theta_y < 1 ||
-     alpha_x > (1 - (1e-8)) ||
-     alpha_y > (1 - (1e-8))
-  ) return(-Inf)
-
-  thrs <- 10
-
+      alpha_y < 0 ||
+      theta_x < 1 ||
+      theta_y < 1 ||
+      alpha_x > (1 - (1e-8)) ||
+      alpha_y > (1 - (1e-8))
+     ) {
+    return(-Inf)
+  }
+  
   f <- function(x) {
     return( -1 * evaluateCondLik(x, theta_x, theta_y, 
                                  alpha_x, alpha_y,
@@ -70,7 +70,8 @@ calcConditional <- function(v, model, Nx, Ny) {
  xlft <- 0
  xrgt <- 1
  eps <- .Machine$double.eps
-
+ thrs <- 10
+ 
  check_left_x  <- evaluateCondLik(eps, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
  check_right_x <- evaluateCondLik(1 - eps, theta_x, theta_y,

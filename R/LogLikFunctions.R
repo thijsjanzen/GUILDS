@@ -4,49 +4,58 @@ logLikguilds <- function(theta_x, theta_y,
                          KDA_X, KDA_Y,
                          prefactor1, prefactor2,
                          verbose=TRUE) {
- thrs <- 10;
+ thrs <- 10
  
  f <- function(x) {
-   return( -1 * evaluateLogLik(x,theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y) );
+   return( -1 * evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+                               J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) )
  }
 
- maxes <- pracma::fminbnd(f,0,1,maxiter=500,tol=1e-4);
+ maxes <- pracma::fminbnd(f, 0, 1,
+                          maxiter = 500, tol = 1e-4)
 
- ymax = -1 * maxes$fmin;
- xmax = maxes$xmin;
- xlft = 0;
- xrgt = 1;
- eps = .Machine$double.eps; 
+ ymax <- -1 * maxes$fmin
+ xmax <- maxes$xmin
+ xlft <- 0
+ xrgt <- 1
+ eps <- .Machine$double.eps
 
- checkLeftX  = evaluateLogLik(eps,theta_x,theta_y, alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y)  - ymax + thrs;
- checkRightX = evaluateLogLik(1-eps,theta_x,theta_y, alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y)- ymax + thrs;
+ check_left_x  <- evaluateLogLik(eps, theta_x, theta_y, alpha_x, alpha_y,
+                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
+ check_right_x <- evaluateLogLik(1 - eps, theta_x, theta_y, alpha_x, alpha_y,
+                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
 
- if(checkLeftX < 0) {
+ if(check_left_x < 0) {
      g <- function(x) {
-        return(evaluateLogLik(x,theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y) - ymax + thrs);
+        return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
      }
-     xlft <- (uniroot(g,c(eps,xmax)))$root;
+     xlft <- (uniroot(g, c(eps, xmax)))$root
  }
 
- if(checkRightX < 0) {
+ if(check_right_x < 0) {
      h <- function(x) {
-        return(evaluateLogLik(x,theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y) - ymax + thrs);
+        return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
      }
-     xrgt <- (uniroot(h,c(xmax,1-eps)))$root;
+     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root;
  }
 
- calcLLEXP <- function(x) {
-   out <- exp(evaluateLogLik(x,theta_x,theta_y,alpha_x,alpha_y,J,Sx,Sy,Nx,Ny,KDA_X,KDA_Y)-ymax);
-   return(out);
+ calc_ll_exp <- function(x) {
+   out <- exp( evaluateLogLik( x, theta_x, theta_y, alpha_x, alpha_y,
+                               J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax)
+   return(out)
  }
 
- aux <- integrate(f=calcLLEXP,lower=xlft,upper=xrgt,abs.tol=1e-9);
+ aux <- integrate(f = calc_ll_exp, lower = xlft, upper = xrgt, abs.tol=1e-9)
 
- y = ymax + log(aux$value) + prefactor1 + Sx * log(theta_x/2) + prefactor2 + Sy * log(theta_y/2) + lgamma((theta_x/2) + (theta_y/2)) - (lgamma(theta_x/2) + lgamma(theta_y/2));
+ y = ymax + log(aux$value) + prefactor1 + Sx * log(theta_x / 2) + 
+   prefactor2 + Sy * log(theta_y / 2) + lgamma((theta_x / 2) + (theta_y / 2)) - 
+   (lgamma(theta_x/2) + lgamma(theta_y / 2))
  
  #if(verbose==TRUE) cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",theta_x,theta_y,alpha_x,alpha_y,y));flush.console(); 
  
- return(y);
+ return(y)
 }
 
 
@@ -138,7 +147,6 @@ maxLikelihood.Guilds <- function(initVals, model,
   	return(-y)
   }
 
-
   x
   if (method == "simplex") {
     	x <- simplex(initVals,g,verbose)
@@ -146,14 +154,13 @@ maxLikelihood.Guilds <- function(initVals, model,
   if (method == "subplex") {
 	  x <- subplex::subplex(initVals,g)
   }
-  
+
   return(x)
 }
 
 logLikelihood.Guilds <- function(parameters, model, 
                                  SADX, SADY, 
                                  verbose = TRUE) {
-
   KDA_X <- calcKDA(SADX)
   KDA_Y <- calcKDA(SADY)
   
@@ -175,14 +182,15 @@ logLikelihood.Guilds <- function(parameters, model,
   
   
   if (model == "D0") { 
-    theta_x = parameters[1]
-    theta_y = parameters[1] 
+    #because theta_x = theta_y = theta/2
+    theta_x = parameters[1] * 2
+    theta_y = parameters[1] * 2
     alpha_x = parameters[2] 
     alpha_y = parameters[2]
   }
   if(model == "D1") {
-    theta_x = parameters[1]
-    theta_y = parameters[1]
+    theta_x = parameters[1] * 2
+    theta_y = parameters[1] * 2
     alpha_x = parameters[2]
     alpha_y = parameters[3]
   }

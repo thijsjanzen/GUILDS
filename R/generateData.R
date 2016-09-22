@@ -33,8 +33,8 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   ny = 1 - nx; 
 
   #update I_X and I_Y accordingly
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny) 
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny)
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
   probs <- c()
   allN <- 0:J
@@ -62,56 +62,63 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
 
 
 PolyaEggenberger <- function(theta_x,theta_y,J,N) {
-  a = lgamma(J+1); #J!
-  b = lgamma(theta_x + theta_y + J) - lgamma(theta_x + theta_y); #(theta_x + theta_y)_J pochhammer
+  a = lgamma(J + 1) #J!
+  b = lgamma(theta_x + theta_y + J) - 
+    lgamma(theta_x + theta_y) #(theta_x + theta_y)_J pochhammer
   
-  c1 = lgamma(theta_x + N) - lgamma(theta_x); #(theta_x)_Nx  pochhammer
-  c2 = lgamma(theta_y + J - N) - lgamma(theta_y); #(theta_y)_Ny  pochhammer
-  d = lgamma(N + 1) + lgamma(J-N+1);
+  c1 = lgamma(theta_x + N) - lgamma(theta_x) #(theta_x)_Nx  pochhammer
+  c2 = lgamma(theta_y + J - N) - lgamma(theta_y) #(theta_y)_Ny  pochhammer
+  d = lgamma(N + 1) + lgamma(J-N+1)
   
-  return( exp(a - b + c1 + c2 - d));
+  return( exp(a - b + c1 + c2 - d))
 }
 
-localComm <- function(alpha_x,alpha_y,Jx,Jy,px) {
-  J = Jx + Jy;
+localComm <- function(alpha_x, alpha_y, Jx, Jy, px) {
+  J = Jx + Jy
 
-  nx = px;
-  ny = 1 - nx;
+  nx = px
+  ny = 1 - nx
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x*nx-alpha_y*ny); #update I_X and I_Y accordingly
-  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x*nx-alpha_y*ny);
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
  if(is.infinite(I_X) && is.infinite(I_Y)) {
-     output = exp( lgamma(J+1) - (lgamma(Jx + 1) + lgamma(J - Jx + 1)) + Jx * log(nx) + (J-Jx) * log(ny));
+     output = exp( lgamma(J+1) - 
+                  (lgamma(Jx + 1) + 
+                   lgamma(J - Jx + 1)) +
+                    Jx * log(nx) + 
+                    (J-Jx) * log(ny))
  } else {
-  output <- PolyaEggenberger(I_X,I_Y,J,Jx);
+  output <- PolyaEggenberger(I_X, I_Y, J, Jx)
  }
-  return(output);
+  return(output)
 }
 
 rho <- function(theta,px) {
   a <- lgamma(2 * theta) - 2 * lgamma(theta)
-  b <- (theta - 1) * log(px) + (theta - 1) * log((1-px));
-  output <- exp(a+b);
-  return(output);
+  b <- (theta - 1) * log(px) + (theta - 1) * log((1-px))
+  output <- exp(a + b)
+  return(output)
 }
 
-getPX <- function(theta,alpha_x,alpha_y,JX,JY) {
-   
-   px = (1:(1000-1))/1000
-   calcLocal <- function(x) {
-	a <- localComm(alpha_x,alpha_y,JX,JY,x) * rho(theta,x)
-	return(a);
-   }
-   divider <- integrate(f=calcLocal,lower=0,upper=1,abs.tol=1e-9)$value;
+getPX <- function(theta, alpha_x, alpha_y, JX, JY) {
+  px = (1:(1000-1))/1000
+  calcLocal <- function(x) {
+    a <- localComm(alpha_x, alpha_y, JX, JY, x) * 
+               rho(theta,x)
+    return(a)
+  }
+  divider <- integrate(f = calcLocal,
+                       lower = 0,
+                       upper = 1,
+                       abs.tol=1e-9)$value
+  
+  probs <- calcLocal(px) / divider
 
-
-   probs <- calcLocal(px) / divider;
-
-   return(sample(px,1,prob=probs));
+  return(sample(px, 1, prob = probs))
 }
 
-generate.Guilds.Cond <- function(theta,alpha_x,alpha_y,JX,JY) {
+generate.Guilds.Cond <- function(theta, alpha_x, alpha_y, JX, JY) {
 
   J = JX + JY
   SADX <- c()
@@ -120,11 +127,11 @@ generate.Guilds.Cond <- function(theta,alpha_x,alpha_y,JX,JY) {
   nx = getPX(theta, alpha_x, alpha_y, JX, JY)
   ny = 1 - nx
 
-  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny) #update I_X and I_Y accordingly
+  I_X = alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
   I_Y = alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  SADX = generate.ZSM(theta,I_X,JX)
-  SADY = generate.ZSM(theta,I_Y,JY)
+  SADX = generate.ZSM(theta, I_X, JX)
+  SADY = generate.ZSM(theta, I_Y, JY)
 
   output <- list( guildX = SADX,guildY = SADY)
   

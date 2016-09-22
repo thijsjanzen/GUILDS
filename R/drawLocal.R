@@ -53,33 +53,33 @@ pm_sad <- function(th, I, j) {
 }
 
 pm_sadaux <- function(x, I, th, j, k) {
-	y = matrix(0,nrow=size(x)[1],ncol=size(x)[2]);
-	idx0=which(x==0);
-	if(length(idx0)) {
+	y = rep(0, length(x))
+	idx0 = which( x == 0 )
+	if(length(idx0) > 0) {
 		aux = log(th) + lgamma(I) - lgamma(I+j) +
 			  lgamma(j+1) - lgamma(k+1) - lgamma(j-k+1) +
-			  lgamma(k) +   lgamma(I+j-k) - lgamma(I) + log(I);
-		y[idx0] = aux;
+			  lgamma(k) +   lgamma(I+j-k) - lgamma(I) + log(I)
+		y[idx0] = aux
 	}
-	idx1=which(x==1);
-	if(length(idx1)) {
-		  if ((k<j)||((k==j)&&(th>1))) {
-			  y[idx1] = -Inf;
-		  } else if ((k==j)&&(th==1)) {
-		      y[idx1] = 0;
-		  } else if ((k==j)&&(th< 1)) {
-			  y[idx1] = Inf;
-		   }
+	idx1 = which(x == 1)
+	if (length(idx1) > 0) {
+		  if ((k<j)||((k == j) && (th > 1))) {
+			  y[idx1] = -Inf
+		  } else if ((k == j) && (th == 1)) {
+		      y[idx1] = 0
+		  } else if ((k == j) && (th < 1)) {
+			  y[idx1] = Inf
+		  }
 	}
-	idxp = which((x>0)&(x<1));
-	xx=x[idxp];
+	idxp = which((x > 0) & (x < 1))
+	xx = x[idxp]
 	aux = log(th) + lgamma(I)-lgamma(I+j) +
 		  lgamma(j+1) - lgamma(k+1) - lgamma(j-k+1) +
-		  lgamma(I*xx+k) - lgamma(I*xx) +
-		  lgamma(I*(1-xx)+j-k)-lgamma(I*(1-xx)) +
-		  (th-1)*log(1-xx)-log(xx);
-	y[idxp] = aux;
-    return(y);
+		  lgamma(I * xx + k) - lgamma(I * xx) +
+		  lgamma(I * (1 - xx) + j - k) - lgamma(I * (1 - xx)) +
+		  (th-1) * log(1 - xx) - log(xx)
+	y[idxp] = aux
+    return(y)
 }
 
 drawLocalCond <- function(theta, alpha_x, alpha_y, JX, JY) {
@@ -122,7 +122,7 @@ drawLocal <- function(theta, alpha_x, alpha_y, J) {
     probs = PolyaEggenberger(I_X, I_Y, J, allN) #set up a probability vector
   }
 
-  NX = sample(0:J,1,replace=TRUE,prob=probs)
+  NX = sample(0:J, 1, replace=TRUE, prob = probs)
   NY = J - NX;
 
   SADX = pm_sad(theta, I_X, NX)
