@@ -38,7 +38,7 @@ logLikguilds <- function(theta_x, theta_y,
         return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
                               J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
      }
-     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root;
+     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
  }
 
  calc_ll_exp <- function(x) {
@@ -70,7 +70,7 @@ maxLikelihood.Guilds <- function(init_vals, model,
   
   if (incorrectlength == 1) { 
     stop("maxLikelihood.Guilds: ",
-         "Input vector is of incorrect length\n"); 
+         "Input vector is of incorrect length\n")
   }
   
   if(init_vals[1] < 1) {
@@ -128,7 +128,7 @@ maxLikelihood.Guilds <- function(init_vals, model,
       alpha_y <- v[3]
     }
 
-    y <- 0;
+    y <- 0
   	if (alpha_x < 0 || 
   	    alpha_y < 0 || 
   	    theta_x < 1 || 
@@ -136,10 +136,10 @@ maxLikelihood.Guilds <- function(init_vals, model,
   	    alpha_x > (1 - ( 1e-8)) ||
   	    alpha_y > (1 - ( 1e-8))
   	    ) {
-  	  y <- -Inf;
+  	  y <- -Inf
   	}
   	if(!is.infinite(y)) {
-  	  y = logLikguilds(theta_x, theta_y, alpha_x, alpha_y,
+  	  y <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y,
   	                 J, Sx, Sy, Nx, Ny, kda_x, kda_y,
   	                 prefactor1, prefactor2, verbose)
   	}
@@ -166,32 +166,32 @@ logLikelihood.Guilds <- function(parameters, model,
   x <- c(table(sadx))
   freq_x <- c()
   for(i in seq_along(x)) freq_x[i] <- x[[i]]
-  prefactor1 = -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
+  prefactor1 <- -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
   
   x2 <- c(table(sady))
   freq_y <- c()
   for(i in seq_along(x2)) freq_y[i] <- x2[[i]]
-  prefactor2 = -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
+  prefactor2 <- -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
 
-  Sx = length(sadx)
-  Sy = length(sady)
-  Nx = sum(sadx)
-  Ny = sum(sady)
-  J = Nx + Ny
+  Sx <- length(sadx)
+  Sy <- length(sady)
+  Nx <- sum(sadx)
+  Ny <- sum(sady)
+  J <- Nx + Ny
   
   
   if (model == "D0") { 
     #because theta_x = theta_y = theta/2
-    theta_x = parameters[1] * 2
-    theta_y = parameters[1] * 2
-    alpha_x = parameters[2] 
-    alpha_y = parameters[2]
+    theta_x <- parameters[1] * 2
+    theta_y <- parameters[1] * 2
+    alpha_x <- parameters[2] 
+    alpha_y <- parameters[2]
   }
   if(model == "D1") {
-    theta_x = parameters[1] * 2
-    theta_y = parameters[1] * 2
-    alpha_x = parameters[2]
-    alpha_y = parameters[3]
+    theta_x <- parameters[1] * 2
+    theta_y <- parameters[1] * 2
+    alpha_x <- parameters[2]
+    alpha_y <- parameters[3]
   }
 
   ll <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,

@@ -4,15 +4,15 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 {
 	numpar <- length(initpars)
 	## Setting up initial simplex
-	v = t(matrix(rep(initpars, each = numpar + 1), nrow = numpar + 1))
+	v <- t(matrix(rep(initpars, each = numpar + 1), nrow = numpar + 1))
 	for (i in 1:numpar)  {
 		parsoptff <- 1.05 * initpars[i]/(1 - initpars[i])
 		trparsoptff <- parsoptff/(1 + parsoptff)
-		fac = trparsoptff/initpars[i]
+		fac <- trparsoptff/initpars[i]
 		if (v[i, i + 1] == 0)  {
-		   v[i, i + 1] = 0.00025
+		   v[i, i + 1] <- 0.00025
 		} else {
-		   v[i, i + 1] = v[i, i + 1] * min(1.05, fac)
+		   v[i, i + 1] <- v[i, i + 1] * min(1.05, fac)
 		}
 	}
 
@@ -25,7 +25,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 	itercount <- 1
 	string <- itercount
 	for (i in 1:numpar)  {
-	   string <- paste(string,v[i,1],sep=" ")
+	   string <- paste(string,v[i,1],sep = " ")
 	}
 	string <- paste(string, -fv[1], how, "\n", sep = " ")
 	if (verbose) cat(string)
@@ -33,7 +33,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 
 	tmp <- order(fv)
 	if (numpar == 1) {
-	   v <- matrix(v[tmp],nrow = 1,ncol = 2)
+	   v <- matrix(v[tmp], nrow = 1, ncol = 2)
 	} else {
 	   v <- v[,tmp]
 	}
@@ -68,7 +68,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 		   if (fxe < fxr)  {
 			   v[,numpar + 1] <- xe
 			   fv[numpar + 1] <- fxe
-			   how = "expand"
+			   how <- "expand"
 		   } else {
 			   v[,numpar + 1] <- xr
 			   fv[numpar + 1] <- fxr
@@ -83,7 +83,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 			   if (fxr < fv[numpar + 1]) {
 				  ## Calculate outside contraction point
 				  xco <- (1 + ps * rh) * xbar - ps * rh * v[,numpar + 1]
-				  fxco <- evalfunc(xco);
+				  fxco <- evalfunc(xco)
 				  if (fxco <= fxr) {
 					 v[,numpar + 1] <- xco
 					 fv[numpar + 1] <- fxco            
@@ -113,7 +113,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 	   }
 	   tmp <- order(fv)
 	   if (numpar == 1)  {
-		  v <- matrix(v[tmp],nrow = 1,ncol = 2)
+		  v <- matrix(v[tmp], nrow = 1, ncol = 2)
 	   } else {
 		  v <- v[,tmp]
 	   }

@@ -49,7 +49,7 @@ esf_local <- function(v, abund, prefactor, kda) {
   return(ll)
 }
 
-maxLikelihood.ESF <- function(init_vals, abund, verbose=TRUE) {
+maxLikelihood.ESF <- function(init_vals, abund, verbose = TRUE) {
   if (init_vals[1] < 1) {
      stop("maxLikelihood.ESF: ",
           "initial theta can not be below one")

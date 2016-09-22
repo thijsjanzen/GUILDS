@@ -5,9 +5,9 @@ pm_sad <- function(th, I, j) {
   for (cnt in seq_along(k1)) {
     k <- k1[cnt]
     f <- function(x) {
-      return(-1 * pm_sadaux(x, I, th, j, k))
-    }
-    xmax <- stats::optimize(f, c(0,1))$minimum
+            return(-1 * pm_sadaux(x, I, th, j, k))
+         }
+    xmax <- stats::optimize(f, c(0, 1))$minimum
     ymax <- pm_sadaux(xmax, I, th, j, k)
     y0 <- pm_sadaux(0, I, th, j, k)
     if (ymax < (y0 + 1)) {

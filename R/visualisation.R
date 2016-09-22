@@ -12,7 +12,7 @@ octave_index <- function(ab_in) {
 
 
 preston_sort <- function(abund) {
-  output <- rep(0,pracma::ceil(log(max(abund)) / log(2)))
+  output <- rep(0, pracma::ceil(log(max(abund)) / log(2)))
   for (i in seq_along(abund)) {
     index <- octave_index(abund[i]);
     output[index] <- output[index] + 1
@@ -38,11 +38,11 @@ preston_plot <- function(abund, expected) {
                                       ylim = c(0,maxy))
   if(plot_expected) {
     xx <- c()
-    yy <- 1:length(df.bar)
+    yy <- seq_along(df.bar)
     lmmm <- stats::lm(df.bar~yy)
     slope <- lmmm$coefficients[[2]]
     intercept <- lmmm$coefficients[[1]]
-    xvals <- 1:length(expected)
+    xvals <- seq_along(expected)
     xvals <- xvals * slope + intercept
     graphics::lines(expected~xvals, lwd = 2)
   }

@@ -164,16 +164,16 @@ generate.ZSM <- function(theta,I,J) {
          } else { 
            # new ancestor is an existing species but
            # new migration into local community
-            prior_lineage = pracma::ceil( runif(1, 0, 1) * (anc_ct - 1))
-            s = ancestor_species[prior_lineage]
+            prior_lineage <- pracma::ceil( runif(1, 0, 1) * (anc_ct - 1))
+            s <- ancestor_species[prior_lineage]
             species[j] <- s
             ancestor_species[anc_ct] <- s
          }
      } else { #descendant of existing individual
        #select one individual at random
-        descend_from = pracma::ceil( runif(1, 0, 1) * (j - 1)) 
-        ancestor[j] = ancestor[descend_from]
-        species[j] = species[descend_from]
+        descend_from <- pracma::ceil( runif(1, 0, 1) * (j - 1)) 
+        ancestor[j] <- ancestor[descend_from]
+        species[j] <- species[descend_from]
      }
   }
   

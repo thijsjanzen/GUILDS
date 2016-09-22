@@ -20,9 +20,9 @@ evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
 
   h <- poch_X + poch_Y - (lgamma(Nx + 1) + lgamma(Ny + 1))
 
-  k  <-  lgamma((theta_x / 2) + (theta_y / 2)) -
+  k  <-  lgamma( (theta_x / 2) + (theta_y / 2)) -
         (lgamma(theta_x / 2) + lgamma(theta_y / 2))
-  l  <- ( (theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
+  l  <- ((theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
 
   result <- c + h + k + l
   return(result)
