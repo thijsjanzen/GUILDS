@@ -177,7 +177,7 @@ void calcLogKDA(std::vector<long double>& K,
         }
         bornesup--;
     }    //after that, bornesup=indice next to infinity but after
-  if (infinity==1){
+  if (infinity==1) {
   //cerr << "WARNING : the sample is too large to compute an exact likelihood, the program is thus doing approximations. The following results are to be taken with caution"<<endl;
   //cerr << "Value of A above which K(D,A) is computed approximately ="<<borneinf<<endl;
   //cerr << "Value of A below which K(D,A) is computed approximately ="<<bornesup<<endl;
@@ -185,7 +185,7 @@ void calcLogKDA(std::vector<long double>& K,
   //fitting of the infinite values of K[A] by a polynom of degree 3
     //computing of the derivatives at the critic points
     
-    Rcpp::Rcout << "Infinity == 1 !! You made it!\n"
+    Rcpp::Rcout << "Infinity == 1 !! You made it!\n";
     
     if(borneinf > K.size()) return;
     if(bornesup > (K.size()-1)) return;
