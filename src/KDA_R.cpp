@@ -185,7 +185,7 @@ void calcLogKDA(std::vector<long double>& K,
   //fitting of the infinite values of K[A] by a polynom of degree 3
     //computing of the derivatives at the critic points
     
-    Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
+    // Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
     
     if(borneinf > K.size()) return;
     if(bornesup > (K.size()-1)) return;
@@ -224,7 +224,7 @@ void calcLogKDA(std::vector<long double>& K,
 NumericVector calcKDA(NumericVector A)
 {
   
-  Rcpp::Rcout << "Hello! This is the calcKDA function!\n";
+  // Rcpp::Rcout << "Hello! This is the calcKDA function!\n";
     //convert abundances from A to Species
 	int numspecies = A.size();
 	std::vector<int> Abund(numspecies); //Abund = new int[numspecies];       
@@ -247,5 +247,5 @@ NumericVector calcKDA(NumericVector A)
 	   out[i] = K[i] + 4500.0 * logl(10);
 	}
 
-    return out;	
+  return out;	
 }
