@@ -3,10 +3,10 @@ context("maxLikelihood.ESF")
 test_that("maxLikelihood.ESF: use", {
  #first we generate data 
   set.seed(42)
-  J = 10000
-  theta = 100
+  J <- 10000
+  theta <- 100
   m <- 0.1
-  I = m * (J-1) / (1 - m)
+  I <- m * (J-1) / (1 - m)
   
   v <- generate.ESF(theta, I, J)  
   LL <- maxLikelihood.ESF(init_vals = c(100, 0.1),
@@ -23,10 +23,10 @@ test_that("maxLikelihood.ESF: use", {
 
 test_that("maxLikelihood.ESF: abuse", {
   set.seed(42)
-  J = 100
-  theta = 100
+  J <- 100
+  theta <- 100
   m <- 0.1
-  I = m * (J-1) / (1 - m)
+  I <- m * (J-1) / (1 - m)
   
   v <- generate.ESF(theta, I, J)  
   expect_error(

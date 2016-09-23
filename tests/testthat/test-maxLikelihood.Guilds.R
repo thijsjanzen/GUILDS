@@ -2,10 +2,10 @@ context("maxLikelihood.Guilds")
 
 test_that("maxLikelihood.Guilds: use", {
   set.seed(42)
-  J = 20000
+  J <- 20000
   
-  theta = 50
-  alpha_x = 0.1
+  theta <- 50
+  alpha_x <- 0.1
 
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
   
@@ -27,11 +27,11 @@ test_that("maxLikelihood.Guilds: use", {
   )
   
   
-  J = 20000
+  J <- 20000
   
-  theta = 100
-  alpha_x = 0.1
-  alpha_y = 0.001
+  theta <- 100
+  alpha_x <- 0.1
+  alpha_y <- 0.001
   
   simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
   
@@ -82,10 +82,10 @@ test_that("maxLikelihood.Guilds: use", {
 
 test_that("maxLikelihood.Guilds: abuse", {
   set.seed(42)
-  J = 20000
+  J <- 20000
   
-  theta = 50
-  alpha_x = 0.1
+  theta <- 50
+  alpha_x <- 0.1
   
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
   

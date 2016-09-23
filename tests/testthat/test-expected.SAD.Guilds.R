@@ -10,10 +10,10 @@ test_that("expected.SAD.Guilds: use", {
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
   a <- S1 > S2
-  expect_equal(a,TRUE) #because alpha_x > alpha_y
+  expect_equal(a, TRUE) #because alpha_x > alpha_y
   
   
-  a <- pm_sadaux(x=1, I = 10, th = 100, j = 1000, k = 100)
+  a <- pm_sadaux(x = 1, I = 10, th = 100, j = 1000, k = 100)
   expect_equal(is.infinite(a),TRUE)
 })
 

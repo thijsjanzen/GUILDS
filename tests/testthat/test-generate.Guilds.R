@@ -1,7 +1,7 @@
 context("generate.Guilds")
 
 test_that("generate.Guilds: use", {
-  J = 10000
+  J <- 10000
   v <- generate.ESF(theta = 100, I = 10, J)
   expect_equal(
     sum(v),

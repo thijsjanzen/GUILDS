@@ -2,10 +2,10 @@ context("logLikelihood.Guilds.Conditional")
 
 test_that("logLikelihood.Guilds.Conditional: use", {
   set.seed(666)
-  J = 20000
-  theta = 100
-  alpha_x = 0.1
-  alpha_y = alpha_x
+  J <- 20000
+  theta <- 100
+  alpha_x <- 0.1
+  alpha_y <- alpha_x
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, 
                                      JX=J/2, JY = J/2)
@@ -22,7 +22,7 @@ test_that("logLikelihood.Guilds.Conditional: use", {
   expect_equal(a, TRUE)
   
   set.seed(42+666)
-  alpha_y = 0.01
+  alpha_y <- 0.01
   
   simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
   LL1 <- logLikelihood.Guilds.Conditional( parameters = 
@@ -47,14 +47,14 @@ test_that("logLikelihood.Guilds.Conditional: use", {
 
 test_that("logLikelihood.Guilds.Conditional: abuse", {
   set.seed(666)
-  J = 20000
-  theta = 100
-  alpha_x = 0.1
-  alpha_y = alpha_x
+  J <- 20000
+  theta <- 100
+  alpha_x <- 0.1
+  alpha_y <- alpha_x
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, JX=J/2, JY = J/2)
   expect_error(
-    logLikelihood.Guilds.Conditional(parameters=c(theta, alpha_x, alpha_x), 
+    logLikelihood.Guilds.Conditional(parameters = c(theta, alpha_x, alpha_x), 
                                      model = "D0", 
                                      simul_data$guildX, simul_data$guildY, 
                                      verbose = FALSE),

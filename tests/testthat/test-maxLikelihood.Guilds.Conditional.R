@@ -9,8 +9,8 @@ test_that("maxLikelihood.GuildsConditional: use", {
   
   set.seed(42)
   
-  theta = 50
-  alpha_x = 0.1
+  theta <- 50
+  alpha_x <- 0.1
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_x, 
                                      JX = 10000, JY = 10000)
@@ -32,9 +32,9 @@ test_that("maxLikelihood.GuildsConditional: use", {
   )
   
   set.seed(666)
-  theta = 30
-  alpha_x = 0.01
-  alpha_y = 0.001
+  theta <- 30
+  alpha_x <- 0.01
+  alpha_y <- 0.001
   
   simul_data <- generate.Guilds.Cond(theta, alpha_x, alpha_y, 
                                      JX = 10000, JY = 10000)
