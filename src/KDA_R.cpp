@@ -185,7 +185,7 @@ void calcLogKDA(std::vector<long double>& K,
   //fitting of the infinite values of K[A] by a polynom of degree 3
     //computing of the derivatives at the critic points
     
-    Rcpp::Rcout << "Infinity == 1 !! You made it!\n";
+    Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
     
     if(borneinf > K.size()) return;
     if(bornesup > (K.size()-1)) return;
