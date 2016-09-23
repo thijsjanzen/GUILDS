@@ -9,6 +9,7 @@ Updates \cr\cr
 Version 1.3   : GUILDS is now on GitHub: https://github.com/thijsjanzen/GUILDS\cr
 Version 1.3   : Wrote code tests to check code integrity, code coverage is >95\% \cr
 Version 1.3   : Modified maximum likelihood functions to take into account theta_x = theta_y = theta / 2 \cr
+Version 1.3   : Added a plotting function to plot Preston style plots
 Version 1.2.1 : Updated the User manual\cr
 Version 1.2   : fixed memory leak issues by adding extra vector access checks \cr
 Version 1.2   : fixed memory leak issues by introducing vectors in KDA code\cr

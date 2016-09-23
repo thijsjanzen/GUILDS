@@ -14,6 +14,7 @@ Furthermore it contains functions to generate data given the guilds model, with 
   - GUILDS is now on GitHub: https://github.com/thijsjanzen/GUILDS
   - Wrote code tests to check code integrity, code coverage is >95
   - Modified maximum likelihood functions to take into account theta_x = theta_y = theta / 2
+  - added a function to plot preston-style plots
 - Version 1.2.1
   - Updated the User manual
 - Version 1.2
