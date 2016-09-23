@@ -49,7 +49,7 @@ logLikguilds <- function(theta_x, theta_y,
 
  aux <- integrate(f = calc_ll_exp, lower = xlft, upper = xrgt, abs.tol=1e-9)
 
- y = ymax + log(aux$value) + prefactor1 + Sx * log(theta_x / 2) + 
+ y <- ymax + log(aux$value) + prefactor1 + Sx * log(theta_x / 2) + 
    prefactor2 + Sy * log(theta_y / 2) + lgamma((theta_x / 2) + (theta_y / 2)) - 
    (lgamma(theta_x/2) + lgamma(theta_y / 2))
  
@@ -101,19 +101,20 @@ maxLikelihood.Guilds <- function(init_vals, model,
     
   x <- c(table(sadx))
   freq_x <- c()
-  for(i in seq_along(x) ) freq_x[i] <- x[[i]]
-  prefactor1 = -( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
+  for (i in seq_along(x) ) freq_x[i] <- x[[i]]
+
+  prefactor1 <- -( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
   
   x2 <- c(table(sady))
   freq_y <- c()
   for(i in seq_along(x2)) freq_y[i] <- x2[[i]]
-  prefactor2 = -( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
+  prefactor2 <- -( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
 
-  Sx = length(sadx)
-  Sy = length(sady)
-  Nx = sum(sadx)
-  Ny = sum(sady)
-  J = Nx + Ny
+  Sx <- length(sadx)
+  Sy <- length(sady)
+  Nx <- sum(sadx)
+  Ny <- sum(sady)
+  J <- Nx + Ny
   
   loglikverbose <- verbose
   if(method == "simplex") loglikverbose <- FALSE

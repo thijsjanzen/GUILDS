@@ -14,7 +14,7 @@ octave_index <- function(ab_in) {
 preston_sort <- function(abund) {
   output <- rep(0, pracma::ceil(log(max(abund)) / log(2)))
   for (i in seq_along(abund)) {
-    index <- octave_index(abund[i]);
+    index <- octave_index(abund[i])
     output[index] <- output[index] + 1
   }
   return(output)
