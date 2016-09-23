@@ -13,10 +13,12 @@ using namespace Rcpp;
 //   J. Chave and F. Jabot
 ///  last update 05-23-2008
 
-void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std::vector<int> Abund)
-{           
+void calcLogKDA(std::vector<long double>& K, 
+                long double J, 
+                int numspecies, 
+                std::vector<int> Abund)  {           
    
-    if(Abund.size() < 1) return;
+    if (Abund.size() < 1) return;
    
     sort(Abund.begin(), Abund.end());
 
@@ -24,21 +26,21 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
     long double SPP = numspecies;
     for(int s=0;s<SPP;s++) {
         J += Abund[s];
-	}   
+	  }   
 
     int MaxA = 0;
-	MaxA = Abund[ Abund.size() - 1]; //MaxA = Abund[(int)SPP-1];
+	  MaxA = Abund[ Abund.size() - 1]; //MaxA = Abund[(int)SPP-1];
 	
 
    
     // abundance distribution
     std::vector<int> Phi(MaxA+1,0); //int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
     
-   for(int s=0;s<SPP;s++) Phi[Abund[s]]++;
+   for (int s=0;s<SPP;s++) Phi[Abund[s]]++;
 
-    // Number of distinct abundances
-    int NDA=0;
-    for(int s=0;s<=MaxA;s++) if(Phi[s] > 0) {NDA++;}
+   // Number of distinct abundances
+   int NDA=0;
+   for (int s=0;s<=MaxA;s++) if(Phi[s] > 0) {NDA++;}
     
     
     //cerr << "Start computing Stirling numbers ...\n";
@@ -51,8 +53,8 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
     // T(n,m)= T(n-1,m) + T(n-1,m-1)*(m-1)/(n-1)
    
     
-	std::vector<int> f(NDA,0); //int *f = new int[NDA];
-	std::vector<int> g(NDA,0); //int *g = new int[NDA];
+	  std::vector<int> f(NDA,0); //int *f = new int[NDA];
+	  std::vector<int> g(NDA,0); //int *g = new int[NDA];
     int i = 0;    
     //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
     for(int n=0;n<=MaxA;n++) {
@@ -61,21 +63,21 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
         g[i] = n;                                        
         i++;
         }
-	}
+	  }
     //long double **T= new long double*[NDA];          // T(n,m) just for the n which are useful
     //T[0] = new long double[g[0]+1];
  
     
-	std::vector< long double > fill;
-	std::vector< std::vector< long double > > T(NDA,fill);
+	  std::vector< long double > fill;
+	  std::vector< std::vector< long double > > T(NDA,fill);
 	
-	std::vector<long double> T0(g[0]+1);
-	T[0] = T0;
-	T[0][0]=0;T[0][1]=1;
+	  std::vector<long double> T0(g[0]+1);
+	  T[0] = T0;
+	  T[0][0]=0;T[0][1]=1;
 	
-	if(g[0]!=1)
-	{
-		std::vector<long double> lS2(g[0]+1); //        long double *lS2 = new long double[g[0]+1]; 
+	  if(g[0]!=1)
+	  {
+		    std::vector<long double> lS2(g[0]+1); //        long double *lS2 = new long double[g[0]+1]; 
         lS2[0]=0;lS2[1]=1;
         for (int n=2;n<=g[0];n++) {
             std::vector<long double> lS1(n+1); //long double *lS1 = new long double[n+1];                
@@ -90,18 +92,18 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
         for(int im=2;im<=g[0];im++) {
             T[0][im]=lS2[im];
         }
-    }
+	  }
 	
 	
-    for (int in=1;in<i;in++){
+    for (int in=1;in<i;in++) {
         std::vector<long double> Tin(g[in]+1); //T[in]= new long double[g[in]+1];
-		T[in] = Tin;
-		T[in][0]=0;T[in][1]=1;
+    		T[in] = Tin;
+    		T[in][0]=0;T[in][1]=1;
 		
         std::vector<long double> lS2(g[in]+1); //long double *lS2 = new long double[g[in]+1];         
         for(int im=0;im<=g[in-1];im++) {
-                lS2[im] = T[in-1][im];
-            }
+            lS2[im] = T[in-1][im];
+        }
         for (int n=g[in-1]+1;n<=g[in];n++) {
             std::vector<long double> lS1(n+1); //long double *lS1 = new long double[n+1];                
             for(int im=0;im<=n-1;im++) {
@@ -119,7 +121,7 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
     // After this stage we have stored in T[i][m] T(g[i],m)
     // with T(n,m) = S(n,m)*S(m,1)/S(n,1) for i>0
 
-    //cerr << "Start computing ln(K(D,A)) ...\n";
+    // cerr << "Start computing ln(K(D,A)) ...\n";
     // SECOND STAGE: compute the K(D,A)
     // I follow Etienne's route. Compute the product of polynomials 
     // of length J
@@ -162,7 +164,7 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
     long double maxlog=11333.2;
     int infinity=0;
     for(int i= SPP;i<=J;i++){
-        if ((K[i]>maxlog)||(K[i]<-maxlog)) {
+        if ((K[i]>maxlog) || (K[i] < -maxlog)) {
             infinity=1;
             break;
         }
@@ -182,6 +184,9 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
 
   //fitting of the infinite values of K[A] by a polynom of degree 3
     //computing of the derivatives at the critic points
+    
+    Rcpp::Rcout << "Infinity == 1 !! You made it!\n"
+    
     if(borneinf > K.size()) return;
     if(bornesup > (K.size()-1)) return;
     long double Kprimeinf = K[borneinf]-K[borneinf-1];
@@ -218,6 +223,8 @@ void calcLogKDA(std::vector<long double>& K, long double J, int numspecies, std:
 // [[Rcpp::export]]
 NumericVector calcKDA(NumericVector A)
 {
+  
+  Rcpp::Rcout << "Hello! This is the calcKDA function!\n";
     //convert abundances from A to Species
 	int numspecies = A.size();
 	std::vector<int> Abund(numspecies); //Abund = new int[numspecies];       
