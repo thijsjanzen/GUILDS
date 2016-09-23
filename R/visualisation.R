@@ -20,7 +20,7 @@ preston_sort <- function(abund) {
   return(output)
 }
 
-preston_plot <- function(abund, expected) {
+preston_plot <- function(abund, expected, ...) {
   v <- preston_sort(abund)
   maxy <- max(v)
   plot_expected <- FALSE
@@ -35,7 +35,7 @@ preston_plot <- function(abund, expected) {
   df.bar <- graphics::barplot(v, names.arg = 0:(length(v)-1), 
                                       cex.names = 0.7, 
                                       space = 0, 
-                                      ylim = c(0,maxy))
+                                      ylim = c(0,maxy), ...)
   if(plot_expected) {
     xx <- c()
     yy <- seq_along(df.bar)

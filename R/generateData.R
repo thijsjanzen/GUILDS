@@ -24,9 +24,6 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
     stop("generate.ESF: ",
          "J can not be below zero")
   }
-  #make two SADs
-  SADX <- c()
-  SADY <- c()
 
   #first draw nx and ny from a beta distribution
   nx <- rbeta(1, theta, theta)
@@ -59,7 +56,6 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   
   return(output)
 }
-
 
 polyaeggenberger <- function(theta_x,theta_y,J,N) {
   a <- lgamma(J + 1) #J!
@@ -125,8 +121,8 @@ generate.Guilds.Cond <- function(theta, alpha_x, alpha_y, JX, JY) {
   nx <- getpx(theta, alpha_x, alpha_y, JX, JY)
   ny <- 1 - nx
 
-  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_Y <- alpha_y * ny * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
 
   sadx <- generate.ZSM(theta, I_X, JX)
   sady <- generate.ZSM(theta, I_Y, JY)
