@@ -61,7 +61,7 @@ test_that("maxLikelihood.Guilds: use", {
                               sadx = 1:20, 
                               sady = 1:20, verbose = TRUE)
   LL2 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
-                              model="D0", method="subplex",
+                              model="D0", method="simplex", #subplex before
                               sadx = 1:20, 
                               sady = 1:20, verbose = TRUE)
   LL3 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 

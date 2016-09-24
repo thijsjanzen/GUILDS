@@ -93,6 +93,11 @@ draw_local_cond <- function(theta, alpha_x, alpha_y, JX, JY) {
   #update I_X and I_Y accordingly
   I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
   I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
+  
+  if (is.infinite(I_X)) {
+    stop("draw_local_cond: ",
+         "alpha_x and alpha_y are both one, leading to I_x = I_y = Inf")
+  }
 
   sadx <- pm_sad(theta, I_X, JX)
   sady <- pm_sad(theta, I_Y, JY)

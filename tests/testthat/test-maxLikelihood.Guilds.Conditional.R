@@ -3,7 +3,7 @@ context("maxLikelihood.Guilds.Conditional")
 test_that("maxLikelihood.GuildsConditional: use", {
   set.seed(42)
   maxLikelihood.Guilds.Conditional(init_vals = c(20, 0.1), model ="D0", 
-                                   method = "subplex",
+                                   method = "simplex",  #subplex before
                                    sadx = c(1:20), 
                                    sady = c(1:20), verbose = FALSE)
   
@@ -68,4 +68,72 @@ test_that("maxLikelihood.GuildsConditional: use", {
   simul_data <- generate.Guilds.Cond(theta = 10, alpha_x = 1.0, alpha_y = 1.0, 
                                      JX = 100, JY = 100)
   
+})
+
+
+test_that("maxLikelihood.Guilds: abuse", {
+  set.seed(42)
+  J <- 200
+  
+  theta <- 20
+  alpha_x <- 0.1
+  
+  simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
+  
+  #initial parameters for the D0 model c(theta,alpha)
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(-50, 0.1), 
+                          model="D0", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "initial theta can not be below one"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, -0.1), 
+                          model="D0", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "initial alpha can not be below zero"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, 1.1), 
+                          model="D0", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "initial alpha can not be above 1"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, -0.1), 
+                          model="D1", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "initial alpha_y can not be below 0"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, 1.1), 
+                          model="D1", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "initial alpha_y can not be above 1"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, 1.1), 
+                          model="D0", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "Input vector is of incorrect length"
+  )
+  
+  expect_error(
+    maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1), 
+                          model="D1", method="simplex",
+                          sadx = simul_data$guildX, 
+                          sady = simul_data$guildY, verbose = FALSE),
+    "Input vector is of incorrect length"
+  )
 })

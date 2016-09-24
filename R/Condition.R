@@ -176,6 +176,38 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
                                              method,
                                              sadx, sady,
                                              verbose = TRUE) {
+  incorrectlength <- 0
+  if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
+  if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
+  
+  if (incorrectlength == 1) { 
+    stop("maxLikelihood.Guilds.Conditional: ",
+         "Input vector is of incorrect length\n")
+  }
+  
+  if(init_vals[1] < 1) {
+    stop("maxLikelihood.Guilds.Conditional: ",
+         "initial theta can not be below one")
+  }
+  if(init_vals[2] < 0) {
+    stop("maxLikelihood.Guilds.Conditional: ",
+         "initial alpha can not be below zero")
+  }
+  if(init_vals[2] > 1) {
+    stop("maxLikelihood.Guilds.Conditional: ",
+         "initial alpha can not be above 1")
+  }
+  if(model == "D1") {
+    if(init_vals[3] < 0 ) {
+      stop("maxLikelihood.Guilds.Conditional: ",
+           "initial alpha_y can not be below 0")
+    }
+    if(init_vals[3] > 1 ) {
+      stop("maxLikelihood.Guilds: ",
+           "initial alpha_y can not be above 1")
+    }
+  }
+  
   kda_x <- calcKDA(sadx)
   kda_y <- calcKDA(sady)
 
@@ -208,8 +240,8 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   if (method == "simplex") {
     x <- simplex(init_vals, g, verbose)
   }
-  if (method == "subplex") {
-    x <- subplex::subplex(init_vals, g)
-  }
+#  if (method == "subplex") {
+#    x <- subplex::subplex(init_vals, g)
+#  }
   return(x)
 }

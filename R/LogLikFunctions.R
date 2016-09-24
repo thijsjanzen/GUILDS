@@ -151,9 +151,9 @@ maxLikelihood.Guilds <- function(init_vals, model,
   if (method == "simplex") {
     	x <- simplex(init_vals,g,verbose)
   }
-  if (method == "subplex") {
-	  x <- subplex::subplex(init_vals,g)
-  }
+#  if (method == "subplex") {
+#	  x <- subplex::subplex(init_vals,g)
+#  }
 
   return(x)
 }

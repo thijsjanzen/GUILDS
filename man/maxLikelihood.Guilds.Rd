@@ -25,6 +25,7 @@ maxLikelihood.Guilds(init_vals, model, method, sadx, sady, verbose = TRUE)
  \item{method}{Optimization of the Likelihood can be done using two different methods: \cr
 			- "simplex": this method makes use of the "Nelder Mead" optimization method \cr
 			- "subplex": makes use of the subplex method from the package "subplex" \cr
+						- Note 2016-09-23: Because the subplex method is generating errors, for the time being, the subplex method has been disabled.\cr
 		Please note that we have explicitly not used the "optim" method, since this method tends to provide less reliable outcomes.
     }
 
