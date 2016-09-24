@@ -1,6 +1,7 @@
 context("calcKDA")
 
 test_that("calcKDA use", {
+  skip_on_cran()
   sad <- 1:20
   kda_1 <- calcKDA(sad)
  

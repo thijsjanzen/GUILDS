@@ -1,7 +1,8 @@
 context("simplex")
 
 test_that("simplex use", {
-  
+  skip_on_cran()
+  cat("test simplex use\n")
   a <- 3
   xvals <- 1:10
   yvals <- a * xvals + rnorm(10)

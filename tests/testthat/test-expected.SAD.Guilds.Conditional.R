@@ -1,6 +1,7 @@
 context("expected.SAD.Guilds.Conditional")
 
 test_that("expected.SAD.Guilds.Conditional: use", {
+  skip_on_cran()
   SAD <- expected.SAD.Guilds.Conditional(theta = 200, 
                                          alpha_x = 0.1,
                                          alpha_y = 0.01,
@@ -28,7 +29,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
 
 
 test_that("expected.SAD.Guilds.Conditional: abuse", {
-  
+  skip_on_cran()
   n_replicates = 2
   Jx = 10
   Jy = 20

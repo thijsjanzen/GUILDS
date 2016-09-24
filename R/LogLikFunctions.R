@@ -62,7 +62,7 @@ logLikguilds <- function(theta_x, theta_y,
 
 
 maxLikelihood.Guilds <- function(init_vals, model, 
-                                 method, sadx, sady, 
+                                 method = "simplex", sadx, sady, 
                                  verbose = TRUE) {
   incorrectlength <- 0
   if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1

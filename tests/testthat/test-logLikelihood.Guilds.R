@@ -1,6 +1,7 @@
 context("logLikelihood.Guilds")
 
 test_that("logLikelihood.Guilds: use", {
+  skip_on_cran()
   set.seed(666)
   J <- 20000
   theta <- 100

@@ -1,6 +1,7 @@
 context("expected.SAD.Guilds")
 
 test_that("expected.SAD.Guilds: use", {
+  skip_on_cran()
   SAD <- expected.SAD.Guilds(theta = 200, 
                               alpha_x = 0.1,
                               alpha_y = 0.01,
@@ -18,6 +19,7 @@ test_that("expected.SAD.Guilds: use", {
 })
 
 test_that("expected.SAD.Guilds: abuse", {
+  skip_on_cran()
   expect_error(
     SAD <- expected.SAD.Guilds(theta = 200, 
                                alpha_x = 1.0,

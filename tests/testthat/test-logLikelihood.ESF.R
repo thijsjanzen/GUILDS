@@ -1,6 +1,7 @@
 context("logLikelihood.ESF")
 
 test_that("logLikelihood.ESF: use", {
+  skip_on_cran()
   set.seed(42)
   J <- 10000
   theta <- 100
@@ -16,6 +17,7 @@ test_that("logLikelihood.ESF: use", {
 })
   
 test_that("logLikelihood.ESF: abuse", {
+  skip_on_cran()
   set.seed(42)
   J <- 10000
   theta <- 100

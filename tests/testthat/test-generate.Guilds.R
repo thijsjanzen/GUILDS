@@ -1,6 +1,7 @@
 context("generate.Guilds")
 
 test_that("generate.Guilds: use", {
+  skip_on_cran()
   J <- 10000
   v <- generate.ESF(theta = 100, I = 10, J)
   expect_equal(
@@ -22,6 +23,7 @@ test_that("generate.Guilds: use", {
 })
 
 test_that("generate.Guilds: abuse", {
+  skip_on_cran()
   expect_error(
     generate.ESF(theta = -1, I = 10, J = 100),
     "theta can not be below one"

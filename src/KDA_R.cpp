@@ -187,13 +187,13 @@ void calcLogKDA(std::vector<long double>& K,
     
     // Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
     
-    if(borneinf > K.size()) return;
-    if(bornesup > (K.size()-1)) return;
+    if(borneinf > (int)K.size()) return;
+    if(bornesup > (int)(K.size()-1)) return;
     long double Kprimeinf = K[borneinf]-K[borneinf-1];
 
      
     long double Kprimesup1 = -50.0;  //out of range check
-    if((bornesup+1) < K.size()) Kprimesup1 = K[bornesup+1];
+    if((bornesup+1) < (int)K.size()) Kprimesup1 = K[bornesup+1];
     long double Kprimesup2 = 0.0;   //out of range check
     if(bornesup > -0.1) Kprimesup2 = K[bornesup];
 
@@ -231,7 +231,7 @@ NumericVector calcKDA(NumericVector A)
 	                   
 	int J = 0;
 	for(int s = 0; s < numspecies; ++s) {
-	   if(s > Abund.size()) break;
+	   if(s > (int)Abund.size()) break;
 	   Abund[s] = A[s];
 	   J += Abund[s];
 	}

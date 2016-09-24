@@ -1,6 +1,8 @@
 context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
+  skip_on_cran()
+  cat("test maxLikelihood.GuildsConditional: use\n")
   set.seed(42)
   maxLikelihood.Guilds.Conditional(init_vals = c(20, 0.1), model ="D0", 
                                    method = "simplex",  #subplex before
@@ -28,7 +30,7 @@ test_that("maxLikelihood.GuildsConditional: use", {
   expect_equal(
     alpha_x,
     LL$par[2],
-    tolerance = 0.05, scale = 1
+    tolerance = 0.1, scale = 1
   )
   
   set.seed(666)
@@ -72,6 +74,8 @@ test_that("maxLikelihood.GuildsConditional: use", {
 
 
 test_that("maxLikelihood.Guilds: abuse", {
+  skip_on_cran()
+  cat("test maxLikelihood.GuildsConditional: abuse\n")
   set.seed(42)
   J <- 200
   

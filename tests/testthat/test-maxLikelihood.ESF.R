@@ -1,7 +1,7 @@
 context("maxLikelihood.ESF")
 
 test_that("maxLikelihood.ESF: use", {
- #first we generate data 
+  skip_on_cran()
   set.seed(42)
   J <- 10000
   theta <- 100
@@ -51,7 +51,3 @@ test_that("maxLikelihood.ESF: abuse", {
     "Need more than 1 species in the dataset"
   )
 })
-  
-  
-  
-  

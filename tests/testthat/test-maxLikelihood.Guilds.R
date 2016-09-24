@@ -1,6 +1,7 @@
 context("maxLikelihood.Guilds")
 
 test_that("maxLikelihood.Guilds: use", {
+  skip_on_cran()
   set.seed(42)
   J <- 20000
   
@@ -57,15 +58,15 @@ test_that("maxLikelihood.Guilds: use", {
   )
   
   LL1 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
-                              model="D0", method="simplex",
+                              model="D0", method = "simplex",
                               sadx = 1:20, 
                               sady = 1:20, verbose = TRUE)
   LL2 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
-                              model="D0", method="simplex", #subplex before
+                              model="D0", method = "simplex", #subplex before
                               sadx = 1:20, 
                               sady = 1:20, verbose = TRUE)
   LL3 <- maxLikelihood.Guilds( init_vals = c(50, 0.1), 
-                              model="D0", method="simplex",
+                              model="D0", method = "simplex",
                               sadx = 1:20, 
                               sady = 1:20, verbose = FALSE)
   
@@ -75,12 +76,12 @@ test_that("maxLikelihood.Guilds: use", {
   
   expect_equal(a, b, tolerance = 0.1, scale = 1)
   expect_equal(a, c, tolerance = 0.1, scale = 1)
-  
-  
 })
 
 
 test_that("maxLikelihood.Guilds: abuse", {
+  skip_on_cran()
+  cat("maxLikelihood.Guilds: abuse\n")
   set.seed(42)
   J <- 20000
   
