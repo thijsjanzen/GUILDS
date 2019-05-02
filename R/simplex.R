@@ -1,6 +1,7 @@
 simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
                    reltolx = 1e-4, reltolf = 1e-4,
-                   maxiter = 200 * length(initpars))
+                   maxiter = 200 * length(initpars),
+                   lower_bound = 2)
 {
 	numpar <- length(initpars)
 	## Setting up initial simplex
@@ -14,7 +15,11 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 		} else {
 		   v[i, i + 1] <- v[i, i + 1] * min(1.05, fac)
 		}
+		v[i] <- max(v[i], lower_bound)
 	}
+
+
+
 
 	fv <- rep(0,numpar + 1)
 	for (i in 1:(numpar + 1)) {
@@ -47,23 +52,23 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 
 	v2 <- t(matrix(rep(v[, 1], each = numpar + 1), nrow = numpar + 1))
 
-	while (itercount <= maxiter & 
-	     ( ( is.nan(max(abs(fv - fv[1]))) | 
-	     (max(abs(fv - fv[1])) - reltolf * abs(fv[1]) > 0) ) + 
-	     ( (max(abs(v - v2) - reltolx * abs(v2)) > 0) | 
-	       (max(abs(v - v2)) - abstolx > 0) ) ) ) { 
+	while (itercount <= maxiter &
+	     ( ( is.nan(max(abs(fv - fv[1]))) |
+	     (max(abs(fv - fv[1])) - reltolf * abs(fv[1]) > 0) ) +
+	     ( (max(abs(v - v2) - reltolx * abs(v2)) > 0) |
+	       (max(abs(v - v2)) - abstolx > 0) ) ) ) {
 	   ## Calculate reflection point
 	   if (numpar == 1)  {
 		   xbar <- v[1]
 	   } else {
 		   xbar <- rowSums(v[,1:numpar])/numpar
 	   }
-	   xr <- (1 + rh) * xbar - rh * v[,numpar + 1]
+	   xr <- max((1 + rh) * xbar - rh * v[,numpar + 1], lower_bound)
 	   fxr <- evalfunc(xr)
-	 
+
 	   if (fxr < fv[1])  {
 		   ## Calculate expansion point
-		   xe <- (1 + rh * ch) * xbar - rh * ch * v[, numpar + 1]
+		   xe <- max((1 + rh * ch) * xbar - rh * ch * v[, numpar + 1], lower_bound)
 		   fxe <- evalfunc(xe)
 		   if (fxe < fxr)  {
 			   v[,numpar + 1] <- xe
@@ -75,27 +80,27 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 			   how <- "reflect"
 		   }
 	   } else {
-		   if (fxr < fv[numpar]) {      
+		   if (fxr < fv[numpar]) {
 			   v[,numpar + 1] <- xr
 			   fv[numpar + 1] <- fxr
 			   how <- "reflect"
 		   } else {
 			   if (fxr < fv[numpar + 1]) {
 				  ## Calculate outside contraction point
-				  xco <- (1 + ps * rh) * xbar - ps * rh * v[,numpar + 1]
+				  xco <- max((1 + ps * rh) * xbar - ps * rh * v[,numpar + 1], lower_bound)
 				  fxco <- evalfunc(xco)
 				  if (fxco <= fxr) {
 					 v[,numpar + 1] <- xco
-					 fv[numpar + 1] <- fxco            
+					 fv[numpar + 1] <- fxco
 					 how <- "contract outside"
 				  } else {
 					 how <- "shrink"
 				  }
 			   } else {
 				  ## Calculate inside contraction point
-				  xci <- (1 - ps) * xbar + ps * v[,numpar + 1]
+				  xci <- max((1 - ps) * xbar + ps * v[,numpar + 1], lower_bound)
 				  fxci <- evalfunc(xci)
-				  if(fxci < fv[numpar + 1]) {  
+				  if(fxci < fv[numpar + 1]) {
 					 v[,numpar + 1] <- xci
 					 fv[numpar + 1] <- fxci
 					 how <- "contract inside"
@@ -105,7 +110,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 			   }
 			   if (how == "shrink")  {
 				   for (j in 2:(numpar + 1)) {
-					   v[,j] <- v[,1] + si * (v[,j] - v[,1])
+					   v[,j] <- max(v[,1] + si * (v[,j] - v[,1]), lower_bound)
 					   fv[j] <- evalfunc(v[,j])
 				   }
 			   }
@@ -132,8 +137,8 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 	} else {
 	   if (verbose) cat("Maximum number of iterations has been exceeded.", "\n")
 	}
-	out <- list(par = v[,1], 
-	           fvalues = -fv[1], 
+	out <- list(par = v[,1],
+	           fvalues = -fv[1],
 	           conv = -as.numeric(itercount > maxiter))
 	invisible(out)
 }
