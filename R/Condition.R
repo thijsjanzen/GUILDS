@@ -241,11 +241,9 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   J  <- Nx + Ny
 
   g <- function(x) {
-    cat(x, " ")
     out <- -1 * conditional.LogLik(x, model, J, Sx, Sy, Nx, Ny,
                                    kda_x, kda_y, prefactor1,
                                    prefactor2, verbose)
-    cat(out, "\n")
     return(out)
   }
 
