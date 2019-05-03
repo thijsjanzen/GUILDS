@@ -4,3 +4,4 @@ inst/doc
 .Rproj.user
 *.o
 *.so
+tests/testthat/Rplots.pdf

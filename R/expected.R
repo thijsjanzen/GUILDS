@@ -67,7 +67,6 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
          "J can not be below one")
   }
 
-
   meanx <- rep(0, J)
   meany <- rep(0, J)
 
@@ -85,7 +84,7 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
 
   gx <- sort_aux(meanx)
   gy <- sort_aux(meany)
-  
+
   output <- list( guildX = gx, guildY = gy)
   return(output)
 }
@@ -142,7 +141,7 @@ expected.SAD.Guilds.Conditional <- function(theta,
 
   gx <- sort_aux(meanx)
   gy <- sort_aux(meany)
-  
+
   output <- list( guildX = gx, guildY = gy)
   return(output)
 }
