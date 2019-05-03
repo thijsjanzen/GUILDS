@@ -6,6 +6,7 @@
 \alias{logLikguilds}
 \alias{localComm}
 \alias{getpx}
+\alias{local_esf}
 \alias{evaluateLogLik}
 \alias{conditional.LogLik}
 \alias{calc_sum_kda}

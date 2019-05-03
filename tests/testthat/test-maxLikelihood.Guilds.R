@@ -12,7 +12,7 @@ test_that("maxLikelihood.Guilds: use", {
 
   #initial parameters for the D0 model c(theta,alpha)
   LL <- maxLikelihood.Guilds(init_vals = c(50, 0.1),
-                             model="D0", method="simplex",
+                             model="D0",
                              sadx = simul_data$guildX,
                              sady = simul_data$guildY)
 
@@ -38,7 +38,7 @@ test_that("maxLikelihood.Guilds: use", {
 
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds( init_vals = c(theta, alpha_x, alpha_y),
-                              model="D1", method="simplex",
+                              model="D1",
                               sadx = simul_data$guildX,
                               sady = simul_data$guildY, verbose = FALSE)
   testthat::expect_equal(
@@ -58,15 +58,15 @@ test_that("maxLikelihood.Guilds: use", {
   )
 
   LL1 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0", method = "simplex",
+                              model="D0",
                               sadx = 1:20,
                               sady = 1:20, verbose = TRUE)
   LL2 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0", method = "simplex", #subplex before
+                              model="D0",  #subplex before
                               sadx = 1:20,
                               sady = 1:20, verbose = TRUE)
   LL3 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0", method = "simplex",
+                              model="D0",
                               sadx = 1:20,
                               sady = 1:20, verbose = FALSE)
 
@@ -93,7 +93,7 @@ test_that("maxLikelihood.Guilds: abuse", {
   #initial parameters for the D0 model c(theta,alpha)
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(-50, 0.1),
-                              model="D0", method="simplex",
+                              model="D0",
                               sadx = simul_data$guildX,
                               sady = simul_data$guildY, verbose = FALSE),
     "initial theta can not be below one"
@@ -101,7 +101,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, -0.1),
-                          model="D0", method="simplex",
+                          model="D0",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be below zero"
@@ -109,7 +109,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, 1.1),
-                          model="D0", method="simplex",
+                          model="D0",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be above 1"
@@ -117,7 +117,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, 0.1, -0.1),
-                          model="D1", method="simplex",
+                          model="D1",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be below 0"
@@ -125,7 +125,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, 0.1, 1.1),
-                          model="D1", method="simplex",
+                          model="D1",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be above 1"
@@ -133,7 +133,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, 0.1, 1.1),
-                          model="D0", method="simplex",
+                          model="D0",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"
@@ -141,7 +141,7 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   testthat::expect_error(
     maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                          model="D1", method="simplex",
+                          model="D1",
                           sadx = simul_data$guildX,
                           sady = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"

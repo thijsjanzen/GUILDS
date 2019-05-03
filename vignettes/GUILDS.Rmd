@@ -85,7 +85,6 @@ Now that we have our data, we can apply the guilds' sampling formula, and see wh
 ```{r}
 LL <- maxLikelihood.Guilds.Conditional(init_vals = c(theta, alpha_x), 
                                        model = "D0",
-                                       method = "simplex", 
                                        sadx = abund$guildX, 
                                        sady = abund$guildY,
                                        verbose = FALSE)
@@ -131,16 +130,14 @@ Clearly, there are now strong differences in the community distributions: the la
 ```{r}
 LL1 <- maxLikelihood.Guilds.Conditional(init_vals = c(theta, alpha_x, alpha_y), 
                                        model = "D1",
-                                       method = "simplex", 
                                        sadx = abund$guildX, sady = abund$guildY,
-                                       verbose = TRUE)
+                                       verbose = FALSE)
 ```
 Maximum likelihood estimation shows that we can accurately infer the underlying parameters.
 Furthermore, we can test whether the model assuming differences in dispersal between guilds better explains the data, than the model without. We do this by also fitting the model without differences to the data, and compare the estimated likelihoods:
 ```{r}
 LL2 <- maxLikelihood.Guilds.Conditional(init_vals = c(theta, alpha_x), 
                                        model = "D0",
-                                       method = "simplex", 
                                        sadx = abund$guildX, sady = abund$guildY,
                                        verbose = FALSE)
 ```
