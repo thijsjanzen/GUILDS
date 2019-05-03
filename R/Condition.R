@@ -163,6 +163,17 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
      alpha_y > (1 - (1e-8))
      ) return(-Inf)
 
+  if(is.na(alpha_x) ||
+     is.na(alpha_y) ||
+     is.na(theta_x) ||
+     is.na(theta_y)) {
+    cat("warnings! one of the parameters is somehow NA\n")
+    cat("displaying alpha_x, alpha_y, theta_x, theta_y\n")
+    cat(alpha_x, alpha_y, theta_x, theta_y,"\n")
+    return(-Inf)
+  }
+
+
   ll <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
                      Sx, Sy, Nx, Ny, kda_x, kda_y,
                      prefactor1, prefactor2, verbose)
@@ -173,18 +184,18 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
 }
 
 maxLikelihood.Guilds.Conditional <- function(init_vals, model,
-                                             method,
+                                             method = "subplex",
                                              sadx, sady,
                                              verbose = TRUE) {
   incorrectlength <- 0
   if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
   if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
-  
-  if (incorrectlength == 1) { 
+
+  if (incorrectlength == 1) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "Input vector is of incorrect length\n")
   }
-  
+
   if(init_vals[1] < 1) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "initial theta can not be below one")
@@ -207,7 +218,7 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
            "initial alpha_y can not be above 1")
     }
   }
-  
+
   kda_x <- calcKDA(sadx)
   kda_y <- calcKDA(sady)
 
@@ -230,9 +241,11 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   J  <- Nx + Ny
 
   g <- function(x) {
+    cat(x, " ")
     out <- -1 * conditional.LogLik(x, model, J, Sx, Sy, Nx, Ny,
                                    kda_x, kda_y, prefactor1,
                                    prefactor2, verbose)
+    cat(out, "\n")
     return(out)
   }
 
@@ -240,8 +253,8 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   if (method == "simplex") {
     x <- simplex(init_vals, g, verbose)
   }
-#  if (method == "subplex") {
-#    x <- subplex::subplex(init_vals, g)
-#  }
+  if (method == "subplex") {
+    x <- subplex::subplex(init_vals, g)
+  }
   return(x)
 }

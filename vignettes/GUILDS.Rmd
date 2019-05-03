@@ -39,11 +39,11 @@ preston_plot(abund, abund.expect)
 We can clearly see that the simulated abundance distribution closely matches the expected distribution (the black line), although the stochastic nature of the simulation has caused some small deviations. Using the Etienne Sampling Formula we can now estimate theta and m, using maximum likelihood. Because we already know the real values (those are the values that we used to simulate the data), we can nicely crosscheck whether the Etienne Sampling Formula yields good results. We start the maximum likelihood at three different starting points, to compare convergence.
 ```{r}
 LL1 <- maxLikelihood.ESF(init_vals = c(theta, m),
-                         abund, verbose = FALSE)
+                         abund, verbose = TRUE)
 LL2 <- maxLikelihood.ESF(init_vals = c(1000, 0.001),
-                         abund, verbose = FALSE)
+                         abund, verbose = TRUE)
 LL3 <- maxLikelihood.ESF(init_vals = c(10, 0.9),
-                         abund, verbose = FALSE)
+                         abund, verbose = TRUE)
 LL1$par
 LL2$par
 LL3$par
@@ -83,10 +83,12 @@ preston_plot(abund$guildY, abund.expected$guildY, main = "Guild Y")
 Before, we set the size of Guild X to 8000 individuals, and the size of Guild Y to 2000 individuals. From the Preston plots we notice that indeed Guild X contains more species, but that apart from that, there are not many striking differences (we assumed equal dispersal of course!)
 Now that we have our data, we can apply the guilds' sampling formula, and see whether it can accruately infer parameter values.
 ```{r}
-LL <- maxLikelihood.Guilds.Conditional(init_vals = c(theta, alpha_x), model = "D0",
+LL <- maxLikelihood.Guilds.Conditional(init_vals = c(theta, alpha_x), 
+                                       model = "D0",
                                        method = "simplex", 
-                                       sadx = abund$guildX, sady = abund$guildY,
-                                       verbose = TRUE)
+                                       sadx = abund$guildX, 
+                                       sady = abund$guildY,
+                                       verbose = FALSE)
 LL$par
 ```
 

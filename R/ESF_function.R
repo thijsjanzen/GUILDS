@@ -31,6 +31,13 @@ esf_local <- function(v, abund, prefactor, kda) {
   theta <- v[1]
   m <- v[2]
 
+  if(is.na(theta) ||
+     is.na(m)) {
+    cat("m is", m, " theta is ",theta, "one of them is NA\n")
+    cat(v,"\n")
+    return(-Inf)
+  }
+
   if (theta < 1 ||
      m <= 0 ||
      m > (1 - .Machine$double.eps)) {
@@ -80,6 +87,7 @@ maxLikelihood.ESF <- function(init_vals, abund, verbose = TRUE) {
 		return(out)
   }
 
-  optimum <- simplex(init_vals, g, verbose)
+  #optimum <- simplex(init_vals, g, verbose)
+  optimum <- subplex::subplex(par = init_vals, fn = g)
   return(optimum)
 }
