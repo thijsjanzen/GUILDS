@@ -28,7 +28,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
 
 
 test_that("expected.SAD.Guilds.Conditional: abuse", {
-#  skip_on_cran()
+  skip_on_cran()
   n_replicates = 2
   Jx = 10
   Jy = 20
