@@ -30,7 +30,7 @@ maxLikelihood.Guilds(init_vals, model, method, sadx, sady, verbose = TRUE)
     }
 
   \item{sadx}{ The Species Abundance Distribution of guild X}
-  \item{sady}{ The Species Abundance Distribution of guild Y} 
+  \item{sady}{ The Species Abundance Distribution of guild Y}
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
 
@@ -60,7 +60,13 @@ Thijs Janzen
 }
 
 \examples{
-initParams <- c(20,0.1); #initial parameters for the D0 model c(theta,alpha)
-maxLikelihood.Guilds(initParams, model = "D0", method = "simplex", 
-		     sadx = 1:20, sady = 1:20, verbose = TRUE)
+theta <- 20
+alpha <- 0.1
+initParams <- c(theta, alpha)
+maxLikelihood.Guilds(initParams,
+                     model = "D0",
+                     method = "simplex",
+                     sadx = 1:20,
+                     sady = 1:20,
+                     verbose = TRUE)
 }

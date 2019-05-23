@@ -33,5 +33,8 @@ generate.Guilds(theta, alpha_x, alpha_y, J)
 }
 
 \examples{
-generate.Guilds(theta=200,alpha_x = 0.005, alpha_y = 0.001,J=20000);% Add one or more standard keywords, see file 'KEYWORDS' in the
+generate.Guilds(theta = 200,
+                alpha_x = 0.005,
+                alpha_y = 0.001,
+                J = 10000)
 }

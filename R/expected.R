@@ -71,13 +71,13 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   meany <- rep(0, J)
 
   for (r in seq_len(n_replicates)) {
-		M <- draw_local(theta, alpha_x, alpha_y, J)
-		for (m in seq_along(M$guildX)) {
-			meanx[m] <- meanx[m] + M$guildX[m]
-		}
-		for (m in seq_along(M$guildY)) {
-			meany[m] <- meany[m] + M$guildY[m]
-		}
+    M <- draw_local(theta, alpha_x, alpha_y, J)
+    for (m in seq_along(M$guildX)) {
+      meanx[m] <- meanx[m] + M$guildX[m]
+    }
+    for (m in seq_along(M$guildY)) {
+      meany[m] <- meany[m] + M$guildY[m]
+    }
   }
   meanx <- meanx / n_replicates
   meany <- meany / n_replicates
@@ -124,17 +124,17 @@ expected.SAD.Guilds.Conditional <- function(theta,
          "Jy can not be below one")
   }
 
-  meanx <- rep(0,Jx)
-  meany <- rep(0,Jy)
+  meanx <- rep(0, Jx)
+  meany <- rep(0, Jy)
 
   for (r in seq_len(n_replicates)) {
-		M <- draw_local_cond(theta, alpha_x, alpha_y, Jx, Jy)
-		for (m in seq_along(M$guildX)) {
-			meanx[m] <- meanx[m] + M$guildX[m]
-		}
-		for (m in seq_along(M$guildY)) {
-			meany[m] <- meany[m] + M$guildY[m]
-		}
+    M <- draw_local_cond(theta, alpha_x, alpha_y, Jx, Jy)
+    for (m in seq_along(M$guildX)) {
+      meanx[m] <- meanx[m] + M$guildX[m]
+    }
+    for (m in seq_along(M$guildY)) {
+      meany[m] <- meany[m] + M$guildY[m]
+    }
   }
   meanx <- meanx / n_replicates
   meany <- meany / n_replicates

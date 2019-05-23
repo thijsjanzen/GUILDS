@@ -33,7 +33,7 @@ maxLikelihood.ESF(init_vals, abund, verbose = TRUE)
 }
 
 \examples{
-	A <- c(1,1,1,3,5,8)
-	maxLikelihood.ESF( c(7,0.1), abund = A)
+	A <- c(1, 1, 1, 3, 5, 8)
+	maxLikelihood.ESF( c(7, 0.1), abund = A)
 }
 

@@ -41,7 +41,11 @@ generate.Guilds.Cond(theta, alpha_x, alpha_y, JX, JY)
 
 
 \examples{
-generate.Guilds.Cond(theta=200,alpha_x = 0.005, alpha_y = 0.001,JX=15000,JY=5000);
+generate.Guilds.Cond(theta = 200,
+                     alpha_x = 0.005,
+                     alpha_y = 0.001,
+                     JX = 15000,
+                     JY = 5000);
 }
 \keyword{ Guilds }
 \keyword{ Neutral Theory }% __ONLY ONE__ keyword per line

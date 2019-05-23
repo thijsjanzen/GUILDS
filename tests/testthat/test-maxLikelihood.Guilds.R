@@ -1,17 +1,17 @@
 context("maxLikelihood.Guilds")
 
 test_that("maxLikelihood.Guilds: use", {
- # skip_on_cran()
+  skip_on_cran()
   set.seed(42)
-  J <- 20000
+  J <- 10000
 
-  theta <- 50
+  theta <- 100
   alpha_x <- 0.1
 
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
 
   #initial parameters for the D0 model c(theta,alpha)
-  LL <- maxLikelihood.Guilds(init_vals = c(50, 0.1),
+  LL <- maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
                              model="D0",
                              sadx = simul_data$guildX,
                              sady = simul_data$guildY)
@@ -27,8 +27,7 @@ test_that("maxLikelihood.Guilds: use", {
     tolerance = 0.05, scale = 1
   )
 
-
-  J <- 20000
+  J <- 10000
 
   theta <- 100
   alpha_x <- 0.1
@@ -44,7 +43,7 @@ test_that("maxLikelihood.Guilds: use", {
   testthat::expect_equal(
     theta,
     LL$par[1],
-    tolerance = 10, scale = 1
+    tolerance = 20, scale = 1
   )
   testthat::expect_equal(
     alpha_x,
@@ -54,7 +53,7 @@ test_that("maxLikelihood.Guilds: use", {
   testthat::expect_equal(
     alpha_y,
     LL$par[3],
-    tolerance = 0.0005, scale = 1
+    tolerance = 0.001, scale = 1
   )
 
   LL1 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),

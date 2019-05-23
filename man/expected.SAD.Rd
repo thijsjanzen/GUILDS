@@ -4,7 +4,7 @@
   Calculate the expected species abundance distribution of the standard neutral model, given theta, m and J
 }
 \description{
-  This function calculates the expected species abundance distribution of the standard neutral model given theta, m and J, sensu equation 6 from Etienne and Alonso (2005). 
+  This function calculates the expected species abundance distribution of the standard neutral model given theta, m and J, sensu equation 6 from Etienne and Alonso (2005).
 }
 \usage{
 expected.SAD(theta, m, J)
@@ -32,8 +32,9 @@ expected.SAD(theta, m, J)
 }
 
 \examples{
-SAD <- expected.SAD(theta=42, m = 0.1, J = 200);
-barplot(SAD,names.arg=0:(length(SAD)-1),
-	xlab="Number of individuals (log2)",
-	ylab="Number of Species" )
+SAD <- expected.SAD(theta = 42, m = 0.1, J = 200)
+barplot(SAD,
+        names.arg=0:(length(SAD)-1),
+	      xlab="Number of individuals (log2)",
+	      ylab="Number of Species" )
 }

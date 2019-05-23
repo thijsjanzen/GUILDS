@@ -6,8 +6,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
                                          alpha_y = 0.01,
                                          Jx = 1000,
                                          Jy = 1000,
-                                         n_replicates = 10)
-
+                                         n_replicates = 3)
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
   a <- S1 > S2
@@ -18,7 +17,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
                                          alpha_y = 0.1,
                                          Jx = 3000,
                                          Jy = 1000,
-                                         n_replicates = 10)
+                                         n_replicates = 3)
 
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
@@ -26,9 +25,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
   testthat::expect_equal(a,TRUE) #because Jx > Jy
 })
 
-
 test_that("expected.SAD.Guilds.Conditional: abuse", {
-  skip_on_cran()
   n_replicates = 2
   Jx = 10
   Jy = 20

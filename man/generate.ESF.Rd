@@ -27,5 +27,5 @@ generate.ESF(theta, I, J)
 	Thijs Janzen & Bart Haegeman
 }
 \examples{
-	generate.ESF(theta=42,I=10,J=2000);
+	generate.ESF(theta = 42, I = 10, J = 2000)
 }

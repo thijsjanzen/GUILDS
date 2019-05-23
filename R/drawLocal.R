@@ -27,9 +27,9 @@ pm_sad <- function(th, I, j) {
 		f <- function(x) {
 				return(pm_sadaux(x, I, th, j, k)- ymax + 1)
 		}
-		
+
 		xplu <- stats::uniroot(f, c(xmax, x1), tol = pracma::eps())$root
-		xlft <- xmax - 10 * (xmax - xmin) 
+		xlft <- xmax - 10 * (xmax - xmin)
 		xlft <- max(0, xlft)
 		xrgt <- xmax + 10 * (xplu - xmax)
 		xrgt <- min(1, xrgt)
@@ -41,12 +41,12 @@ pm_sad <- function(th, I, j) {
 		res[cnt] <- integrate(f, xlft, xrgt, abs.tol = 1e-9)$val  #checked!!!!!1
   }
 
-	#the original algorithm had 1:j, but at the interp1 algorithm 
+	#the original algorithm had 1:j, but at the interp1 algorithm
 	# does not evaluate at the ends.
-	k2 <- 1:(j - 1)  
-	kesk <- pracma::interp1(x = log2(k1), 
-	                        y = k1 * res, 
-	                        xi = log2(k2), 
+	k2 <- 1:(j - 1)
+	kesk <- pracma::interp1(x = log2(k1),
+	                        y = k1 * res,
+	                        xi = log2(k2),
 	                        method = "spline")
 	k2 <- c(k2, j)
 	kesk <- c(kesk, 0)
@@ -85,15 +85,19 @@ pm_sadaux <- function(x, I, th, j, k) {
   return(y)
 }
 
-draw_local_cond <- function(theta, alpha_x, alpha_y, JX, JY) {
+draw_local_cond <- function(theta,
+                            alpha_x,
+                            alpha_y,
+                            JX,
+                            JY) {
   J <- JX + JY
   nx <- getpx(theta, alpha_x, alpha_y, JX, JY)
   ny <- 1 - nx
 
   #update I_X and I_Y accordingly
-  I_X <- alpha_x * nx * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-  I_Y <- alpha_y * ny * (J-1) / (1 - alpha_x * nx - alpha_y * ny)
-  
+  I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
+  I_Y <- alpha_y * ny * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
+
   if (is.infinite(I_X)) {
     stop("draw_local_cond: ",
          "alpha_x and alpha_y are both one, leading to I_x = I_y = Inf")
@@ -112,14 +116,14 @@ draw_local <- function(theta, alpha_x, alpha_y, J) {
   nx <- rbeta(1, theta, theta)
   ny <- 1 - nx
 
-  I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny) 
+  I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
   I_Y <- alpha_y * ny * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
-  
+
   if (is.infinite(I_X)) {
     stop("draw_local: ",
          "alpha_x and alpha_y are both one, leading to I_x = I_y = Inf")
   }
-  
+
   probs <- c()
   allN <- 0:J
 
