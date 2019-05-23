@@ -12,5 +12,5 @@ r_github_packages:
 
 after_success:
 #  - Rscript -e 'lintr::lint_package()'
-  - Rscript -e 'library(covr); codecov()'
+  - travis_wait 40 Rscript -e "covr::codecov()";
 #  - Rscript -e 'library(goodpractice); gp()'
