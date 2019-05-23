@@ -60,13 +60,18 @@ Thijs Janzen
 }
 
 \examples{
-theta <- 20
-alpha <- 0.1
-initParams <- c(theta, alpha)
-maxLikelihood.Guilds(initParams,
-                     model = "D0",
-                     method = "simplex",
-                     sadx = 1:20,
-                     sady = 1:20,
-                     verbose = TRUE)
+\dontrun{
+  J <- 10000
+
+  theta <- 100
+  alpha_x <- 0.1
+
+  simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
+
+  #initial parameters for the D0 model c(theta,alpha)
+  LL <- maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
+                             model="D0",
+                             sadx = simul_data$guildX,
+                             sady = simul_data$guildY)
+}
 }

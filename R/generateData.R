@@ -35,7 +35,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
 
   probs <- c()
   allN <- 0:J
-  if(is.infinite(I_X) && is.infinite(I_Y)) {
+  if(is.infinite(I_X) & is.infinite(I_Y)) {
      probs <- exp( lgamma(J+1) -
                  (lgamma(allN + 1) +
                   lgamma(J - allN + 1)) +
@@ -82,7 +82,7 @@ localComm <- function(alpha_x,
   I_X <- alpha_x * nx * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
   I_Y <- alpha_y * ny * (J - 1) / (1 - alpha_x * nx - alpha_y * ny)
 
-  if(is.infinite(I_X) && is.infinite(I_Y)) {
+  if(is.infinite(I_X) & is.infinite(I_Y)) {
     output <- exp( lgamma(J+1) -
                      (lgamma(Jx + 1) +
                         lgamma(J - Jx + 1)) +
