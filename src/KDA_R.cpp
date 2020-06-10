@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stdlib.h> //qsort
 #include <limits.h>
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 using namespace std;

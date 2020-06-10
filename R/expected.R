@@ -1,10 +1,10 @@
 sort_aux <- function(A) {
-  output <- rep(0,13)
+  output <- rep(0, 13)
 
   for (k in seq_along(output)) {
-    start <- 2^(k - 1)
-    end <- -1 + 2^(k)
-    if(end > length(A)) {
+    start <- 2 ^ (k - 1)
+    end <- -1 + 2 ^ (k)
+    if (end > length(A)) {
       end <- length(A)
       X <- sum(A[start:end])
       output[k] <- X
@@ -85,7 +85,7 @@ expected.SAD.Guilds <- function(theta, alpha_x, alpha_y,
   gx <- sort_aux(meanx)
   gy <- sort_aux(meany)
 
-  output <- list( guildX = gx, guildY = gy)
+  output <- list(guildX = gx, guildY = gy)
   return(output)
 }
 
@@ -142,6 +142,6 @@ expected.SAD.Guilds.Conditional <- function(theta,
   gx <- sort_aux(meanx)
   gy <- sort_aux(meany)
 
-  output <- list( guildX = gx, guildY = gy)
+  output <- list(guildX = gx, guildY = gy)
   return(output)
 }

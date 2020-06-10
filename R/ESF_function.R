@@ -7,7 +7,7 @@ logLikelihood.ESF <- function(theta, m, abund) {
 
   J <- sum(abund)
   S <- length(abund)
-  I <- m * (J-1) / (1 - m)
+  I <- m * (J - 1) / (1 - m)
 
   kda <- calcKDA(abund)  #confirmed in PARI
 
@@ -16,10 +16,10 @@ logLikelihood.ESF <- function(theta, m, abund) {
   x <- c(table(abund))
   freq_x <- c()
   for (i in seq_along(x)) freq_x[i] <- x[[i]]
-  prefactor1 <- -1 * ( sum(log(abund)) + sum(lgamma(1 + freq_x)))
+  prefactor1 <- -1 * (sum(log(abund)) + sum(lgamma(1 + freq_x)))
 
   #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
-  factor1 <- lgamma(J+1) + prefactor1
+  factor1 <- lgamma(J + 1) + prefactor1
 
   factor2 <- S*log(theta)   -  (lgamma(I + J) - lgamma(I))
 
@@ -31,10 +31,10 @@ esf_local <- function(v, abund, prefactor, kda) {
   theta <- v[1]
   m <- v[2]
 
-  if(is.na(theta) ||
+  if (is.na(theta) ||
      is.na(m)) {
-    cat("m is", m, " theta is ",theta, "one of them is NA\n")
-    cat(v,"\n")
+    cat("m is", m, " theta is ", theta, "one of them is NA\n")
+    cat(v, "\n")
     return(-Inf)
   }
 
@@ -77,17 +77,17 @@ maxLikelihood.ESF <- function(init_vals, abund, verbose = TRUE) {
   kda <- calcKDA(abund)  #confirmed in PARI
 
   J <- sum(abund)
-  x <- c( table(abund))
+  x <- c(table(abund))
   freq_x <- c()
   for (i in seq_along(x)) freq_x[i] <- x[[i]]
-  prefactor <- lgamma(J+1) - ( sum(log(abund)) + sum(lgamma(1 + freq_x)) )
+  prefactor <- lgamma(J + 1) - (sum(log(abund)) + sum(lgamma(1 + freq_x)))
 
   g <- function(x) {
 	  out <- -1 * esf_local(x, abund, prefactor, kda)
 		return(out)
   }
 
-  #optimum <- simplex(init_vals, g, verbose)
+  # optimum <- simplex(init_vals, g, verbose)
   optimum <- subplex::subplex(par = init_vals, fn = g)
   return(optimum)
 }

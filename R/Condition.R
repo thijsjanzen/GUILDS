@@ -20,7 +20,7 @@ evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
 
   h <- poch_X + poch_Y - (lgamma(Nx + 1) + lgamma(Ny + 1))
 
-  k  <-  lgamma( (theta_x / 2) + (theta_y / 2)) -
+  k  <-  lgamma((theta_x / 2) + (theta_y / 2)) -
         (lgamma(theta_x / 2) + lgamma(theta_y / 2))
   l  <- ((theta_x / 2) - 1) * log(nx) + ((theta_y / 2) - 1) * log(ny)
 
@@ -58,12 +58,12 @@ calc_conditional <- function(v, model, Nx, Ny) {
   }
 
   f <- function(x) {
-    return( -1 * evaluate_cond_lik(x, theta_x, theta_y,
+    return(-1 * evaluate_cond_lik(x, theta_x, theta_y,
                                  alpha_x, alpha_y,
-                                 Nx, Ny) )
+                                 Nx, Ny))
   }
 
- maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4 )
+ maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4)
 
  ymax <- -1 * maxes$fmin
  xmax <- maxes$xmin
@@ -91,7 +91,7 @@ calc_conditional <- function(v, model, Nx, Ny) {
                                alpha_x, alpha_y,
                                Nx, Ny) - ymax + thrs)
      }
-     xrgt <- (uniroot( h, c( xmax, 1 - eps)))$root
+     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
  }
 
  calc_ll_exp <- function(x) {
@@ -163,13 +163,13 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
      alpha_y > (1 - (1e-8))
      ) return(-Inf)
 
-  if(is.na(alpha_x) ||
+  if (is.na(alpha_x) ||
      is.na(alpha_y) ||
      is.na(theta_x) ||
      is.na(theta_y)) {
     cat("warnings! one of the parameters is somehow NA\n")
     cat("displaying alpha_x, alpha_y, theta_x, theta_y\n")
-    cat(alpha_x, alpha_y, theta_x, theta_y,"\n")
+    cat(alpha_x, alpha_y, theta_x, theta_y, "\n")
     return(-Inf)
   }
 
@@ -196,24 +196,24 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
          "Input vector is of incorrect length\n")
   }
 
-  if(init_vals[1] < 1) {
+  if (init_vals[1] < 1) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "initial theta can not be below one")
   }
-  if(init_vals[2] < 0) {
+  if (init_vals[2] < 0) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "initial alpha can not be below zero")
   }
-  if(init_vals[2] > 1) {
+  if (init_vals[2] > 1) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "initial alpha can not be above 1")
   }
-  if(model == "D1") {
-    if(init_vals[3] < 0 ) {
+  if (model == "D1") {
+    if (init_vals[3] < 0) {
       stop("maxLikelihood.Guilds.Conditional: ",
            "initial alpha_y can not be below 0")
     }
-    if(init_vals[3] > 1 ) {
+    if (init_vals[3] > 1) {
       stop("maxLikelihood.Guilds: ",
            "initial alpha_y can not be above 1")
     }
@@ -226,13 +226,13 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   freq_x <- c()
   for (i in seq_along(x)) freq_x[i] <- x[[i]]
 
-  prefactor1 <- -1 * ( sum(log(sadx)) + sum(lgamma(1 + freq_x)) )
+  prefactor1 <- -1 * (sum(log(sadx)) + sum(lgamma(1 + freq_x)))
 
   x2 <- c(table(sady))
   freq_y <- c()
   for (i in seq_along(x2)) freq_y[i] <- x2[[i]]
 
-  prefactor2 <- -1 * ( sum(log(sady)) + sum(lgamma(1 + freq_y)) )
+  prefactor2 <- -1 * (sum(log(sady)) + sum(lgamma(1 + freq_y)))
 
   Sx <- length(sadx)
   Sy <- length(sady)

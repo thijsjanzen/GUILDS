@@ -1,8 +1,7 @@
 simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
                    reltolx = 1e-4, reltolf = 1e-4,
                    maxiter = 200 * length(initpars),
-                   lower_bound = 2)
-{
+                   lower_bound = 2) {
 	numpar <- length(initpars)
 	## Setting up initial simplex
 	v <- t(matrix(rep(initpars, each = numpar + 1), nrow = numpar + 1))
@@ -17,9 +16,6 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 		}
 		v[i] <- max(v[i], lower_bound)
 	}
-
-
-
 
 	fv <- rep(0,numpar + 1)
 	for (i in 1:(numpar + 1)) {
