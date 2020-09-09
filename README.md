@@ -1,4 +1,4 @@
-# GUILDS
+# GUILDS <img src="pics/guilds_sticker.png" align="right" width="120" />
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/GUILDS)](https://cran.r-project.org/package=GUILDS)
 [![Build Status](https://travis-ci.org/thijsjanzen/GUILDS.svg?branch=master)](https://travis-ci.org/thijsjanzen/GUILDS)
 [![codecov](https://codecov.io/gh/thijsjanzen/GUILDS/branch/master/graph/badge.svg)](https://codecov.io/gh/thijsjanzen/GUILDS)
