@@ -29,11 +29,11 @@ evaluate_cond_lik <- function(v, theta_x, theta_y, alpha_x, alpha_y, Nx, Ny) {
 }
 
 calc_conditional <- function(v, model, Nx, Ny) {
-  incorrectlength <- 0
-  if (model == "D0" && length(v) != 2) incorrectlength <- 1
-  if (model == "D1" && length(v) != 3) incorrectlength <- 1
+  incorrectlength <- FALSE
+  if (model == "D0" && length(v) != 2) incorrectlength <- TRUE
+  if (model == "D1" && length(v) != 3) incorrectlength <- TRUE
 
-  if (incorrectlength == 1) {
+  if (incorrectlength == TRUE) {
     stop("calcConditional:",
          "Input vector is of incorrect length\n")
   }
