@@ -40,10 +40,12 @@ test_that("logLikelihood.Guilds.Conditional: use", {
   testthat::expect_equal(a, TRUE)
 
   # to test verbose == TRUE
+  testthat::expect_output(
   LL2 <- logLikelihood.Guilds.Conditional(parameters=c(3, 0.99, 0.5),
                                           model = "D1",
                                           simul_data$guildX, simul_data$guildY,
                                           verbose = TRUE)
+  )
 })
 
 test_that("logLikelihood.Guilds.Conditional: abuse", {

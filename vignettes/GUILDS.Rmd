@@ -1,15 +1,19 @@
 ---
-title: "GUILDS Vignette"
+title: "GUILDS vignette"
 author: "Thijs Janzen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{GUILDS vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-## Guilds Vignette
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Guilds overview
 
 Welcome to the vignette of GUILDS. GUILDS is an R package aimed at providing the user with easy to use functions that help dealing with the Unified Neutral Theory of Biodiversity and Biogeography. More specifically, the package bundles together the sampling functions for the Neutral Model including multiple guilds that differ in dispersal ability (Janzen et al. 2015), and the Etienne sampling formula for the standard neutral model. Furthermore, the package contains functions to generate artificial datasets, and to calculate the expected abundances.
 

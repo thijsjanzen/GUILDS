@@ -183,10 +183,11 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
   return(out)
 }
 
-maxLikelihood.Guilds.Conditional <- function(init_vals, model,
-                                             method = "subplex",
+maxLikelihood.Guilds.Conditional <- function(init_vals,
+                                             model,
+                                             method = "simplex",
                                              sadx, sady,
-                                             verbose = TRUE) {
+                                             verbose = FALSE) {
   incorrectlength <- 0
   if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
   if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
@@ -247,12 +248,12 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
     return(out)
   }
 
-  x
+  out <- c()
   if (method == "simplex") {
-    x <- simplex(init_vals, g, verbose)
+    out <- simplex(init_vals, g, verbose)
   }
   if (method == "subplex") {
-    x <- subplex::subplex(init_vals, g)
+    out <- subplex::subplex(init_vals, g)
   }
-  return(x)
+  return(out)
 }

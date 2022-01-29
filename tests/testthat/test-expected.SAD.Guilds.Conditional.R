@@ -9,8 +9,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
                                          n_replicates = 3)
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
-  a <- S1 > S2
-  testthat::expect_equal(a,TRUE) #because alpha_x > alpha_y
+  testthat::expect_gt(S1, S2)  #because alpha_x > alpha_y
 
   SAD <- expected.SAD.Guilds.Conditional(theta = 200,
                                          alpha_x = 0.1,
@@ -22,7 +21,7 @@ test_that("expected.SAD.Guilds.Conditional: use", {
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
   a <- S1 > S2
-  testthat::expect_equal(a,TRUE) #because Jx > Jy
+  testthat::expect_equal(a, TRUE) #because Jx > Jy
 })
 
 test_that("expected.SAD.Guilds.Conditional: abuse", {
