@@ -7,4 +7,8 @@ test_that("calcKDA use", {
   for(i in 1:20) {
     testthat::expect_equal(kda_1[i], 10361.632918)
   }
+
+  testthat::expect_silent( calcKDA(c(sad,1000))   )
+  testthat::expect_silent( calcKDA(c(sad,10000))  )
+  testthat::expect_silent( calcKDA(c(sad,25000))  )
 })

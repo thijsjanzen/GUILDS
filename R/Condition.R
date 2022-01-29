@@ -194,11 +194,11 @@ maxLikelihood.Guilds.Conditional <- function(init_vals,
                                              method = "simplex",
                                              sadx, sady,
                                              verbose = FALSE) {
-  incorrectlength <- 0
-  if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
-  if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
+  incorrectlength <- FALSE
+  if (model == "D0" && length(init_vals) != 2) incorrectlength <- TRUE
+  if (model == "D1" && length(init_vals) != 3) incorrectlength <- TRUE
 
-  if (incorrectlength == 1) {
+  if (incorrectlength == TRUE) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "Input vector is of incorrect length\n")
   }

@@ -61,14 +61,6 @@ test_that("maxLikelihood.GuildsConditional: use", {
     LL$par[3],
     tolerance = 0.0005, scale = 1
   )
-
-  # to test for alpha_x = alpha_y = 1, which leads to I_X = Inf
-  simul_data <- generate.Guilds.Cond(theta = 10,
-                                     alpha_x = 1.0,
-                                     alpha_y = 1.0,
-                                     JX = 100,
-                                     JY = 100)
-
 })
 
 
