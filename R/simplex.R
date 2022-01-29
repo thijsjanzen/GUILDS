@@ -1,7 +1,11 @@
-simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
-                   reltolx = 1e-4, reltolf = 1e-4,
-                   maxiter = 200 * length(initpars),
-                   lower_bound = 2) {
+simplex <- function(initpars,
+                    evalfunc,
+                    verbose,
+                    abstolx = 1e-4,
+                    reltolx = 1e-4,
+                    reltolf = 1e-4,
+                    maxiter = 200 * length(initpars),
+                    lower_bound = 2) {
 	numpar <- length(initpars)
 	## Setting up initial simplex
 	v <- t(matrix(rep(initpars, each = numpar + 1), nrow = numpar + 1))
@@ -96,7 +100,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 				  ## Calculate inside contraction point
 				  xci <- max((1 - ps) * xbar + ps * v[,numpar + 1], lower_bound)
 				  fxci <- evalfunc(xci)
-				  if(fxci < fv[numpar + 1]) {
+				  if (fxci < fv[numpar + 1]) {
 					 v[,numpar + 1] <- xci
 					 fv[numpar + 1] <- fxci
 					 how <- "contract inside"
@@ -129,7 +133,7 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 	   v2 <- t(matrix(rep(v[, 1], each = numpar + 1), nrow = numpar + 1))
 	}
 	if (itercount < maxiter) {
-	   if(verbose) cat("Optimization has terminated successfully.", "\n")
+	   if (verbose) cat("Optimization has terminated successfully.", "\n")
 	} else {
 	   if (verbose) cat("Maximum number of iterations has been exceeded.", "\n")
 	}

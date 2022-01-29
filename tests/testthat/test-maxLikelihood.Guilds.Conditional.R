@@ -38,10 +38,10 @@ test_that("maxLikelihood.GuildsConditional: use", {
                                      JX = 2000, JY = 2000)
 
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
-  LL <- maxLikelihood.Guilds.Conditional( init_vals =
-                                            c(theta, alpha_x, alpha_y),
+  LL <- GUILDS::maxLikelihood.Guilds.Conditional( init_vals =
+                                            c(30, 0.01, 0.001),
                                           model = "D1",
-                                          method = "simplex",
+                                          method = "subplex",
                                           sadx = simul_data$guildX,
                                           sady = simul_data$guildY,
                                           verbose = FALSE)
@@ -74,7 +74,6 @@ test_that("maxLikelihood.GuildsConditional: use", {
 
 test_that("maxLikelihood.Guilds: abuse", {
 #  skip_on_cran()
-  cat("test maxLikelihood.GuildsConditional: abuse\n")
   set.seed(42)
   J <- 200
 
