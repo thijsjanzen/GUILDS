@@ -2,6 +2,7 @@ context("simplex")
 
 test_that("simplex use", {
 #  skip_on_cran()
+  cat("test simplex use\n")
   a <- 3
   xvals <- 1:10
   yvals <- a * xvals + rnorm(10)
@@ -16,9 +17,7 @@ test_that("simplex use", {
   v <- simplex(initpars=c(2), evalfunc,
                verbose = FALSE,
                maxiter = 1000)
-  testthat::expect_output(
-    v <- simplex(initpars=c(2), evalfunc,
+  v <- simplex(initpars=c(2), evalfunc,
                verbose = TRUE,
                maxiter = 10)
-  )
 })

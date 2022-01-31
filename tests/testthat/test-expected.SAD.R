@@ -3,9 +3,7 @@ context("expected.SAD")
 test_that("expected.SAD: use", {
  # skip_on_cran()
   J <- 10000
-  testthat::expect_silent(
-    SAD <- expected.SAD(theta = 200, m = 0.09, J)
-  )
+  SAD <- expected.SAD(theta = 200, m = 0.09, J)
 })
 
 test_that("expected.SAD: abuse", {

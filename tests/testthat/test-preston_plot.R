@@ -2,6 +2,7 @@ context("preston_plot")
 
 test_that("preston_plot use", {
 #  skip_on_cran()
+  cat("preston_plot use\n")
   theta <- 100
   m <- 0.1
   J <- 10000
@@ -11,7 +12,5 @@ test_that("preston_plot use", {
   par(mfrow = c(1, 2))
   preston_plot(abund)
   abund.expect <- expected.SAD(theta, m, J)
-  testthat::expect_silent(
-    preston_plot(abund, abund.expect)
-  )
+  preston_plot(abund, abund.expect)
 })

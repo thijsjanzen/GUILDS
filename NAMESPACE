@@ -1,3 +1,4 @@
+useDynLib(GUILDS)
 importFrom("stats", "integrate", "optimize", "rbeta", "runif", "lm",
              "uniroot")
 importFrom("utils", "flush.console")
@@ -26,6 +27,4 @@ export(maxLikelihood.Guilds.Conditional)
 export(preston_plot)
 export(calcKDA)
 export(simplex)
-
-useDynLib(GUILDS, .registration = TRUE)
 
