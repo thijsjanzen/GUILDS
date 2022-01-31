@@ -143,8 +143,15 @@ logLikelihood.Guilds.Conditional <- function(parameters, model,
   return(output)
 }
 
-conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
-                               prefactor1, prefactor2, verbose = TRUE) {
+conditional.LogLik <- function(v,
+                               model,
+                               J,
+                               Sx, Sy,
+                               Nx, Ny,
+                               kda_x, kda_y,
+                               prefactor1,
+                               prefactor2,
+                               verbose = FALSE) {
 
   theta_x <- v[1] * 2
   theta_y <- v[1] * 2
@@ -155,24 +162,23 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
     alpha_y <- v[3]
   }
 
+  if (is.na(alpha_x) ||
+      is.na(alpha_y) ||
+      is.na(theta_x) ||
+      is.na(theta_y)) {
+    stop("one of the parameters is somehow NA\n")
+   # message("displaying alpha_x, alpha_y, theta_x, theta_y\n")
+  #  message(alpha_x, alpha_y, theta_x, theta_y, "\n")
+  #  return(-Inf)
+  }
+
   if (alpha_x < 0 ||
      alpha_y < 0 ||
      theta_x < 1 ||
      theta_y < 1 ||
      alpha_x > (1 - (1e-8)) ||
      alpha_y > (1 - (1e-8))
-     ) return(-Inf)
-
-  if (is.na(alpha_x) ||
-     is.na(alpha_y) ||
-     is.na(theta_x) ||
-     is.na(theta_y)) {
-    cat("warnings! one of the parameters is somehow NA\n")
-    cat("displaying alpha_x, alpha_y, theta_x, theta_y\n")
-    cat(alpha_x, alpha_y, theta_x, theta_y, "\n")
-    return(-Inf)
-  }
-
+  ) return(-Inf)
 
   ll <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y, J,
                      Sx, Sy, Nx, Ny, kda_x, kda_y,
@@ -183,15 +189,16 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
   return(out)
 }
 
-maxLikelihood.Guilds.Conditional <- function(init_vals, model,
-                                             method = "subplex",
+maxLikelihood.Guilds.Conditional <- function(init_vals,
+                                             model,
+                                             method = "simplex",
                                              sadx, sady,
-                                             verbose = TRUE) {
-  incorrectlength <- 0
-  if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
-  if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
+                                             verbose = FALSE) {
+  incorrectlength <- FALSE
+  if (model == "D0" && length(init_vals) != 2) incorrectlength <- TRUE
+  if (model == "D1" && length(init_vals) != 3) incorrectlength <- TRUE
 
-  if (incorrectlength == 1) {
+  if (incorrectlength == TRUE) {
     stop("maxLikelihood.Guilds.Conditional: ",
          "Input vector is of incorrect length\n")
   }
@@ -240,19 +247,19 @@ maxLikelihood.Guilds.Conditional <- function(init_vals, model,
   Ny <- sum(sady)
   J  <- Nx + Ny
 
-  g <- function(x) {
-    out <- -1 * conditional.LogLik(x, model, J, Sx, Sy, Nx, Ny,
+  g <- function(pars) {
+    result <- -1 * conditional.LogLik(pars, model, J, Sx, Sy, Nx, Ny,
                                    kda_x, kda_y, prefactor1,
                                    prefactor2, verbose)
-    return(out)
+    return(result)
   }
 
-  x
+  out <- c()
   if (method == "simplex") {
-    x <- simplex(init_vals, g, verbose)
+    out <- simplex(init_vals, g, verbose)
   }
   if (method == "subplex") {
-    x <- subplex::subplex(init_vals, g)
+    out <- subplex::subplex(init_vals, g)
   }
-  return(x)
+  return(out)
 }

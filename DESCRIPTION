@@ -3,7 +3,7 @@ Type: Package
 Title: Implementation of Sampling Formulas for the Unified Neutral
         Model of Biodiversity and Biogeography, with or without Guild
         Structure
-Version: 1.3
+Version: 1.3.1
 Authors@R: c( person("Thijs","Janzen", email = "thijsjanzen@gmail.com",role=c("aut","cre")), 
               person("Bart","Haegeman",email="",role = c("ctb")),
               person("Franck","Jabot",role = c("ctb")),
@@ -16,7 +16,6 @@ Suggests: testthat,
     rmarkdown 
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Repository: CRAN
 URL: https://github.com/thijsjanzen/GUILDS
 BugReports: https://github.com/thijsjanzen/GUILDS/issues
 VignetteBuilder: knitr
