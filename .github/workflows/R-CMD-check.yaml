@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+      - dev_rbase
   pull_request:
     branches:
       - main
       - master
+      - dev_rbase
 
 name: R-CMD-check
 
