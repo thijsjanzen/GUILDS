@@ -4,60 +4,60 @@ logLikguilds <- function(theta_x, theta_y,
                          KDA_X, KDA_Y,
                          prefactor1, prefactor2,
                          verbose = TRUE) {
- thrs <- 10
+  thrs <- 10
 
- f <- function(x) {
-   return(-1 * evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+  f <- function(x) {
+    return(-1 * evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
                                J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y))
- }
+  }
 
- maxes <- pracma::fminbnd(f, 0, 1,
-                          maxiter = 500, tol = 1e-4)
+  maxes <- pracma::fminbnd(f, 0, 1,
+                           maxiter = 500, tol = 1e-4)
 
- ymax <- -1 * maxes$fmin
- xmax <- maxes$xmin
- xlft <- 0
- xrgt <- 1
- eps <- .Machine$double.eps
+  ymax <- -1 * maxes$fmin
+  xmax <- maxes$xmin
+  xlft <- 0
+  xrgt <- 1
+  eps <- .Machine$double.eps
 
- check_left_x  <- evaluateLogLik(eps, theta_x, theta_y, alpha_x, alpha_y,
-                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
- check_right_x <- evaluateLogLik(1 - eps, theta_x, theta_y, alpha_x, alpha_y,
-                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
+  check_left_x  <- evaluateLogLik(eps, theta_x, theta_y, alpha_x, alpha_y,
+                                  J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
+  check_right_x <- evaluateLogLik(1 - eps, theta_x, theta_y, alpha_x, alpha_y,
+                                  J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs
 
- if (check_left_x < 0) {
-     g <- function(x) {
-        return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
-                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
-     }
-     xlft <- (uniroot(g, c(eps, xmax)))$root
- }
+  if (check_left_x < 0) {
+    g <- function(x) {
+      return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+                            J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
+    }
+    xlft <- (uniroot(g, c(eps, xmax)))$root
+  }
 
- if (check_right_x < 0) {
-     h <- function(x) {
-        return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
-                              J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
-     }
-     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
- }
+  if (check_right_x < 0) {
+    h <- function(x) {
+      return(evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
+                            J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax + thrs)
+    }
+    xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
+  }
 
- calc_ll_exp <- function(x) {
-   out <- exp( evaluateLogLik( x, theta_x, theta_y, alpha_x, alpha_y,
+  calc_ll_exp <- function(x) {
+    out <- exp( evaluateLogLik(x, theta_x, theta_y, alpha_x, alpha_y,
                                J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y) - ymax)
-   return(out)
- }
+    return(out)
+  }
 
- aux <- integrate(f = calc_ll_exp, lower = xlft, upper = xrgt, abs.tol = 1e-9)
+  aux <- integrate(f = calc_ll_exp, lower = xlft, upper = xrgt, abs.tol = 1e-9)
 
- y <- ymax + log(aux$value) + prefactor1 + Sx * log(theta_x / 2) +
-   prefactor2 + Sy * log(theta_y / 2) + lgamma((theta_x / 2) + (theta_y / 2)) -
-   (lgamma(theta_x/2) + lgamma(theta_y / 2))
+  y <- ymax + log(aux$value) + prefactor1 + Sx * log(theta_x / 2) +
+    prefactor2 + Sy * log(theta_y / 2) + lgamma((theta_x / 2) + (theta_y / 2)) -
+    (lgamma(theta_x / 2) + lgamma(theta_y / 2))
 
- #if(verbose==TRUE)
- # cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",
- #  theta_x, theta_y, alpha_x, alpha_y, y)); flush.console();
+  #if(verbose==TRUE)
+  # cat(sprintf("%4.3f       %4.4f       %4.4f       %4.4f        %4.3f\n",
+  #  theta_x, theta_y, alpha_x, alpha_y, y)); flush.console();
 
- return(y)
+  return(y)
 }
 
 
@@ -89,11 +89,11 @@ maxLikelihood.Guilds <- function(init_vals,
          "initial alpha can not be above 1")
   }
   if (model == "D1") {
-    if (init_vals[3] < 0 ) {
+    if (init_vals[3] < 0) {
       stop("maxLikelihood.Guilds: ",
            "initial alpha_y can not be below 0")
     }
-    if (init_vals[3] > 1 ) {
+    if (init_vals[3] > 1) {
       stop("maxLikelihood.Guilds: ",
            "initial alpha_y can not be above 1")
     }
@@ -130,47 +130,61 @@ maxLikelihood.Guilds <- function(init_vals,
     }
 
     y <- 0
-  	if (alpha_x < 0 ||
-  	    alpha_y < 0 ||
-  	    theta_x < 1 ||
-  	    theta_y < 1  ||
-  	    alpha_x > (1 - (1e-8)) ||
-  	    alpha_y > (1 - (1e-8))
-  	    ) {
-  	  y <- -Inf
-  	}
-  	if (!is.infinite(y)) {
-  	  y <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y,
-  	                 J, Sx, Sy, Nx, Ny, kda_x, kda_y,
-  	                 prefactor1, prefactor2, verbose)
-  	}
+    if (alpha_x < 0 ||
+        alpha_y < 0 ||
+        theta_x < 1 ||
+        theta_y < 1  ||
+        alpha_x > (1 - (1e-8)) ||
+        alpha_y > (1 - (1e-8))
+    ) {
+      y <- -Inf
+    }
+    if (!is.infinite(y)) {
+      y <- logLikguilds(theta_x, theta_y, alpha_x, alpha_y,
+                        J, Sx, Sy, Nx, Ny, kda_x, kda_y,
+                        prefactor1, prefactor2, verbose)
+    }
     if (verbose) {
       cat(theta_x, theta_y, alpha_x, alpha_y, y, "\n")
     }
-  	return(-y)
+    return(-y)
   }
 
-  x <- c()
-  if (method == "simplex") {
- #   	x <- simplex(init_vals, g, verbose)
-    x <- nloptr::nloptr(x0 = init_vals,
-                        eval_f = g,
-                        opts = list("algorithm" = "NLOPT_LN_NELDERMEAD",
-                                    "print_level" = 0,
-                                    "xtol_rel" = 1e-4))
-  }
-  if (method == "subplex") {
-	#  x <- subplex::subplex(init_vals, g)
-    x <- nloptr::nloptr(x0 = init_vals,
-                        eval_f = g,
-                        opts = list("algorithm" = "NLOPT_LN_SBPLX",
-                                    "print_level" = 0,
-                                    "xtol_rel" = 1e-4))
-  }
+  use_nloptr <- FALSE
 
-  out <- list(par = x$solution,
-              fvalues = -x$objective)
-  return(out)
+  if (use_nloptr) {
+    x <- c()
+    if (method == "simplex") {
+      #  	x <- simplex(init_vals, g, verbose)
+      x <- nloptr::nloptr(x0 = init_vals,
+                          eval_f = g,
+                          opts = list("algorithm" = "NLOPT_LN_NELDERMEAD",
+                                      "print_level" = 0,
+                                      "xtol_rel" = 1e-4))
+    }
+    if (method == "subplex") {
+      #  x <- subplex::subplex(init_vals, g)
+      x <- nloptr::nloptr(x0 = init_vals,
+                          eval_f = g,
+                          opts = list("algorithm" = "NLOPT_LN_SBPLX",
+                                      "print_level" = 0,
+                                      "xtol_rel" = 1e-4))
+    }
+
+    out <- list(par = x$solution,
+                fvalues = -x$objective)
+    return(out)
+  } else {
+    x
+    if (method == "simplex") {
+      x <- simplex(init_vals, g, verbose)
+    }
+    if (method == "subplex") {
+      x <- subplex::subplex(init_vals, g)
+    }
+
+    return(x)
+  }
 }
 
 logLikelihood.Guilds <- function(parameters, model,

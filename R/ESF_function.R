@@ -21,7 +21,7 @@ logLikelihood.ESF <- function(theta, m, abund) {
   #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
   factor1 <- lgamma(J + 1) + prefactor1
 
-  factor2 <- S*log(theta)   -  (lgamma(I + J) - lgamma(I))
+  factor2 <- S * log(theta)   -  (lgamma(I + J) - lgamma(I))
 
   ll <- factor1 + factor2 + sumkda
   return(ll)
@@ -87,7 +87,6 @@ maxLikelihood.ESF <- function(init_vals, abund, verbose = TRUE) {
 		return(out)
   }
 
-  # optimum <- simplex(init_vals, g, verbose)
   optimum <- subplex::subplex(par = init_vals, fn = g)
   return(optimum)
 }

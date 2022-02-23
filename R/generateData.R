@@ -36,7 +36,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   probs <- c()
   allN <- 0:J
   if (is.infinite(I_X) & is.infinite(I_Y)) {
-     probs <- exp( lgamma(J + 1) -
+     probs <- exp(lgamma(J + 1) -
                  (lgamma(allN + 1) +
                   lgamma(J - allN + 1)) +
                   allN * log(nx) +

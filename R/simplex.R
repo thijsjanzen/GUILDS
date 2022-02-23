@@ -71,13 +71,13 @@ simplex <- function(initpars, evalfunc, verbose, abstolx = 1e-4,
 			   fv[numpar + 1] <- fxe
 			   how <- "expand"
 		   } else {
-			   v[,numpar + 1] <- xr
+			   v[, numpar + 1] <- xr
 			   fv[numpar + 1] <- fxr
 			   how <- "reflect"
 		   }
 	   } else {
 		   if (fxr < fv[numpar]) {
-			   v[,numpar + 1] <- xr
+			   v[, numpar + 1] <- xr
 			   fv[numpar + 1] <- fxr
 			   how <- "reflect"
 		   } else {
