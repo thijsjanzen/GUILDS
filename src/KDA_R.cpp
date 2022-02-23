@@ -6,6 +6,21 @@
 #include <limits.h>
 #include <cmath>
 #include <vector>
+
+
+#include <thread>
+#include <chrono>
+void force_output() {
+  //  std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+  std::this_thread::sleep_for(std::chrono::milliseconds(300));
+  R_FlushConsole();
+  R_ProcessEvents();
+  R_CheckUserInterrupt();
+}
+
+
+
+
 class log_val {
 public:
   log_val() {
@@ -37,7 +52,6 @@ public:
   }
 
   double get_log_val() const {
-    //if (val == 0.0) return 0.0;
     return log_val_;
   }
 
@@ -65,16 +79,14 @@ private:
 };
 
 log_val operator+(const log_val& a, const log_val& b) {
-  double l_a = a.get_log_val();
-  double l_b = b.get_log_val();
-
   if (a.is_zero()) {
     return b;
   }
   if (b.is_zero()) {
     return a;
   }
-
+  double l_a = a.get_log_val();
+  double l_b = b.get_log_val();
   double res = l_a + log(1 + exp(l_b - l_a));
   return log_val(res);
 }
@@ -167,9 +179,8 @@ std::vector<double> calcLogKDA(int J,
                                int numspecies,
                                std::vector<int> Abund)  {
 
-  std::vector<double> K;
 
-  if (Abund.size() < 1) return K;
+  if (Abund.size() < 1) return std::vector<double>();
 
   sort(Abund.begin(), Abund.end());
 
@@ -271,6 +282,7 @@ std::vector<double> calcLogKDA(int J,
   // SECOND STAGE: compute the K(D,A)
   // I follow Etienne's route. Compute the product of polynomials
   // of length J
+
   std::vector< log_val > K_prime(J+2);
   std::vector< log_val > log_poly2(J+1);
 
@@ -301,6 +313,8 @@ std::vector<double> calcLogKDA(int J,
       spe++;
     }
 
+
+  std::vector<double> K(J+2, 0.0);
   for(size_t i = 0; i < K_prime.size(); ++i) {
     K[i] = K_prime[i].get_log_val();
     if (K[i] == -1e10) K[i] = 0;
