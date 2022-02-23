@@ -12,16 +12,22 @@ logLikelihood.ESF <- function(theta, m, abund) {
   kda <- calcKDA(abund)  #confirmed in PARI
 
   sumkda <- calc_sum_kda(S, J, I, theta, kda)
+  cat("sumkda: ", sumkda, "\n")
 
   x <- c(table(abund))
   freq_x <- c()
   for (i in seq_along(x)) freq_x[i] <- x[[i]]
   prefactor1 <- -1 * (sum(log(abund)) + sum(lgamma(1 + freq_x)))
+  cat("prefactor1: ", prefactor1, "\n")
 
   #J!/[prod(n1)prod(Sx!)]  #confirmed in PARI
   factor1 <- lgamma(J + 1) + prefactor1
 
   factor2 <- S*log(theta)   -  (lgamma(I + J) - lgamma(I))
+
+  cat("factor1: ", factor1, "\n")
+  cat("factor2: ", factor2, "\n")
+
 
   ll <- factor1 + factor2 + sumkda
   return(ll)

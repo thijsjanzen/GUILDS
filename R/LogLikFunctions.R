@@ -61,9 +61,12 @@ logLikguilds <- function(theta_x, theta_y,
 }
 
 
-maxLikelihood.Guilds <- function(init_vals, model,
-                                 method = "subplex", sadx, sady,
-                                 verbose = TRUE) {
+maxLikelihood.Guilds <- function(init_vals,
+                                 model = "D0",
+                                 method = "subplex",
+                                 sadx,
+                                 sady,
+                                 verbose = FALSE) {
   incorrectlength <- 0
   if (model == "D0" && length(init_vals) != 2) incorrectlength <- 1
   if (model == "D1" && length(init_vals) != 3) incorrectlength <- 1
@@ -141,18 +144,33 @@ maxLikelihood.Guilds <- function(init_vals, model,
   	                 J, Sx, Sy, Nx, Ny, kda_x, kda_y,
   	                 prefactor1, prefactor2, verbose)
   	}
+    if (verbose) {
+      cat(theta_x, theta_y, alpha_x, alpha_y, y, "\n")
+    }
   	return(-y)
   }
 
-  x
+  x <- c()
   if (method == "simplex") {
-    	x <- simplex(init_vals, g, verbose)
+ #   	x <- simplex(init_vals, g, verbose)
+    x <- nloptr::nloptr(x0 = init_vals,
+                        eval_f = g,
+                        opts = list("algorithm" = "NLOPT_LN_NELDERMEAD",
+                                    "print_level" = 0,
+                                    "xtol_rel" = 1e-4))
   }
   if (method == "subplex") {
-	  x <- subplex::subplex(init_vals, g)
+	#  x <- subplex::subplex(init_vals, g)
+    x <- nloptr::nloptr(x0 = init_vals,
+                        eval_f = g,
+                        opts = list("algorithm" = "NLOPT_LN_SBPLX",
+                                    "print_level" = 0,
+                                    "xtol_rel" = 1e-4))
   }
 
-  return(x)
+  out <- list(par = x$solution,
+              fvalues = -x$objective)
+  return(out)
 }
 
 logLikelihood.Guilds <- function(parameters, model,

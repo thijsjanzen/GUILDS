@@ -1,7 +1,7 @@
 context("maxLikelihood.Guilds")
 
 test_that("maxLikelihood.Guilds: use", {
-  skip_on_cran()
+  skip_on_cran() # takes too long
   set.seed(42)
   J <- 10000
 
@@ -11,10 +11,10 @@ test_that("maxLikelihood.Guilds: use", {
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
 
   #initial parameters for the D0 model c(theta,alpha)
-  LL <- maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
-                             model="D0",
-                             sadx = simul_data$guildX,
-                             sady = simul_data$guildY)
+  LL <- GUILDS::maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
+                             model = "D0", method = "simplex",
+                             sadx  = simul_data$guildX,
+                             sady  = simul_data$guildY, verbose = TRUE)
 
   testthat::expect_equal(
     theta,
@@ -37,9 +37,9 @@ test_that("maxLikelihood.Guilds: use", {
 
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds( init_vals = c(theta, alpha_x, alpha_y),
-                              model="D1",
-                              sadx = simul_data$guildX,
-                              sady = simul_data$guildY, verbose = FALSE)
+                              model = "D1",
+                              sadx  = simul_data$guildX,
+                              sady  = simul_data$guildY, verbose = TRUE)
   testthat::expect_equal(
     theta,
     LL$par[1],
@@ -56,18 +56,20 @@ test_that("maxLikelihood.Guilds: use", {
     tolerance = 0.001, scale = 1
   )
 
-  LL1 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0",
-                              sadx = 1:20,
-                              sady = 1:20, verbose = TRUE)
-  LL2 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0",  #subplex before
-                              sadx = 1:20,
-                              sady = 1:20, verbose = TRUE)
-  LL3 <- maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model="D0",
-                              sadx = 1:20,
-                              sady = 1:20, verbose = FALSE)
+  testthat::expect_output(
+  LL1 <- GUILDS::maxLikelihood.Guilds(init_vals = c(50, 0.1),
+                              model = "D0",
+                              sadx  = 1:20, method = "simplex",
+                              sady  = 1:20, verbose = TRUE)
+  )
+  LL2 <- GUILDS::maxLikelihood.Guilds( init_vals = c(50, 0.1),
+                              model = "D0", method = "subplex", #subplex before
+                              sadx  = 1:20,
+                              sady  = 1:20, verbose = FALSE)
+  LL3 <- GUILDS::maxLikelihood.Guilds( init_vals = c(50, 0.1),
+                              model = "D0",
+                              sadx  = 1:20,
+                              sady  = 1:20, verbose = FALSE)
 
   a <- LL1$par
   b <- LL2$par

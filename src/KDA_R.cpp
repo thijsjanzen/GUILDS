@@ -7,6 +7,8 @@
 #include <cmath>
 #include <vector>
 
+#include "quad.h"
+
 using namespace std;
 using namespace Rcpp;
 //// Base of this code by
@@ -133,7 +135,7 @@ void calcLogKDA(std::vector<long double>& K,
         for(int j=0;j<f[i];j++){ // loop over abundances per class
             for(int nn=0;nn<=degree;nn++)
                 for(int mm=1;mm<=g[i];mm++){
-                    if (K[nn]>0){
+                    if (K[nn]>0) {
                        poly2[nn+mm] += T[i][mm]*K[nn];
                     }
 
@@ -234,8 +236,12 @@ NumericVector calcKDA(NumericVector A)
 	}
 	//call calcLogKDA
 	std::vector<long double> K;
-	calcLogKDA(K, J, numspecies, Abund);
-	//return K
+#ifdef __arm__
+	K = calcLogKDA_quad(J, numspecies, Abund);
+#else
+	  calcLogKDA(K, J, numspecies, Abund);
+#endif
+	  	//return K
 
 	//int sizeofK =  J + 1; //I hope!
 	int sizeofK = K.size();

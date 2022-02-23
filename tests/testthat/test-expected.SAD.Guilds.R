@@ -9,11 +9,10 @@ test_that("expected.SAD.Guilds: use", {
 
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
-  a <- S1 > S2
-  testthat::expect_equal(a, TRUE) #because alpha_x > alpha_y
-
+  testthat::expect_gt(S1, S2) #because alpha_x > alpha_y
 
   a <- pm_sadaux(x = 1, I = 10, th = 100, j = 1000, k = 100)
+
   testthat::expect_equal(is.infinite(a),TRUE)
 })
 
