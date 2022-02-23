@@ -6,6 +6,7 @@ on:
       - main
       - master
       - dev_rbase
+      - quad
   pull_request:
     branches:
       - main
