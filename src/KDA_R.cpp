@@ -176,7 +176,7 @@ std::vector<long double> calcLogKDA_arm(int J,
                                std::vector<int> Abund)  {
 
 
-  if (Abund.size() < 1) return std::vector<double>();
+  if (Abund.size() < 1) return std::vector<long double>();
 
   sort(Abund.begin(), Abund.end());
 
@@ -456,7 +456,7 @@ void calcLogKDA(std::vector<long double>& K,
     for(int i=int(SPP);i<=J;i++){
         K[i] = logl(K[i]);                                    // now K[A]=ln(K(D,A)/10^4500) in Etienne's paper
     }
-  
+
   adjust(K, SPP, J);
 }
 
@@ -478,12 +478,14 @@ NumericVector calcKDA(NumericVector A)
 	}
 	//call calcLogKDA
 	std::vector<long double> K;
-#ifdef __arm__
-	K = calcLogKDA_arm(J, numspecies, Abund);
-#else
+
+
+	if constexpr ( sizeof(long double) >= 16) {
 	  calcLogKDA(K, J, numspecies, Abund);
-#endif
-	  	//return K
+	} else {
+
+		K = calcLogKDA_arm(J, numspecies, Abund);
+	}
 
 	//int sizeofK =  J + 1; //I hope!
 	int sizeofK = K.size();
