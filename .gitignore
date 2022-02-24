@@ -5,3 +5,4 @@ inst/doc
 *.o
 *.so
 tests/testthat/Rplots.pdf
+tests/testthat/Rplots.pdf
