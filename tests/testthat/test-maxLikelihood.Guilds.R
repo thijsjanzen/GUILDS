@@ -13,7 +13,7 @@ test_that("maxLikelihood.Guilds: use", {
   #initial parameters for the D0 model c(theta,alpha)
   testthat::expect_output(
   LL <- GUILDS::maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
-                             model = "D0", method = "simplex",
+                             model = "D0",
                              sadx  = simul_data$guildX,
                              sady  = simul_data$guildY, verbose = TRUE)
   )
@@ -39,7 +39,7 @@ test_that("maxLikelihood.Guilds: use", {
   testthat::expect_output(
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds( init_vals = c(theta, alpha_x, alpha_y),
-                              model = "D1", method = "simplex",
+                              model = "D1",
                               sadx  = simul_data$guildX,
                               sady  = simul_data$guildY, verbose = TRUE)
   )
@@ -63,30 +63,21 @@ test_that("maxLikelihood.Guilds: use", {
   testthat::expect_output(
   LL1 <- GUILDS::maxLikelihood.Guilds(init_vals = c(50, 0.1),
                               model = "D0",
-                              sadx  = 1:20, method = "simplex",
+                              sadx  = 1:20,
                               sady  = 1:20, verbose = TRUE)
   )
   LL2 <- GUILDS::maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model = "D0", method = "subplex", #subplex before
-                              sadx  = 1:20,
-                              sady  = 1:20, verbose = FALSE)
-  LL3 <- GUILDS::maxLikelihood.Guilds( init_vals = c(50, 0.1),
                               model = "D0",
                               sadx  = 1:20,
                               sady  = 1:20, verbose = FALSE)
-
   a <- LL1$par
   b <- LL2$par
-  c <- LL3$par
 
   testthat::expect_equal(a, b, tolerance = 0.1, scale = 1)
-  testthat::expect_equal(a, c, tolerance = 0.1, scale = 1)
 })
 
 
 test_that("maxLikelihood.Guilds: abuse", {
-  #skip_on_cran()
-  cat("maxLikelihood.Guilds: abuse\n")
   set.seed(42)
   J <- 20000
 

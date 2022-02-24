@@ -9,7 +9,7 @@ test_that("preston_plot use", {
   abund <- generate.ESF(theta, I, J)
   abund.expect <- expected.SAD(theta, m, J)
 
-  old_par <- par()
+  old_par <- par(no.readonly = TRUE)
   testthat::expect_silent(
 
     par(mfrow = c(1, 2) )

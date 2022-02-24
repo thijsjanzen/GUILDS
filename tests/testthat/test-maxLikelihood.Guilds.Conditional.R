@@ -2,10 +2,8 @@ context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
 #  skip_on_cran()
-  cat("test maxLikelihood.GuildsConditional: use\n")
   set.seed(42)
   maxLikelihood.Guilds.Conditional(init_vals = c(20, 0.1), model ="D0",
-                                   method = "subplex",  #subplex before
                                    sadx = c(1:20),
                                    sady = c(1:20))
 
@@ -44,9 +42,9 @@ test_that("maxLikelihood.GuildsConditional: use", {
   #initial parameters for the D1 model c(theta, alpha_x, alpha_y)
   LL <- maxLikelihood.Guilds.Conditional( init_vals =
                                             c(30, 0.1, 0.001),
-                                          model="D1",
-                                          sadx = simul_data$guildX,
-                                          sady = simul_data$guildY,
+                                          model = "D1",
+                                          sadx  = simul_data$guildX,
+                                          sady  = simul_data$guildY,
                                           verbose = FALSE)
 
   expect_equal(
@@ -74,7 +72,6 @@ test_that("maxLikelihood.GuildsConditional: use", {
 
 test_that("maxLikelihood.Guilds: abuse", {
 #  skip_on_cran()
-  cat("test maxLikelihood.GuildsConditional: abuse\n")
   set.seed(42)
   J <- 200
 
@@ -94,49 +91,49 @@ test_that("maxLikelihood.Guilds: abuse", {
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, -0.1),
-                          model="D0",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D0",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be below zero"
   )
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, 1.1),
-                          model="D0",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D0",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "initial alpha can not be above 1"
   )
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, -0.1),
-                          model="D1",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D1",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be below 0"
   )
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, 1.1),
-                          model="D1",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D1",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "initial alpha_y can not be above 1"
   )
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1, 1.1),
-                          model="D0",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D0",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"
   )
 
   expect_error(
     maxLikelihood.Guilds.Conditional( init_vals = c(50, 0.1),
-                          model="D1",
-                          sadx = simul_data$guildX,
-                          sady = simul_data$guildY, verbose = FALSE),
+                          model = "D1",
+                          sadx  = simul_data$guildX,
+                          sady  = simul_data$guildY, verbose = FALSE),
     "Input vector is of incorrect length"
   )
 })

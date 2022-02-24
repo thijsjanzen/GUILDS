@@ -480,11 +480,11 @@ NumericVector calcKDA(NumericVector A)
 	std::vector<long double> K;
 
 
-	if constexpr ( sizeof(long double) >= 16) {
-	  Rcpp::Rcout << "intel\n";
+	if ( sizeof(long double) >= 16) {
+//	  Rcpp::Rcout << "intel\n";
 	  calcLogKDA(K, J, numspecies, Abund);
 	} else {
-    Rcpp::Rcout << "arm\n";
+//    Rcpp::Rcout << "arm\n";
 		K = calcLogKDA_arm(J, numspecies, Abund);
 	}
 

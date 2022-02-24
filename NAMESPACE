@@ -26,5 +26,4 @@ export(maxLikelihood.Guilds.Conditional)
 
 export(preston_plot)
 export(calcKDA)
-export(simplex)
 

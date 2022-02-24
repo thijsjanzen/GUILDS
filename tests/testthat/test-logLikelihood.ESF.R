@@ -12,8 +12,7 @@ test_that("logLikelihood.ESF: use", {
   LL1 <- logLikelihood.ESF(theta, m, abund)
   LL2 <- logLikelihood.ESF(theta * 2, m * 2, abund)
 
-  a <- LL1[[1]] > LL2[[1]]
-  expect_equal(a, TRUE)
+  testthat::expect_gt(LL1, LL2)
 })
 
 test_that("logLikelihood.ESF: abuse", {
@@ -29,5 +28,4 @@ test_that("logLikelihood.ESF: abuse", {
   expect_equal(is.infinite(LL1[[1]]), TRUE)
   LL1 <- logLikelihood.ESF(theta, 2, abund)
   expect_equal(is.infinite(LL1[[1]]), TRUE)
-
 })
