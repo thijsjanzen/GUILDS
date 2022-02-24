@@ -8,7 +8,8 @@
  This function computes the maximum likelihood estimates of the parameters of the guilds model.
 }
 \usage{
-maxLikelihood.Guilds(init_vals, model, method, sadx, sady, verbose = TRUE)
+maxLikelihood.Guilds(init_vals, model = "D0",
+                     sadx, sady, verbose = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,26 +23,13 @@ maxLikelihood.Guilds(init_vals, model, method, sadx, sady, verbose = TRUE)
 		-  "D1" \cr
 	}
 
- \item{method}{Optimization of the Likelihood can be done using two different methods: \cr
-			- "simplex": this method makes use of the "Nelder Mead" optimization method \cr
-			- "subplex": makes use of the subplex method from the package "subplex" \cr
-						- Note 2016-09-23: Because the subplex method is generating errors, for the time being, the subplex method has been disabled.\cr
-		Please note that we have explicitly not used the "optim" method, since this method tends to provide less reliable outcomes.
-    }
-
   \item{sadx}{ The Species Abundance Distribution of guild X}
   \item{sady}{ The Species Abundance Distribution of guild Y}
   \item{verbose}{TRUE/FALSE flag, indicates whether intermediate output is shown on screen}
 }
 
 \value{
-
-if the method used was "simplex", the output is a list containing the following:
-	\item{par}{a vector containing the parameter values at the maximum likelihood}
-	\item{fvalues}{the likelihood at the corresponding parameter values}
-	\item{conv}{gives a message on convergence of optimization; conv = 0 means convergence} \cr
-
-if the method used was "subplex", the output is a list containing the following:
+  The output is a list containing the following:
    \item{par}{a vector containing the parameter values at the maximum likelihood}
    \item{value}{the likelihood at the corresponding parameter values}
    \item{counts}{Number of function evaluations required}
@@ -70,8 +58,8 @@ Thijs Janzen
 
   #initial parameters for the D0 model c(theta,alpha)
   LL <- maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
-                             model="D0",
-                             sadx = simul_data$guildX,
-                             sady = simul_data$guildY)
+                             model = "D0",
+                             sadx  = simul_data$guildX,
+                             sady  = simul_data$guildY)
 }
 }

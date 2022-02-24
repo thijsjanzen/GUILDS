@@ -3,13 +3,15 @@
 \docType{package}
 \title{Package implementing the Guilds sampling formula for the Neutral Theory of Biodiversity
 }
-\description{ The GUILDS package contains a number of sampling formula's being the Etienne Sampling Formula (Etienne 2005), the GUILDS sampling formula (Janzen et al. 2014) and the GUILDS sampling formula conditioned on guild Size (Janzen et al. 2015). Furthermore it contains functions to generate data given the guilds model, with or without conditioning on guild size. C++ Code to obtain Sterling numbers of the first kind was adopted from the Tetame program by Jabot et al. (2008).   
+\description{ The GUILDS package contains a number of sampling formula's being the Etienne Sampling Formula (Etienne 2005), the GUILDS sampling formula (Janzen et al. 2014) and the GUILDS sampling formula conditioned on guild Size (Janzen et al. 2015). Furthermore it contains functions to generate data given the guilds model, with or without conditioning on guild size. C++ Code to obtain Sterling numbers of the first kind was adopted from the Tetame program by Jabot et al. (2008).
 \cr\cr
 Updates \cr\cr
+Version 1.3.2 : Extend support to M1 processors where sizeof(long double) < 16 \cr
+Version 1.3.1 : Comply with _R_CHECK_LENGTH_0_LOGIC2_ \cr
 Version 1.3   : GUILDS is now on GitHub: https://github.com/thijsjanzen/GUILDS\cr
 Version 1.3   : Wrote code tests to check code integrity, code coverage is >95\% \cr
 Version 1.3   : Modified maximum likelihood functions to take into account theta_x = theta_y = theta / 2 \cr
-Version 1.3   : Added a plotting function to plot Preston style plots
+Version 1.3   : Added a plotting function to plot Preston style plots \cr
 Version 1.2.1 : Updated the User manual\cr
 Version 1.2   : fixed memory leak issues by adding extra vector access checks \cr
 Version 1.2   : fixed memory leak issues by introducing vectors in KDA code\cr
