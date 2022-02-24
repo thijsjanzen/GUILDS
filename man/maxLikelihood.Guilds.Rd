@@ -9,7 +9,7 @@
 }
 \usage{
 maxLikelihood.Guilds(init_vals, model = "D0",
-                     sadx, sady, verbose = TRUE)
+                     sadx, sady, verbose = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
