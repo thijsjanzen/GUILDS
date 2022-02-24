@@ -4,7 +4,7 @@ author: "Thijs Janzen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{GUILDS Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,7 +21,7 @@ set.seed(42)
 theta = 100
 m <- 0.1
 J <- 10000
-I <- m * (J-1) / (1 - m)
+I <- m * (J - 1) / (1 - m)
 abund <- generate.ESF(theta, I, J)
 abund
 ```
@@ -105,7 +105,7 @@ Using the ESF, we find a slightly higher estimate for theta (but notice that the
 
 So, what happens if we assume differences in dispersal? Let's, for fun, assume that there are two guilds (guild X and Y), where guild X is much bigger, but where species from guild X have a much lower dispersal ability:
 ```{r}
-set.seed(666+42)
+set.seed(666 + 42)
 theta <- 200
 alpha_x <- 0.001
 alpha_y <- 0.01
