@@ -1,14 +1,6 @@
 #include <Rcpp.h>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <stdlib.h> //qsort
-#include <limits.h>
 #include <cmath>
 #include <vector>
-
-#include <thread>
-#include <chrono>
 
 class log_val {
 public:
@@ -55,10 +47,9 @@ public:
     }
 
 
-    double l_a = this->get_log_val();
-    double l_b = other.get_log_val();
-    double res = l_a + log(1 + exp(l_b - l_a));
-    log_val_ = res;
+    auto l_a = this->get_log_val();
+    auto l_b = other.get_log_val();
+    log_val_ = l_a + log(1.f + exp(l_b - l_a));
     return *this;
   }
 
@@ -74,9 +65,9 @@ log_val operator+(const log_val& a, const log_val& b) {
   if (b.is_zero()) {
     return a;
   }
-  double l_a = a.get_log_val();
-  double l_b = b.get_log_val();
-  double res = l_a + log(1 + exp(l_b - l_a));
+  auto l_a = a.get_log_val();
+  auto l_b = b.get_log_val();
+  auto res = l_a + log(1 + exp(l_b - l_a));
   return log_val(res);
 }
 
@@ -160,7 +151,7 @@ using namespace std;
 using namespace Rcpp;
 //// Base of this code by
 //   J. Chave and F. Jabot
-///  last update 05-23-2008
+///  last update by Chave& Jabot @ 05-23-2008
 
 std::vector<long double> calcLogKDA_arm(int J,
                                int numspecies,
@@ -169,9 +160,9 @@ std::vector<long double> calcLogKDA_arm(int J,
 
   if (Abund.size() < 1) return std::vector<long double>();
 
-  sort(Abund.begin(), Abund.end());
+  std::sort(Abund.begin(), Abund.end());
 
-  J=0;
+  J = 0;
   size_t SPP = numspecies;
   for(size_t s = 0; s < SPP; s++) {
     J += Abund[s];
@@ -181,9 +172,9 @@ std::vector<long double> calcLogKDA_arm(int J,
   MaxA = Abund[ Abund.size() - 1]; //MaxA = Abund[(int)SPP-1];
 
   // abundance distribution
-  std::vector<int> Phi(MaxA+1,0); //int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
+  std::vector<int> Phi(MaxA + 1, 0); //int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
 
-  for (int s=0;s<SPP;s++) Phi[Abund[s]]++;
+  for (int s=0; s<SPP; s++) Phi[ Abund[s] ]++;
 
   // Number of distinct abundances
   int NDA=0;
@@ -199,8 +190,8 @@ std::vector<long double> calcLogKDA_arm(int J,
   // The recurrence relation on T(n,m) is
   // T(n,m)= T(n-1,m) + T(n-1,m-1)*(m-1)/(n-1)
 
-  std::vector<int> f(NDA,0); //int *f = new int[NDA];
-  std::vector<int> g(NDA,0); //int *g = new int[NDA];
+  std::vector<int> f(NDA, 0); //int *f = new int[NDA];
+  std::vector<int> g(NDA, 0); //int *g = new int[NDA];
   int i = 0;
   //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
   for(int n=0; n <= MaxA; n++) {
@@ -218,7 +209,8 @@ std::vector<long double> calcLogKDA_arm(int J,
 
   std::vector< double > T0(g[0]+1);
   T[0] = T0;
-  T[0][0]=0;T[0][1]=1;
+  T[0][0]=0;
+  T[0][1]=1;
 
   if(g[0]!=1) {
     std::vector<double> lS2(g[0]+1); //        long double *lS2 = new long double[g[0]+1];
@@ -314,7 +306,7 @@ std::vector<long double> calcLogKDA_arm(int J,
 
   size_t cnt = 0;
   for (const auto& i : K_prime) {
-    K[cnt] = i.get_log_val();
+    K[cnt] = static_cast<long double>(i.get_log_val());
     if (K[cnt] == -1e10) K[cnt] = 0.0;
     cnt++;
   }
@@ -484,14 +476,11 @@ NumericVector calcKDA(NumericVector A)
 
 
 	if ( sizeof(long double) >= 16) {
-//	  Rcpp::Rcout << "intel\n";
 	  calcLogKDA(K, J, numspecies, Abund);
 	} else {
-//    Rcpp::Rcout << "arm\n";
 		K = calcLogKDA_arm(J, numspecies, Abund);
 	}
 
-	//int sizeofK =  J + 1; //I hope!
 	int sizeofK = K.size();
 	NumericVector out(sizeofK);
 	for(int i = 0; i < sizeofK; ++i) {
