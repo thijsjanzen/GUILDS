@@ -9,15 +9,6 @@
 
 #include <thread>
 #include <chrono>
-void force_output() {
-  std::this_thread::sleep_for(std::chrono::milliseconds(300));
-  R_FlushConsole();
-  R_ProcessEvents();
-  R_CheckUserInterrupt();
-}
-
-
-
 
 class log_val {
 public:
@@ -181,8 +172,8 @@ std::vector<long double> calcLogKDA_arm(int J,
   sort(Abund.begin(), Abund.end());
 
   J=0;
-  long double SPP = numspecies;
-  for(int s=0;s<SPP;s++) {
+  size_t SPP = numspecies;
+  for(size_t s = 0; s < SPP; s++) {
     J += Abund[s];
   }
 
@@ -212,7 +203,7 @@ std::vector<long double> calcLogKDA_arm(int J,
   std::vector<int> g(NDA,0); //int *g = new int[NDA];
   int i = 0;
   //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
-  for(int n=0;n<=MaxA;n++) {
+  for(int n=0; n <= MaxA; n++) {
     if(Phi[n] > 0) {
       f[i] = Phi[n];
       g[i] = n;
@@ -222,18 +213,18 @@ std::vector<long double> calcLogKDA_arm(int J,
   //long double **T= new long double*[NDA];          // T(n,m) just for the n which are useful
   //T[0] = new long double[g[0]+1];
 
-  std::vector< long double > fill;
-  std::vector< std::vector< long double > > T(NDA,fill);
+  std::vector< double > fill;
+  std::vector< std::vector< double > > T(NDA,fill);
 
-  std::vector<long double> T0(g[0]+1);
+  std::vector< double > T0(g[0]+1);
   T[0] = T0;
   T[0][0]=0;T[0][1]=1;
 
   if(g[0]!=1) {
-    std::vector<long double> lS2(g[0]+1); //        long double *lS2 = new long double[g[0]+1];
+    std::vector<double> lS2(g[0]+1); //        long double *lS2 = new long double[g[0]+1];
     lS2[0]=0;lS2[1]=1;
     for (int n=2;n<=g[0];n++) {
-      std::vector<long double> lS1(n+1); //long double *lS1 = new long double[n+1];
+      std::vector<double> lS1(n+1); //long double *lS1 = new long double[n+1];
       for(int im=0;im<=n-1;im++) {
         lS1[im] = lS2[im];
       }
@@ -249,16 +240,16 @@ std::vector<long double> calcLogKDA_arm(int J,
 
 
   for (int in=1;in<i;in++) {
-    std::vector<long double> Tin(g[in]+1); //T[in]= new long double[g[in]+1];
+    std::vector<double> Tin(g[in]+1); //T[in]= new long double[g[in]+1];
     T[in] = Tin;
     T[in][0]=0;T[in][1]=1;
 
-    std::vector<long double> lS2(g[in]+1); //long double *lS2 = new long double[g[in]+1];
+    std::vector<double> lS2(g[in]+1); //long double *lS2 = new long double[g[in]+1];
     for(int im=0;im<=g[in-1];im++) {
       lS2[im] = T[in-1][im];
     }
     for (int n=g[in-1]+1;n<=g[in];n++) {
-      std::vector<long double> lS1(n+1); //long double *lS1 = new long double[n+1];
+      std::vector<double> lS1(n+1); //long double *lS1 = new long double[n+1];
       for(int im=0;im<=n-1;im++) {
         lS1[im] = lS2[im];
       }
@@ -274,10 +265,19 @@ std::vector<long double> calcLogKDA_arm(int J,
   // After this stage we have stored in T[i][m] T(g[i],m)
   // with T(n,m) = S(n,m)*S(m,1)/S(n,1) for i>0
 
+  // precompute log values
+  for (auto& i : T) {
+    for (auto& j : i) {
+      j = log(j);
+    }
+  }
+
   // cerr << "Start computing ln(K(D,A)) ...\n";
   // SECOND STAGE: compute the K(D,A)
   // I follow Etienne's route. Compute the product of polynomials
   // of length J
+
+
 
   std::vector< log_val > K_prime(J+2);
   std::vector< log_val > log_poly2(J+1);
@@ -291,10 +291,10 @@ std::vector<long double> calcLogKDA_arm(int J,
       for(int nn=0;nn<=degree;nn++)
         for(int mm=1;mm<=g[i];mm++){
           if (!K_prime[nn].is_zero()){
-            log_poly2[nn + mm] += log(T[i][mm]) + K_prime[nn].get_log_val();
+            log_poly2[nn + mm] += T[i][mm] + K_prime[nn].get_log_val();
           }
-
         }
+
         degree += g[i];
       for(int nn=0;nn<=degree;nn++){
         if (!log_poly2[nn].is_zero() ) {
@@ -311,9 +311,12 @@ std::vector<long double> calcLogKDA_arm(int J,
 
 
   std::vector<long double> K(J+2, 0.0);
-  for(size_t i = 0; i < K_prime.size(); ++i) {
-    K[i] = K_prime[i].get_log_val();
-    if (K[i] == -1e10) K[i] = 0;
+
+  size_t cnt = 0;
+  for (const auto& i : K_prime) {
+    K[cnt] = i.get_log_val();
+    if (K[cnt] == -1e10) K[cnt] = 0.0;
+    cnt++;
   }
 
   adjust(K, SPP, J);
