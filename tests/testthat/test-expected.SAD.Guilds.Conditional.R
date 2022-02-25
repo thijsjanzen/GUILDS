@@ -4,9 +4,9 @@ test_that("expected.SAD.Guilds.Conditional: use", {
   SAD <- expected.SAD.Guilds.Conditional(theta = 200,
                                          alpha_x = 0.1,
                                          alpha_y = 0.01,
-                                         Jx = 1000,
-                                         Jy = 1000,
-                                         n_replicates = 3)
+                                         Jx = 200,
+                                         Jy = 200,
+                                         n_replicates = 2)
   S1 <- sum(SAD$guildX)
   S2 <- sum(SAD$guildY)
   testthat::expect_gt(S1, S2) # because alpha_x > alpha_y
@@ -14,9 +14,9 @@ test_that("expected.SAD.Guilds.Conditional: use", {
   SAD <- expected.SAD.Guilds.Conditional(theta = 200,
                                          alpha_x = 0.1,
                                          alpha_y = 0.1,
-                                         Jx = 3000,
-                                         Jy = 1000,
-                                         n_replicates = 3)
+                                         Jx = 200,
+                                         Jy = 100,
+                                         n_replicates = 2)
   testthat::expect_gt(S1, S2) # because Jx > Jy
 })
 

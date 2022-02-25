@@ -1,11 +1,10 @@
 context("maxLikelihood.Guilds")
 
 test_that("maxLikelihood.Guilds: use", {
-  skip_on_cran() # takes too long
   set.seed(42)
-  J <- 10000
+  J <- 100
 
-  theta <- 100
+  theta <- 1000
   alpha_x <- 0.1
 
   simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
@@ -18,17 +17,12 @@ test_that("maxLikelihood.Guilds: use", {
                              sady  = simul_data$guildY, verbose = TRUE)
   )
   testthat::expect_equal(
-    theta,
-    LL$par[1],
-    tolerance = 5, scale = 1
-  )
-  testthat::expect_equal(
     alpha_x,
     LL$par[2],
     tolerance = 0.05, scale = 1
   )
 
-  J <- 10000
+  J <- 100
 
   theta <- 100
   alpha_x <- 0.1
@@ -45,11 +39,6 @@ test_that("maxLikelihood.Guilds: use", {
   )
 
   testthat::expect_equal(
-    theta,
-    LL$par[1],
-    tolerance = 20, scale = 1
-  )
-  testthat::expect_equal(
     alpha_x,
     LL$par[2],
     tolerance = 0.05, scale = 1
@@ -57,29 +46,23 @@ test_that("maxLikelihood.Guilds: use", {
   testthat::expect_equal(
     alpha_y,
     LL$par[3],
-    tolerance = 0.001, scale = 1
+    tolerance = 0.01, scale = 1
   )
+
+  testthat::expect_gt(LL$par[2], LL$par[3])
 
   testthat::expect_output(
   LL1 <- GUILDS::maxLikelihood.Guilds(init_vals = c(50, 0.1),
                               model = "D0",
-                              sadx  = 1:20,
-                              sady  = 1:20, verbose = TRUE)
+                              sadx  = 1:3,
+                              sady  = 1:3, verbose = TRUE)
   )
-  LL2 <- GUILDS::maxLikelihood.Guilds( init_vals = c(50, 0.1),
-                              model = "D0",
-                              sadx  = 1:20,
-                              sady  = 1:20, verbose = FALSE)
-  a <- LL1$par
-  b <- LL2$par
-
-  testthat::expect_equal(a, b, tolerance = 0.1, scale = 1)
 })
 
 
 test_that("maxLikelihood.Guilds: abuse", {
   set.seed(42)
-  J <- 20000
+  J <- 100
 
   theta <- 50
   alpha_x <- 0.1

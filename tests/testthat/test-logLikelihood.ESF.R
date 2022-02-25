@@ -1,9 +1,8 @@
 context("logLikelihood.ESF")
 
 test_that("logLikelihood.ESF: use", {
-#  skip_on_cran()
   set.seed(42)
-  J <- 10000
+  J <- 1000
   theta <- 100
   m <- 0.1
   I <- m * (J - 1) / (1 - m)
@@ -16,9 +15,8 @@ test_that("logLikelihood.ESF: use", {
 })
 
 test_that("logLikelihood.ESF: abuse", {
- # skip_on_cran()
   set.seed(42)
-  J <- 10000
+  J <- 1000
   theta <- 100
   m <- 0.1
   I <- m * (J - 1) / (1 - m)
