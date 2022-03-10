@@ -2,7 +2,6 @@ importFrom("stats", "integrate", "optimize", "rbeta", "runif", "lm",
              "uniroot")
 importFrom("utils", "flush.console")
 importFrom("graphics", "barplot", "lines")
-importFrom(subplex, subplex)
 importFrom(Rcpp, evalCpp)
 
 export(generate.ESF)

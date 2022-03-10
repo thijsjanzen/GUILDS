@@ -86,6 +86,12 @@ maxLikelihood.Guilds <- function(init_vals,
     return(-y)
   }
 
-  x <- subplex::subplex(init_vals, g)
-  return(x)
+  x <- nloptr::nloptr(x0 = init_vals,
+                      eval_f = g,
+                      opts = list("algorithm" = "NLOPT_LN_COBYLA",
+                                  xtol_rel = 1e-4))
+  out <- list()
+  out$par <- x$solution
+  out$value <- x$objective
+  return(out)
 }

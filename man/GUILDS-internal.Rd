@@ -1,6 +1,5 @@
 \name{GUILDS-internal}
 \title{Internal Guilds functions}
-\alias{simplex}
 \alias{rho}
 \alias{polyaeggenberger}
 \alias{logLikguilds}

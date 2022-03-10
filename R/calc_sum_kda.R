@@ -14,3 +14,4 @@ calc_sum_kda <- function(S, N, I, theta, kda) {
 
   return(results)
 }
+
