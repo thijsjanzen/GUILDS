@@ -5,8 +5,7 @@ on:
     branches:
       - main
       - master
-      - dev_rbase
-      - quad
+      - test_arm
 
   pull_request:
     branches:
