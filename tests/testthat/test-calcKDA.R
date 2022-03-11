@@ -17,7 +17,7 @@ test_that("calcKDA use", {
   kda_old <- calcKDA_old(sad)
   kda_new <- calcKDA_new(sad)
   diff <- kda_old - kda_new
-  testthat::expect_equal(mean(diff), 0.0, tolerance = 0.0)
+  testthat::expect_equal(mean(diff), 0.0, tolerance = 0.1)
 
 
 })
