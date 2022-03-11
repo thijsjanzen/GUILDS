@@ -27,3 +27,5 @@ export(calcKDA)
 
 useDynLib(GUILDS, .registration = TRUE)
 
+export(calcKDA_new)
+export(calcKDA_old)

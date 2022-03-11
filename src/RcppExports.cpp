@@ -10,6 +10,28 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// calcKDA_old_cpp
+Rcpp::NumericVector calcKDA_old_cpp(const Rcpp::NumericVector& A);
+RcppExport SEXP _GUILDS_calcKDA_old_cpp(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(calcKDA_old_cpp(A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calcKDA_new_cpp
+Rcpp::NumericVector calcKDA_new_cpp(const Rcpp::NumericVector& A);
+RcppExport SEXP _GUILDS_calcKDA_new_cpp(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(calcKDA_new_cpp(A));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calcKDA
 Rcpp::NumericVector calcKDA(const Rcpp::NumericVector& A);
 RcppExport SEXP _GUILDS_calcKDA(SEXP ASEXP) {
@@ -23,6 +45,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_GUILDS_calcKDA_old_cpp", (DL_FUNC) &_GUILDS_calcKDA_old_cpp, 1},
+    {"_GUILDS_calcKDA_new_cpp", (DL_FUNC) &_GUILDS_calcKDA_new_cpp, 1},
     {"_GUILDS_calcKDA", (DL_FUNC) &_GUILDS_calcKDA, 1},
     {NULL, NULL, 0}
 };

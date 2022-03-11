@@ -12,4 +12,12 @@ test_that("calcKDA use", {
   kda_2 <- calcKDA(c(sad, 1000))
   kda_3 <- calcKDA(c(sad, 10000))
   kda_4 <- calcKDA(c(sad, 25000))
+
+
+  kda_old <- calcKDA_old(sad)
+  kda_new <- calcKDA_new(sad)
+  diff <- kda_old - kda_new
+  testthat::expect_equal(mean(diff), 0.0, tolerance = 0.0)
+
+
 })

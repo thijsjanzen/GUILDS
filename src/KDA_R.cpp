@@ -8,6 +8,55 @@
 #include <vector>
 
 // [[Rcpp::export]]
+Rcpp::NumericVector calcKDA_old_cpp(const Rcpp::NumericVector& A)
+{
+  size_t numspecies = A.size();
+  std::vector< size_t > Abund(numspecies); //Abund = new int[numspecies];
+
+  long double J = 0;
+  for(size_t s = 0; s < numspecies; ++s) {
+    if(s > Abund.size()) break;
+    Abund[s] = A[s];
+    J += Abund[s];
+  }
+  //call calcLogKDA
+  std::vector<long double> K;
+  calcLogKDA(K, J, numspecies, Abund);
+  int sizeofK = K.size();
+  Rcpp::NumericVector out(sizeofK);
+  for(int i = 0; i < sizeofK; ++i) {
+    out[i] = K[i] + 4500.0 * logl(10);
+  }
+
+  return out;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector calcKDA_new_cpp(const Rcpp::NumericVector& A)
+{
+  size_t numspecies = A.size();
+  std::vector< size_t > Abund(numspecies); //Abund = new int[numspecies];
+
+  long double J = 0;
+  for(size_t s = 0; s < numspecies; ++s) {
+    if(s > Abund.size()) break;
+    Abund[s] = A[s];
+    J += Abund[s];
+  }
+  //call calcLogKDA
+  std::vector<long double> K;
+  K = calcLogKDA_arm(numspecies, Abund);
+  int sizeofK = K.size();
+  Rcpp::NumericVector out(sizeofK);
+  for(int i = 0; i < sizeofK; ++i) {
+    out[i] = K[i] + 4500.0 * logl(10);
+  }
+
+  return out;
+}
+
+
+// [[Rcpp::export]]
 Rcpp::NumericVector calcKDA(const Rcpp::NumericVector& A)
 {
   try {
