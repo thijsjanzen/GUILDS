@@ -11,12 +11,12 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // calcKDA
-Rcpp::NumericVector calcKDA(const Rcpp::NumericVector& A);
+NumericVector calcKDA(NumericVector A);
 RcppExport SEXP _GUILDS_calcKDA(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type A(ASEXP);
     rcpp_result_gen = Rcpp::wrap(calcKDA(A));
     return rcpp_result_gen;
 END_RCPP
