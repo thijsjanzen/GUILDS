@@ -35,6 +35,8 @@ void calcLogKDA(std::vector<long double>& K,
     std::vector<int> Phi(MaxA+1,0); //int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
 
    for (int s = 0; s < SPP; s++) {
+	   if (s >= Abund.size()) throw "s > Abund";
+	   if (Abund[s] >= Phi.size()) throw "Abund[s] > Phi";
 	   Phi[Abund[s]]++;
    }
 	
