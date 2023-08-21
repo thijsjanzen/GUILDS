@@ -1,5 +1,6 @@
 \name{GUILDS-package}
 \alias{GUILDS}
+\alias{GUILDS-package}
 \docType{package}
 \title{Package implementing the Guilds sampling formula for the Neutral Theory of Biodiversity
 }
@@ -19,15 +20,7 @@ Version 1.2   : fixed memory leak issues by introducing vectors in KDA code\cr
 Version 1.2   : renamed logLik to avoid shadowing of the function logLik in the package stats\cr
 Version 1.1   : removed malloc header from KDA code \cr
 }
-\details{
-\tabular{ll}{
-Package: \tab GUILDS\cr
-Type: \tab Package\cr
-Version: \tab 1.3\cr
-License: \tab GPL 2.0 \cr
-}
 
-}
 \author{
 Thijs Janzen
 
