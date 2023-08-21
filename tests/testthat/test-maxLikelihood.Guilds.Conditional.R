@@ -2,7 +2,7 @@ context("maxLikelihood.Guilds.Conditional")
 
 test_that("maxLikelihood.GuildsConditional: use", {
   skip_on_cran() # takes too long
-  testthat::skip("takes too long")
+ # testthat::skip("takes too long")
   set.seed(42)
 
   theta <- 1000
