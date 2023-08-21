@@ -1,6 +1,5 @@
 # GUILDS <img src="pics/guilds_sticker.png" align="right" width="120" />
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/GUILDS)](https://cran.r-project.org/package=GUILDS)
-[![Build Status](https://travis-ci.org/thijsjanzen/GUILDS.svg?branch=master)](https://travis-ci.org/thijsjanzen/GUILDS)
 [![codecov](https://codecov.io/gh/thijsjanzen/GUILDS/branch/master/graph/badge.svg)](https://app.codecov.io/gh/thijsjanzen/GUILDS)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/GUILDS)](https://cran.r-project.org/package=GUILDS)
 [![](http://cranlogs.r-pkg.org/badges/GUILDS)](https://cran.r-project.org/package=GUILDS)
@@ -38,5 +37,3 @@ Janzen, T., Haegeman B., Etienne, R.S. (2015) A sampling formula for communities
 Etienne, R.S. (2005). A new sampling formula for neutral biodiversity. Ecology Letters, 8(3), 253-260.
 
 Jabot, F., Etienne, R.S., & Chave, J. (2008). Reconciling neutral community models and environmental filtering: theory and an empirical test. Oikos 117: 1308-1320
-
-
