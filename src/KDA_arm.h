@@ -1,18 +1,29 @@
-#ifndef KDA_ARM_H
-#define KDA_ARM_H
+// Copyright 2015 - 2025 Thijs Janzen
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+#ifndef SRC_KDA_ARM_H_
+#define SRC_KDA_ARM_H_
 
 #include <cmath>
 #include <vector>
 #include <algorithm>
 
 class log_val {
-public:
+ public:
   log_val() {
     is_zero_ = true;
     log_val_ = -1e10;
   }
 
-  log_val(double v) : log_val_(v) {
+  explicit log_val(double v) : log_val_(v) {
     is_zero_ = false;
   }
 
@@ -55,7 +66,7 @@ public:
     return *this;
   }
 
-private:
+ private:
   double log_val_;
   bool is_zero_;
 };
@@ -99,7 +110,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     J += Abund[s];
   }
 
-  double MaxA = Abund.back(); // MaxA = Abund[(int)SPP-1];
+  double MaxA = Abund.back();   // MaxA = Abund[(int)SPP-1];
 
   // abundance distribution
   // int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
@@ -115,7 +126,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     }
   }
 
-  //cerr << "Start computing Stirling numbers ...\n";
+  // cerr << "Start computing Stirling numbers ...\n";
   // FIRST STAGE: compute the Stirling numbers
   // I use the relationship S(n,m)=S(n-1,m-1)-(n-1)S(n-1,m)
   // where n >= m >= 1
@@ -124,10 +135,10 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   // The recurrence relation on T(n,m) is
   // T(n,m)= T(n-1,m) + T(n-1,m-1)*(m-1)/(n-1)
 
-  std::vector<size_t> f(NDA, 0); //int *f = new int[NDA];
-  std::vector<size_t> g(NDA, 0); //int *g = new int[NDA];
+  std::vector<size_t> f(NDA, 0);   // int *f = new int[NDA];
+  std::vector<size_t> g(NDA, 0);   // int *g = new int[NDA];
   size_t i = 0;
-  //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
+  // for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
   for (int n = 0; n <= MaxA; n++) {
     if (Phi[n] > 0) {
       f[i] = Phi[n];
@@ -150,7 +161,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     lS2[0] = 0; lS2[1] = 1;
     for (size_t n = 2; n <= g[0]; n++) {
       std::vector<double> lS1(n + 1);   // double *lS1 = new double[n+1];
-      for(size_t im = 0; im <= n-1; im++) {
+      for (size_t im = 0; im <= n-1; im++) {
         lS1[im] = lS2[im];
       }
       lS1[n] = 0;
@@ -165,17 +176,17 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
 
 
   for (size_t in = 1; in < i; in++) {
-    std::vector<double> Tin(g[in] + 1); //T[in]= new double[g[in]+1];
+    std::vector<double> Tin(g[in] + 1);   // T[in]= new double[g[in]+1];
     T[in] = Tin;
     T[in][0] = 0;
     T[in][1] = 1;
 
-    std::vector<double> lS2(g[in] + 1); //double *lS2 = new double[g[in]+1];
-    for(size_t im = 0; im <= g[in - 1]; im++) {
+    std::vector<double> lS2(g[in] + 1);   // double *lS2 = new double[g[in]+1];
+    for (size_t im = 0; im <= g[in - 1]; im++) {
       lS2[im] = T[in - 1][im];
     }
     for (size_t n = g[in - 1] + 1; n <= g[in]; n++) {
-      std::vector<double> lS1(n + 1); //double *lS1 = new double[n+1];
+      std::vector<double> lS1(n + 1);   // double *lS1 = new double[n+1];
       for (size_t im = 0; im <= n - 1; im++) {
         lS1[im] = lS2[im];
       }
@@ -211,9 +222,9 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   size_t degree = 0;
   double minus = 4500.0 * log(10) / SPP;
 
-  for (size_t i = 0; i < NDA; i++) { // loop over number of distinct abundances
-    for (size_t j = 0; j< f[i]; j++) { // loop over abundances per class
-
+  // loop over number of distinct abundances
+  for (size_t i = 0; i < NDA; i++) {
+    for (size_t j = 0; j< f[i]; j++) {   // loop over abundances per class
       for (size_t nn = 0; nn <= degree; nn++) {
         for (size_t mm = 1; mm <= g[i]; mm++) {
           if (!K_prime[nn].is_zero()) {
@@ -223,8 +234,8 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
       }
 
       degree += g[i];
-      for (size_t nn = 0; nn <= degree; nn++){
-        if (!log_poly2[nn].is_zero() ) {
+      for (size_t nn = 0; nn <= degree; nn++) {
+        if (!log_poly2[nn].is_zero()) {
           double add_new = log_poly2[nn].get_log_val() - minus;
           K_prime[nn].set_with_log(add_new);
         } else {
@@ -245,23 +256,23 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     cnt++;
   }
 
-  double borneinf = (SPP - 1);
-  double bornesup = (J + 1 );
+  double borneinf = SPP - 1;
+  double bornesup = J + 1;
   double maxlog = 11333.2;
   bool infinity = false;
-  for(int i = SPP; i <= J; i++){
+  for (int i = SPP; i <= J; i++) {
     if (i >= static_cast<int>(K.size())) {
       return K;  // throw std::out_of_range("i > K.size()");
     }
 
-    if (( K[i] > maxlog) || (K[i] < -maxlog)) {
+    if ((K[i] > maxlog) || (K[i] < -maxlog)) {
       infinity = true;
       break;
     }
     borneinf++;
   }    // after that, borneinf=indice next to infinity but before
 
-  for (int i = 0; i <= J - SPP; i++){
+  for (int i = 0; i <= J - SPP; i++) {
     if (i >= static_cast<int>(K.size())) {
       // throw std::out_of_range("i > K.size()");
       return K;
@@ -272,7 +283,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
       break;
     }
     bornesup--;
-  }    //after that, bornesup=indice next to infinity but after
+  }    // after that, bornesup=indice next to infinity but after
 
   if ( infinity == true ) {
     // cerr << "WARNING : the sample is too large to compute an exact
@@ -306,22 +317,22 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     double Kprimeinf = K[index1] - K[index2];
 
 
-    double Kprimesup1 = -50.0;  //out of range check
+    double Kprimesup1 = -50.0;  // out of range check
 
     int bornesup_one = static_cast<int>(bornesup) + 1;
 
-    if(bornesup_one < static_cast<int>(K.size()) && bornesup_one >= 0)
+    if (bornesup_one < static_cast<int>(K.size()) && bornesup_one >= 0)
       Kprimesup1 = K[bornesup_one];
 
     double Kprimesup2 = 0.0;   //out of range check
 
-    if(static_cast<int>(bornesup) >= 0)
+    if (static_cast<int>(bornesup) >= 0)
       Kprimesup2 = K[static_cast<int>(bornesup)];
 
     double Kprimesup = Kprimesup1 - Kprimesup2;  // K[bornesup+1]-K[bornesup];
     // definition of the parameters of the fitted polynom aX^3+bX^2+cX+d
-    double a,b,c,d;
-    //inversion of the linear system of equations (with the Gauss method)
+    double a, b, c, d;
+    // inversion of the linear system of equations (with the Gauss method)
     double borneinf2 = static_cast<double>(borneinf) *
                        static_cast<double>(borneinf);
     double borneinf3 = static_cast<double>(borneinf2) *
@@ -357,7 +368,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
           d_borneinf +
           2 * c +
           3 * d / d_borneinf) / (0.0 - d_borneinf);
-    a= (K[borneinf] -
+    a = (K[borneinf] -
         b * borneinf2 -
         c * d_borneinf - d) /
         borneinf3;
@@ -371,4 +382,4 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   return K;
 }
 
-#endif
+#endif  // SRC_KDA_ARM_H_

@@ -11,14 +11,16 @@
 
 #include "KDA_arm.h"          // NOLINT [build/include_subdir]
 
-#include <Rcpp.h>
-#include <stdio.h>
+#include <vector>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+
+#include <Rcpp.h>
+#include <stdio.h>
 #include <stdlib.h>   // qsort
 #include <limits.h>
 #include <math.h>
-#include <vector>
 
 using namespace std;         // NOLINT [build/namespaces]
 using namespace Rcpp;        // NOLINT [build/namespaces]
@@ -53,7 +55,7 @@ void calcLogKDA(std::vector<long double>* K,
 
   // Number of distinct abundances
   int NDA = 0;
-  for (int s = 0;s <= MaxA; s++) {
+  for (int s = 0; s <= MaxA; s++) {
     if (Phi[s] > 0) {
       NDA++;
     }
@@ -69,10 +71,10 @@ void calcLogKDA(std::vector<long double>* K,
   // T(n,m)= T(n-1,m) + T(n-1,m-1)*(m-1)/(n-1)
 
 
-  std::vector<int> f(NDA,0);   // int *f = new int[NDA];
-  std::vector<int> g(NDA,0);   // int *g = new int[NDA];
+  std::vector<int> f(NDA, 0);   // int *f = new int[NDA];
+  std::vector<int> g(NDA, 0);   // int *g = new int[NDA];
   int i = 0;
-  //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
+  // for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
   for (int n = 0; n <= MaxA; n++) {
     if (Phi[n] > 0) {
       f[i] = Phi[n];
@@ -93,49 +95,49 @@ void calcLogKDA(std::vector<long double>* K,
   T[0][0] = 0; T[0][1] = 1;
 
   if (g[0] != 1) {
-    //        long double *lS2 = new long double[g[0]+1];
+    //  long double *lS2 = new long double[g[0]+1];
     std::vector<long double> lS2(g[0] + 1);
     lS2[0] = 0; lS2[1] = 1;
     for (int n = 2; n <= g[0]; n++) {
-      //long double *lS1 = new long double[n+1];
+      // long double *lS1 = new long double[n+1];
       std::vector<long double> lS1(n + 1);
-      for(int im = 0; im <= n-1; im++) {
+      for (int im = 0; im <= n - 1; im++) {
         lS1[im] = lS2[im];
       }
       lS1[n]=0;
-      for(int im = 2;im <= n; im++) {
+      for(int im = 2; im <= n; im++) {
         lS2[im] = lS1[im] + lS1[im - 1] * (im - 1) / (n - 1);
       }
     }
-    for(int im = 2; im <= g[0]; im++) {
+    for (int im = 2; im <= g[0]; im++) {
       T[0][im] = lS2[im];
     }
   }
 
 
   for (int in = 1; in < i; in++) {
-    //T[in]= new long double[g[in]+1];
+    // T[in]= new long double[g[in]+1];
     std::vector<long double> Tin(g[in] + 1);
     T[in] = Tin;
     T[in][0] = 0; T[in][1] = 1;
 
-    //long double *lS2 = new long double[g[in]+1];
+    // long double *lS2 = new long double[g[in]+1];
     std::vector<long double> lS2(g[in] + 1);
-    for(int im=0;im<=g[in-1];im++) {
+    for (int im = 0; im <= g[in - 1]; im++) {
       lS2[im] = T[in - 1][im];
     }
     for (int n = g[in - 1] + 1; n <= g[in]; n++) {
-      //long double *lS1 = new long double[n+1];
+      // long double *lS1 = new long double[n+1];
       std::vector< long double > lS1(n + 1);
-      for(int im = 0; im <= n - 1; im++) {
+      for (int im = 0; im <= n - 1; im++) {
         lS1[im] = lS2[im];
       }
       lS1[n] = 0;
-      for(int im = 2; im <= n; im++) {
+      for (int im = 2; im <= n; im++) {
         lS2[im] = lS1[im] + lS1[im - 1] * (im - 1) / (n - 1);
       }
     }
-    for(int im = 2; im <= g[in]; im++) {
+    for (int im = 2; im <= g[in]; im++) {
       T[in][im] = lS2[im];
     }
   }
@@ -147,69 +149,71 @@ void calcLogKDA(std::vector<long double>* K,
   // I follow Etienne's route. Compute the product of polynomials
   // of length J
   K->clear();
-  K->resize(J + 2, 0.0); //K = new long double[int(J)+1];
+  K->resize(J + 2, 0.0); // K = new long double[int(J)+1];
 
-  std::vector<long double> poly2(J + 1,0.0);//long double *poly2 = new long double[int(J)+1];
-  (*K)[0]=1;
+  // long double *poly2 = new long double[int(J)+1];
+  std::vector<long double> poly2(J + 1, 0.0);
+  (*K)[0] = 1;
   int degree = 0;
 
-  for (int i = 0; i < NDA; i++) // loop over number of distinct abundances
-    for (int j = 0;j < f[i]; j++) { // loop over abundances per class
-      for (int nn = 0;nn <= degree; nn++)
+  for (int i = 0; i < NDA; i++) {    // loop over number of distinct abundances
+    for (int j = 0;j < f[i]; j++) {  // loop over abundances per class
+      for (int nn = 0;nn <= degree; nn++) {
         for (int mm = 1;mm <= g[i]; mm++) {
-          if ( (*K)[nn] > 0){
+          if ((*K)[nn] > 0) {
             poly2[nn + mm] += T[i][mm] * (*K)[nn];
           }
-
         }
         degree += g[i];
-      for(int nn=0;nn<=degree;nn++) {
-        (*K)[nn] = (poly2[nn] / powl(10, (4500.0/SPP)));
-        poly2[nn] = 0.0;
+        for (int nn = 0; nn <= degree; nn++) {
+          (*K)[nn] = (poly2[nn] / powl(10, (4500.0/SPP)));
+          poly2[nn] = 0.0;
+        }
       }
     }
+  }
 
     // now K[A]=ln(K(D,A)/10^4500) in Etienne's paper
-    for(int i = static_cast<int>(SPP); i <= J; i++) {
+    for (int i = static_cast<int>(SPP); i <= J; i++) {
       (*K)[i] = logl((*K)[i]);
     }
-    //for(i=0;i<NDA;i++) delete[] T[i];
-    //delete[] T;
-    //delete[] poly2;
-    //delete[] f;
-    //delete[] g;
+    // for(i=0;i<NDA;i++) delete[] T[i];
+    // delete[] T;
+    // delete[] poly2;
+    // delete[] f;
+    // delete[] g;
 
   // search of "infinite" values in K[A]
-  int borneinf = (SPP - 1);
-  int bornesup = (J + 1);
+  int borneinf = SPP - 1;
+  int bornesup = J + 1;
   long double maxlog = 11333.2;
   bool infinity = false;
-  for(int i= SPP; i <= J; i++){
+  for (int i = SPP; i <= J; i++) {
     if (((*K)[i] > maxlog) || ((*K)[i] < -maxlog)) {
       infinity = true;
       break;
     }
     borneinf++;
-  }  //after that, borneinf=indice next to infinity but before
+  }    // after that, borneinf=indice next to infinity but before
 
-  for(int i = 0; i <= J - SPP; i++){
-    if (((*K)[J - i] > maxlog)||((*K)[static_cast<int>(J) - i] < -maxlog)) {
+  for (int i = 0; i <= J - SPP; i++){
+    if (((*K)[J - i] > maxlog) || ((*K)[static_cast<int>(J) - i] < -maxlog)) {
       infinity = true;
       break;
     }
     bornesup--;
-  }    //after that, bornesup=indice next to infinity but after
+  }    // after that, bornesup=indice next to infinity but after
   if (infinity == true) {
-    //cerr << "WARNING : the sample is too large to compute an exact likelihood,
+    // cerr << "WARNING : the sample is too large to compute an exact likelihood,
     // the program is thus doing approximations. The following results are to
     // be taken with caution"<<endl;
-    //cerr << "Value of A above which K(D,A) is
-    //computed approximately ="<<borneinf<<endl;
-    //cerr << "Value of A below which K(D,A) is
-    //computed approximately ="<<bornesup<<endl;
+    // cerr << "Value of A above which K(D,A) is
+    // computed approximately ="<<borneinf<<endl;
+    // cerr << "Value of A below which K(D,A) is
+    // computed approximately ="<<bornesup<<endl;
 
-    //fitting of the infinite values of K[A] by a polynom of degree 3
-    //computing of the derivatives at the critic points
+    // fitting of the infinite values of K[A] by a polynom of degree 3
+    // computing of the derivatives at the critic points
 
     // Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
 
@@ -220,16 +224,17 @@ void calcLogKDA(std::vector<long double>* K,
     long double Kprimeinf = (*K)[borneinf] - (*K)[borneinf - 1];
 
 
-    long double Kprimesup1 = -50.0;  //out of range check
+    long double Kprimesup1 = -50.0;   // out of range check
     if ((bornesup + 1) < static_cast<int>(K->size()))
         Kprimesup1 = (*K)[bornesup + 1];
-    long double Kprimesup2 = 0.0;   //out of range check
+    long double Kprimesup2 = 0.0;    // out of range check
     if (bornesup >= 0.0) Kprimesup2 = (*K)[bornesup];
 
-    long double Kprimesup = Kprimesup1-Kprimesup2; //K[bornesup+1]-K[bornesup];
+    // K[bornesup+1]-K[bornesup];
+    long double Kprimesup = Kprimesup1-Kprimesup2;
     // definition of the parameters of the fitted polynom aX^3+bX^2+cX+d
-    long double a,b,c,d;
-    //inversion of the linear system of equations (with the Gauss method)
+    long double a, b, c, d;
+    // inversion of the linear system of equations (with the Gauss method)
     long double borneinf2 = static_cast<long double>(borneinf) *
                             static_cast<long double>(borneinf);
     long double borneinf3 = static_cast<long double>(borneinf2) *
@@ -266,7 +271,7 @@ void calcLogKDA(std::vector<long double>* K,
     a = ((*K)[borneinf] - b * borneinf2 -
       c * ld_borneinf - d) / borneinf3;
 
-    //reconstruction of K[A] with the fitted polynom
+    // reconstruction of K[A] with the fitted polynom
     for (int i = borneinf + 1; i < bornesup; i++) {
       (*K)[i]=(a * i * i * i + b * i * i + c * i + d);
     }
@@ -278,7 +283,6 @@ void calcLogKDA(std::vector<long double>* K,
 
 // [[Rcpp::export]]
 NumericVector calcKDA(NumericVector A) {
-
 #ifdef __arm64__
   // long doubles are not supported on ARM / M1 CPU
   // so we have to work around this.
@@ -286,7 +290,7 @@ NumericVector calcKDA(NumericVector A) {
   std::vector< size_t > Abund(numspecies);
 
   for (size_t s = 0; s < numspecies; ++s) {
-    if(s > Abund.size()) break;
+    if (s > Abund.size()) break;
     Abund[s] = A[s];
   }
 
@@ -306,19 +310,18 @@ NumericVector calcKDA(NumericVector A) {
   std::vector<int> Abund(numspecies);  // Abund = new int[numspecies];
 
   int J = 0;
-  for (int s = 0; s < numspecies; ++s) {
-    if(s > (int)Abund.size()) break;
+  for (size_t s = 0; s < numspecies; ++s) {
+    if (s > Abund.size()) break;
     Abund[s] = A[s];
     J += Abund[s];
   }
   // call calcLogKDA
   std::vector<long double> K;
-  calcLogKDA(K,J,numspecies,Abund);
+  calcLogKDA(K, J, numspecies, Abund);
 
   // int sizeofK =  J + 1; //I hope!
-  int sizeofK = K.size();
-  NumericVector out(sizeofK);
-  for (int i = 0; i < sizeofK; ++i) {
+  NumericVector out(K.size());
+  for (size_t i = 0; i < K.size(); ++i) {
     out[i] = K[i] + 4500.0 * logl(10);
   }
 
