@@ -161,7 +161,7 @@ std::vector<long double> calcLogKDA(int numspecies,
 
   for (int i = 0; i < NDA; i++) {    // loop over number of distinct abundances
     for (int j = 0; j < f[i]; j++) {  // loop over abundances per class
-      for (int nn = 0;nn <= degree; nn++) {
+      for (int nn = 0; nn <= degree; nn++) {
         for (int mm = 1; mm <= g[i]; mm++) {
           if (K[nn] > 0) {
             poly2[nn + mm] += T[i][mm] * K[nn];

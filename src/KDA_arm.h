@@ -23,7 +23,7 @@ class log_val {
     log_val_ = -1e10;
   }
 
-  log_val(double v) : log_val_(v) {
+  explicit log_val(double v) : log_val_(v) {
     is_zero_ = false;
   }
 
@@ -62,6 +62,19 @@ class log_val {
 
     auto l_a = this->get_log_val();
     auto l_b = other.get_log_val();
+    log_val_ = l_a + log(1.0 + exp(l_b - l_a));
+    return *this;
+  }
+
+  log_val& operator+=(const double& other) {
+    if (is_zero_) {
+      log_val_ = other;
+      is_zero_ = false;
+      return *this;
+    }
+
+    auto l_a = this->get_log_val();
+    auto l_b = other;
     log_val_ = l_a + log(1.0 + exp(l_b - l_a));
     return *this;
   }
@@ -223,8 +236,8 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   double minus = 4500.0 * log(10) / SPP;
 
   // loop over number of distinct abundances
-  for (size_t i = 0; i < NDA; i++) { // loop over number of distinct abundances
-    for (size_t j = 0; j < f[i]; j++) { // loop over abundances per class
+  for (size_t i = 0; i < NDA; i++) {
+    for (size_t j = 0; j < f[i]; j++) {   // loop over abundances per class
       for (size_t nn = 0; nn <= degree; nn++) {
         for (size_t mm = 1; mm <= g[i]; mm++) {
           if (!K_prime[nn].is_zero()) {
@@ -234,7 +247,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
       }
 
       degree += g[i];
-      for(size_t nn = 0; nn <= degree; nn++){
+      for (size_t nn = 0; nn <= degree; nn++) {
         if (!log_poly2[nn].is_zero()) {
           double add_new = log_poly2[nn].get_log_val() - minus;
           K_prime[nn].set_with_log(add_new);
