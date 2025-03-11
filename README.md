@@ -4,7 +4,6 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/GUILDS)](https://cran.r-project.org/package=GUILDS)
 [![](http://cranlogs.r-pkg.org/badges/GUILDS)](https://cran.r-project.org/package=GUILDS)
 [![R-CMD-check](https://github.com/thijsjanzen/GUILDS/workflows/R-CMD-check/badge.svg)](https://github.com/thijsjanzen/GUILDS/actions)
- [![Research software impact](http://depsy.org/api/package/cran/GUILDS/badge.svg)](http://depsy.org/package/r/GUILDS)
 
 The GUILDS package combines a range of sampling formulas for the unified neutral model of biogeography and biodiversity. Alongside the sampling formulas, it includes methods to perform maximum likelihood optimization of the sampling formulas, methods to generate data given the neutral model, and methods to estimate the expected species abundance distribution. Sampling formulas included in the GUILDS package are the Etienne Sampling Formula (Etienne 2005), the guild sampling formula, where guilds are assumed to differ in dispersal ability (Janzen et al. 2015), and the guilds sampling formula conditioned on guild size (Janzen et al. 2015).
 
@@ -14,13 +13,10 @@ Furthermore it contains functions to generate data given the guilds model, with 
 - Version 1.4.7
   - added CITATION file
   - cleaned up C++ code
-
 - Version 1.4
   - Cleaner README and Vignettes
   - Extend support to M1 processors where sizeof(long double) < 16
   - Comply with _R_CHECK_LENGTH_0_LOGIC2_ 
-
-
 - Version 1.3
   - GUILDS is now on GitHub: https://github.com/thijsjanzen/GUILDS
   - Wrote code tests to check code integrity, code coverage is >95
