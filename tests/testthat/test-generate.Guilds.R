@@ -15,10 +15,10 @@ test_that("generate.Guilds: use", {
   )
 
   v <- generate.Guilds(theta = 100, alpha_x = 0.1, alpha_y = 0.1, J)
-  expect_equal(sum(v$guildX,v$guildY), J)
+  expect_equal(sum(v$guildX, v$guildY), J)
 
   v <- generate.Guilds(theta = 100, alpha_x = 1, alpha_y = 1, J)
-  expect_equal(sum(v$guildX,v$guildY), J)
+  expect_equal(sum(v$guildX, v$guildY), J)
 })
 
 test_that("generate.Guilds: abuse", {

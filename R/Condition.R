@@ -53,53 +53,53 @@ calc_conditional <- function(v, model, Nx, Ny) {
       theta_y < 1 ||
       alpha_x > (1 - (1e-8)) ||
       alpha_y > (1 - (1e-8))
-     ) {
+  ) {
     return(-Inf)
   }
 
   f <- function(x) {
     return(-1 * evaluate_cond_lik(x, theta_x, theta_y,
-                                 alpha_x, alpha_y,
-                                 Nx, Ny))
+                                  alpha_x, alpha_y,
+                                  Nx, Ny))
   }
 
- maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4)
+  maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4)
 
- ymax <- -1 * maxes$fmin
- xmax <- maxes$xmin
- xlft <- 0
- xrgt <- 1
- eps <- .Machine$double.eps
- thrs <- 10
+  ymax <- -1 * maxes$fmin
+  xmax <- maxes$xmin
+  xlft <- 0
+  xrgt <- 1
+  eps <- .Machine$double.eps
+  thrs <- 10
 
- check_left_x  <- evaluate_cond_lik(eps, theta_x, theta_y,
-                               alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
- check_right_x <- evaluate_cond_lik(1 - eps, theta_x, theta_y,
-                               alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
+  check_left_x  <- evaluate_cond_lik(eps, theta_x, theta_y,
+                                     alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
+  check_right_x <- evaluate_cond_lik(1 - eps, theta_x, theta_y,
+                                     alpha_x, alpha_y, Nx, Ny)  - ymax + thrs
 
- if (check_left_x < 0) {
-     g <- function(x) {
-        return(evaluate_cond_lik(x, theta_x, theta_y,
+  if (check_left_x < 0) {
+    g <- function(x) {
+      return(evaluate_cond_lik(x, theta_x, theta_y,
                                alpha_x, alpha_y, Nx, Ny) - ymax + thrs)
-     }
-     xlft <- (uniroot(g, c(eps, xmax)))$root
- }
+    }
+    xlft <- (uniroot(g, c(eps, xmax)))$root
+  }
 
- if (check_right_x < 0) {
-     h <- function(x) {
-        return(evaluate_cond_lik(x, theta_x, theta_y,
+  if (check_right_x < 0) {
+    h <- function(x) {
+      return(evaluate_cond_lik(x, theta_x, theta_y,
                                alpha_x, alpha_y,
                                Nx, Ny) - ymax + thrs)
-     }
-     xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
- }
+    }
+    xrgt <- (uniroot(h, c(xmax, 1 - eps)))$root
+  }
 
- calc_ll_exp <- function(x) {
-   out <- exp(evaluate_cond_lik(x, theta_x, theta_y,
-                              alpha_x, alpha_y,
-                              Nx, Ny) - ymax)
-   return(out)
- }
+  calc_ll_exp <- function(x) {
+    out <- exp(evaluate_cond_lik(x, theta_x, theta_y,
+                                 alpha_x, alpha_y,
+                                 Nx, Ny) - ymax)
+    return(out)
+  }
 
   aux <- integrate(f = calc_ll_exp,
                    lower = xlft,
@@ -124,17 +124,17 @@ conditional.LogLik <- function(v, model, J, Sx, Sy, Nx, Ny, kda_x, kda_y,
   }
 
   if (alpha_x < 0 ||
-     alpha_y < 0 ||
-     theta_x < 1 ||
-     theta_y < 1 ||
-     alpha_x > (1 - (1e-8)) ||
-     alpha_y > (1 - (1e-8))
-     ) return(-Inf)
+      alpha_y < 0 ||
+      theta_x < 1 ||
+      theta_y < 1 ||
+      alpha_x > (1 - (1e-8)) ||
+      alpha_y > (1 - (1e-8))
+  ) return(-Inf)
 
   if (is.na(alpha_x) ||
-     is.na(alpha_y) ||
-     is.na(theta_x) ||
-     is.na(theta_y)) {
+      is.na(alpha_y) ||
+      is.na(theta_x) ||
+      is.na(theta_y)) {
     cat("warnings! one of the parameters is somehow NA\n")
     cat("displaying alpha_x, alpha_y, theta_x, theta_y\n")
     cat(alpha_x, alpha_y, theta_x, theta_y, "\n")

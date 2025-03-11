@@ -21,9 +21,9 @@ test_that("expected.SAD.Guilds.Conditional: use", {
 })
 
 test_that("expected.SAD.Guilds.Conditional: abuse", {
-  n_replicates = 2
-  Jx = 10
-  Jy = 20
+  n_replicates <- 2
+  Jx <- 10
+  Jy <- 20
 
   testthat::expect_error(
     SAD <- expected.SAD.Guilds.Conditional(theta = 200,

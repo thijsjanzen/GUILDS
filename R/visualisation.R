@@ -27,29 +27,22 @@ preston_plot <- function(abund, expected, ...) {
   if(!missing(expected)) {
     plot_expected <- TRUE
   }
-  
-  if(plot_expected) {
-    maxy <- max(maxy,max(expected))
+
+  if (plot_expected) {
+    maxy <- max(maxy, max(expected))
   }
-  
-  df.bar <- graphics::barplot(v, names.arg = 0:(length(v)-1), 
-                                      cex.names = 0.7, 
-                                      space = 0, 
-                                      ylim = c(0,maxy), ...)
+
+  df.bar <- graphics::barplot(v, names.arg = 0:(length(v) - 1),
+                              cex.names = 0.7,
+                              space = 0,
+                              ylim = c(0, maxy), ...)
   if(plot_expected) {
-    xx <- c()
     yy <- seq_along(df.bar)
-    lmmm <- stats::lm(df.bar~yy)
+    lmmm <- stats::lm(df.bar ~ yy)
     slope <- lmmm$coefficients[[2]]
     intercept <- lmmm$coefficients[[1]]
     xvals <- seq_along(expected)
     xvals <- xvals * slope + intercept
-    graphics::lines(expected~xvals, lwd = 2)
+    graphics::lines(expected ~ xvals, lwd = 2)
   }
 }
-
-
-
-
-
-

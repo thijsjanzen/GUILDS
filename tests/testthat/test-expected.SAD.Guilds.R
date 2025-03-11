@@ -13,7 +13,7 @@ test_that("expected.SAD.Guilds: use", {
 
   a <- pm_sadaux(x = 1, I = 10, th = 100, j = 1000, k = 100)
 
-  testthat::expect_equal(is.infinite(a),TRUE)
+  testthat::expect_equal(is.infinite(a), TRUE)
 })
 
 test_that("expected.SAD.Guilds: abuse", {
