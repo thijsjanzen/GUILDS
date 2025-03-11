@@ -16,6 +16,8 @@
 #include <vector>
 #include <algorithm>
 
+
+
 class log_val {
  public:
   log_val() {
@@ -110,6 +112,11 @@ log_val operator*(const log_val& a, const log_val& b) {
   double res = l_a + l_b;
   return log_val(res);
 }
+
+
+//// Base of this code by
+//   J. Chave and F. Jabot
+///  last update 05-23-2008
 
 std::vector<double> calcLogKDA_arm(size_t numspecies,
                                    std::vector<size_t> Abund) {
@@ -389,7 +396,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
 
     // reconstruction of K[A] with the fitted polynom
     for (int i = borneinf + 1; i < bornesup; i++) {
-      K[i]=(a * i * i * i + b * i * i + c * i + d);
+      K[i] = (a * i * i * i + b * i * i + c * i + d);
     }
   }
 
