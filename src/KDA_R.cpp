@@ -9,20 +9,19 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+#include "KDA_arm.h"          // NOLINT [build/include_subdir]
+
 #include <Rcpp.h>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>   //qsort
+#include <stdlib.h>   // qsort
 #include <limits.h>
 #include <math.h>
 #include <vector>
 
-#include "KDA_arm.h"          // NOLINT [build/include_subdir]
-
-
-using namespace std;
-using namespace Rcpp;
+using namespace std;         // NOLINT [build/namespaces]
+using namespace Rcpp;        // NOLINT [build/namespaces]
 //// Base of this code by
 //   J. Chave and F. Jabot
 ///  last update 05-23-2008
@@ -31,34 +30,36 @@ void calcLogKDA(std::vector<long double>* K,
                 long double J,
                 int numspecies,
                 std::vector<int> Abund)  {
-
   if (Abund.size() < 1) return;
 
   sort(Abund.begin(), Abund.end());
 
   J = 0;
   long double SPP = numspecies;
-  for (int s = 0;s < SPP; s++) {
+  for (int s = 0; s < SPP; s++) {
     J += Abund[s];
   }
 
   int MaxA = 0;
-  MaxA = Abund[ Abund.size() - 1]; //MaxA = Abund[(int)SPP-1];
-
-
+  MaxA = Abund[ Abund.size() - 1];    // MaxA = Abund[(int)SPP-1];
 
   // abundance distribution
-  // //int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
+  // int *Phi = new int[MaxA+1]; for(s=0;s<=MaxA;s++) Phi[s]=0;
   std::vector<int> Phi(MaxA + 1, 0);
 
-  for (int s = 0; s < SPP; s++) Phi[Abund[s]]++;
+  for (int s = 0; s < SPP; s++) {
+    Phi[Abund[s]]++;
+  }
 
   // Number of distinct abundances
   int NDA = 0;
-  for (int s = 0;s <= MaxA; s++) if(Phi[s] > 0) {NDA++;}
+  for (int s = 0;s <= MaxA; s++) {
+    if (Phi[s] > 0) {
+      NDA++;
+    }
+  }
 
-
-  //cerr << "Start computing Stirling numbers ...\n";
+  // cerr << "Start computing Stirling numbers ...\n";
   // FIRST STAGE: compute the Stirling numbers
   // I use the relationship S(n,m)=S(n-1,m-1)-(n-1)S(n-1,m)
   // where n >= m >= 1
@@ -68,8 +69,8 @@ void calcLogKDA(std::vector<long double>* K,
   // T(n,m)= T(n-1,m) + T(n-1,m-1)*(m-1)/(n-1)
 
 
-  std::vector<int> f(NDA,0); //int *f = new int[NDA];
-  std::vector<int> g(NDA,0); //int *g = new int[NDA];
+  std::vector<int> f(NDA,0);   // int *f = new int[NDA];
+  std::vector<int> g(NDA,0);   // int *g = new int[NDA];
   int i = 0;
   //for(s=0;s<NDA;s++) {f[s]=0;g[s]=0;}
   for (int n = 0; n <= MaxA; n++) {
@@ -79,9 +80,9 @@ void calcLogKDA(std::vector<long double>* K,
       i++;
     }
   }
-  //long double **T= new long double*[NDA];
+  // long double **T= new long double*[NDA];
   // T(n,m) just for the n which are useful
-  //T[0] = new long double[g[0]+1];
+  // T[0] = new long double[g[0]+1];
 
 
   std::vector< long double > fill;
