@@ -1,6 +1,7 @@
 context("calcKDA")
 
 test_that("calcKDA use", {
+  cat("calcKDA!\n")
   sad <- 1:20
   kda_1 <- GUILDS::calcKDA(sad)
 

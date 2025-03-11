@@ -289,6 +289,7 @@ std::vector<long double> calcLogKDA(int numspecies,
 // [[Rcpp::export]]
 NumericVector calcKDA(NumericVector A) {
 #ifdef __arm64__
+  Rcout << "Using ARM code\n";
   // long doubles are not supported on ARM / M1 CPU
   // so we have to work around this.
   size_t numspecies = A.size();
@@ -307,9 +308,9 @@ NumericVector calcKDA(NumericVector A) {
   }
 
   return out;
-
-
 #else
+
+  Rcout << "Using intel code\n";
   // convert abundances from A to Species
   int numspecies = A.size();
   std::vector<int> Abund(numspecies);  // Abund = new int[numspecies];
