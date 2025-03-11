@@ -371,6 +371,4 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   return K;
 }
 
-
-
 #endif
