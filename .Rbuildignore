@@ -4,3 +4,4 @@
 ^\.github$
 ..Rcheck
 ^\temp_store_man
+^\.pics

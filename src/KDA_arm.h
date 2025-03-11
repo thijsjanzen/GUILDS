@@ -16,7 +16,7 @@
 #include <vector>
 #include <algorithm>
 
-
+#include <Rcpp.h>
 
 class log_val {
  public:
@@ -85,33 +85,6 @@ class log_val {
   double log_val_;
   bool is_zero_;
 };
-
-log_val operator+(const log_val& a, const log_val& b) {
-  if (a.is_zero()) {
-    return b;
-  }
-  if (b.is_zero()) {
-    return a;
-  }
-  auto l_a = a.get_log_val();
-  auto l_b = b.get_log_val();
-  auto res = l_a + log(1.0 + exp(l_b - l_a));
-  return log_val(res);
-}
-
-double log(const log_val& a) {
-  if (a.is_zero()) {
-    return -1e10;
-  }
-  return a.get_log_val();
-}
-
-log_val operator*(const log_val& a, const log_val& b) {
-  double l_a = a.get_log_val();
-  double l_b = b.get_log_val();
-  double res = l_a + l_b;
-  return log_val(res);
-}
 
 
 //// Base of this code by
@@ -283,7 +256,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
   bool infinity = false;
   for (int i = SPP; i <= J; i++) {
     if (i >= static_cast<int>(K.size())) {
-      return K;  // throw std::out_of_range("i > K.size()");
+      Rcpp::stop("i > K.size()");;
     }
 
     if ((K[i] > maxlog) || (K[i] < -maxlog)) {
@@ -295,8 +268,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
 
   for (int i = 0; i <= J - SPP; i++) {
     if (i >= static_cast<int>(K.size())) {
-      // throw std::out_of_range("i > K.size()");
-      return K;
+      Rcpp::stop("i > K.size()");
     }
 
     if ((K[J - i] > maxlog) || (K[static_cast<int>(J) - i] < -maxlog)) {
@@ -319,20 +291,20 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     // computing of the derivatives at the critic points
 
     if (static_cast<int>(borneinf) >= static_cast<int>(K.size())) {
-      return K;   // throw std::out_of_range("borneinf > K.size()");
+      Rcpp::stop("borneinf > K.size()");
     }
     if (bornesup >= static_cast<int>((K.size()))) {
-      return K;   // throw std::out_of_range("bornesup > K.size()");
+      Rcpp::stop("bornesup > K.size()");
     }
 
     int index1 = static_cast<int>(borneinf);
     int index2 = static_cast<int>(borneinf - 1);
 
     if (index1 >= static_cast<int>(K.size()) || index1 < 0) {
-      return K;   // throw std::out_of_range("borneinf");
+      Rcpp::stop("index1 out of range");
     }
     if (index2 >= static_cast<int>(K.size()) || index2 < 0) {
-      return K;   // throw std::out_of_range("borneinf - 1");
+      Rcpp::stop("index2 out of range");
     }
 
     double Kprimeinf = K[index1] - K[index2];

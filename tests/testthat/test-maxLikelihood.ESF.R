@@ -49,4 +49,16 @@ test_that("maxLikelihood.ESF: abuse", {
                             abund = c(1), verbose = FALSE),
     "Need more than 1 species in the dataset"
   )
+
+  expect_error(
+    LL <- maxLikelihood.ESF(init_vals = c(0.1),
+                            abund = v , verbose = FALSE),
+    "maxLikelihood.ESF: Need exactly 2 initial values"
+  )
+
+  testthat::expect_error(
+    LL <- maxLikelihood.ESF(init_vals = c(NA, 0.1),
+                            abund = v , verbose = FALSE),
+    "maxLikelihood.ESF: one of the initial values is NA"
+  )
 })

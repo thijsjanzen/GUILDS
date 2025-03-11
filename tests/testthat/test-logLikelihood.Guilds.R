@@ -8,11 +8,11 @@ test_that("logLikelihood.Guilds: use", {
   alpha_y <- alpha_x
 
   simul_data <- generate.Guilds(theta, alpha_x, alpha_y, J)
-  LL1 <- logLikelihood.Guilds(parameters = c(theta, alpha_x, alpha_y),
+  LL1 <- logLikelihood.Guilds(parameters = c(theta, alpha_x),
                               model = "D0",
                               simul_data$guildX, simul_data$guildY,
                               verbose = FALSE)
-  LL2 <- logLikelihood.Guilds(parameters = c(20, 0.5, 0.25),
+  LL2 <- logLikelihood.Guilds(parameters = c(20, 0.5),
                               model = "D0",
                               simul_data$guildX, simul_data$guildY,
                               verbose = FALSE)
@@ -42,7 +42,7 @@ test_that("logLikelihood.Guilds: use", {
                               simul_data$guildX, simul_data$guildY,
                               verbose = FALSE)
 
-  LL3 <- logLikelihood.Guilds(parameters = c(theta, alpha_x, alpha_x),
+  LL3 <- logLikelihood.Guilds(parameters = c(theta, alpha_x),
                               model = "D0",
                               simul_data$guildX, simul_data$guildY,
                               verbose = FALSE)

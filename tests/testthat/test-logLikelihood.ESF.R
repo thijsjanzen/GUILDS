@@ -23,7 +23,15 @@ test_that("logLikelihood.ESF: abuse", {
 
   abund <- generate.ESF(theta, I, J)
   LL1 <- logLikelihood.ESF(-10, m, abund)
-  expect_equal(is.infinite(LL1[[1]]), TRUE)
+  testthat::expect_equal(is.infinite(LL1[[1]]), TRUE)
   LL1 <- logLikelihood.ESF(theta, 2, abund)
-  expect_equal(is.infinite(LL1[[1]]), TRUE)
+  testthat::expect_equal(is.infinite(LL1[[1]]), TRUE)
+
+  # enter NA values and expect error:
+
+  testthat::expect_true(is.infinite(logLikelihood.ESF(5, NA, abund)))
+  testthat::expect_true(is.infinite(logLikelihood.ESF(NA, 0.1, abund)))
+
+
+
 })

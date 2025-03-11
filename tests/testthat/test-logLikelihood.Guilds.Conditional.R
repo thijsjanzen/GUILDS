@@ -37,6 +37,15 @@ test_that("logLikelihood.Guilds.Conditional: use", {
   testthat::expect_gt(LL1, LL2)
 
   # to test verbose == TRUE
+
+  testthat::expect_output(
+    LL2 <- logLikelihood.Guilds.Conditional(parameters = c(3, 0.99),
+                                            model = "D0",
+                                            simul_data$guildX,
+                                            simul_data$guildY,
+                                            verbose = TRUE)
+  )
+
   testthat::expect_output(
    LL2 <- logLikelihood.Guilds.Conditional(parameters = c(3, 0.99, 0.5),
                                           model = "D1",
@@ -44,6 +53,8 @@ test_that("logLikelihood.Guilds.Conditional: use", {
                                           simul_data$guildY,
                                           verbose = TRUE)
   )
+
+
 })
 
 test_that("logLikelihood.Guilds.Conditional: abuse", {
@@ -60,7 +71,15 @@ test_that("logLikelihood.Guilds.Conditional: abuse", {
     logLikelihood.Guilds.Conditional(parameters = c(theta, alpha_x, alpha_x),
                                      model = "D0",
                                      simul_data$guildX, simul_data$guildY,
-                                     verbose = FALSE),
-    "Input vector is of incorrect length"
+                                     verbose = FALSE)
+   # ,"Model D0 requires 2 parameters (theta, alpha)"
+  )
+
+  testthat::expect_error(
+    logLikelihood.Guilds.Conditional(parameters = c(theta, alpha_x),
+                                     model = "D1",
+                                     simul_data$guildX, simul_data$guildY,
+                                     verbose = FALSE)
+  #  ,"Model D1 requires 3 parameters (theta, alpha_x, alpha_y)"
   )
 })

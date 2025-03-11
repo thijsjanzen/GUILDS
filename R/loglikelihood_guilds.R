@@ -22,6 +22,9 @@ logLikelihood.Guilds <- function(parameters, model,
 
 
   if (model == "D0") {
+    if (length(parameters) != 2) {
+      stop("Model D0 requires 2 parameters (theta, alpha)")
+    }
     #because theta_x = theta_y = theta/2
     theta_x <- parameters[1] * 2
     theta_y <- parameters[1] * 2
@@ -29,6 +32,11 @@ logLikelihood.Guilds <- function(parameters, model,
     alpha_y <- parameters[2]
   }
   if (model == "D1") {
+    if (length(parameters) != 3) {
+      stop("Model D1 requires 3 parameters (theta, alpha_x, alpha_y)")
+    }
+
+
     theta_x <- parameters[1] * 2
     theta_y <- parameters[1] * 2
     alpha_x <- parameters[2]

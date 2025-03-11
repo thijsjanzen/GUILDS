@@ -1,9 +1,13 @@
 logLikelihood.ESF <- function(theta, m, abund) {
+  if (is.na(theta)) return(-Inf)
+  if (is.na(m)) return(-Inf)
+
   if (theta < 1 ||
      m > (1 - .Machine$double.eps) ||
      m <= 0) {
      return(-Inf)
   }
+
 
   J <- sum(abund)
   S <- length(abund)
@@ -56,11 +60,23 @@ esf_local <- function(v, abund, prefactor, kda) {
   return(ll)
 }
 
-maxLikelihood.ESF <- function(init_vals, abund, verbose = FALSE) {
+maxLikelihood.ESF <- function(init_vals,
+                              abund,
+                              verbose = FALSE) {
+  if (sum(is.na(init_vals))) {
+    stop("maxLikelihood.ESF: ",
+         "one of the initial values is NA")
+  }
+
+  if (length(init_vals) != 2) {
+    stop("maxLikelihood.ESF: ",
+         "Need exactly 2 initial values")
+  }
+
   if (init_vals[1] < 1) {
      stop("maxLikelihood.ESF: ",
           "initial theta can not be below one")
-   }
+  }
   if (init_vals[2] < 0) {
     stop("maxLikelihood.ESF: ",
          "initial m can not be below zero")

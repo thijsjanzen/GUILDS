@@ -1,7 +1,6 @@
 context("expected.SAD.Guilds.Conditional")
 
 test_that("expected.SAD.Guilds.Conditional: use", {
-  cat("expected.SAD.Guilds.Conditional\n")
   SAD <- expected.SAD.Guilds.Conditional(theta = 200,
                                          alpha_x = 0.1,
                                          alpha_y = 0.01,
