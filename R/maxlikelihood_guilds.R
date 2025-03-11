@@ -1,3 +1,40 @@
+#' maximum likelihood assuming guild structure
+#' @inheritParams default_params_doc
+#' @title Maximization of the loglikelihood under the Guilds Model.
+#' @description This function computes the maximum likelihood estimates of the
+#' parameters of the guilds model.
+
+#' @return The output is a list containing the following:
+#'  \item{par}{a vector containing the parameter values at the maximum
+#'  likelihood}
+#' \item{value}{the likelihood at the corresponding parameter values}
+#' \item{counts}{Number of function evaluations required}
+#' \item{convergence}{
+#'   -2:  invalid input\cr
+#'   -1:  number of maximum function evaluations exceeded \cr
+#'   0:  success: convergence \cr
+#'   1:  limit of machine precision reached \cr
+#' }
+#' \item{message}{A character string giving a diagnostic message from the
+#' optimizer,}
+#' \item{hessian}{Hessian matrix (not implemented for this package)}
+#' @author Thijs Janzen
+#' @examples
+#' \dontrun{
+#' J <- 10000
+#'
+#' theta <- 100
+#' alpha_x <- 0.1
+#'
+#' simul_data <- generate.Guilds(theta, alpha_x, alpha_x, J)
+#'
+#'  #initial parameters for the D0 model c(theta,alpha)
+#' LL <- maxLikelihood.Guilds(init_vals = c(theta, alpha_x),
+#'                            model = "D0",
+#'                            sadx  = simul_data$guildX,
+#'                            sady  = simul_data$guildY)
+#' }
+#' @export
 maxLikelihood.Guilds <- function(init_vals,
                                  model = "D0",
                                  sadx,

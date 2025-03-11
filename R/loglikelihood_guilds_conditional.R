@@ -1,3 +1,23 @@
+#' @title Likelihood of the Guilds sampling formula, conditional on guild size
+#' @description This function calculates the likelihood of the guilds model,
+#' conditional on guild size; provided abundance data and parameter values.
+#' @inheritParams default_params_doc
+#' @return loglikelihood
+#' @author Thijs Janzen
+#' @examples
+#' exampleData <- generate.Guilds.Cond(theta = 200,
+#'                                     alpha_x = 0.005,
+#'                                     alpha_y = 0.001,
+#'                                     JX = 1000,
+#'                                     JY = 2000)
+#'            #theta = 200, alpha X = 0.005, alpha Y = 0.001
+#'  parametervals <- c(200, 0.005, 0.001)
+#'  LL = logLikelihood.Guilds.Conditional(parametervals,
+#'                                        model = "D1",
+#'                                        exampleData$guildX,
+#'                                        exampleData$guildY,
+#'                                        verbose = TRUE)
+#'  @export
 logLikelihood.Guilds.Conditional <- function(parameters, model,
                                              sadx, sady,
                                              verbose = TRUE) {

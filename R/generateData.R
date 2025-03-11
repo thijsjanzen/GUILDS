@@ -1,3 +1,21 @@
+#' simulate under the GUILDS model
+#' @title Generate Artificial data under the GUILDS model
+#' @description Using this function it is possible to generate a community
+#' dataset consisting of two separate abundance vectors for each guild, where
+#' the data generated adhere to the Guilds model.
+#' @inheritParams default_params_doc
+#' @param J Total number of individuals in the local community (e.g. J_X + J_Y)
+#' @return \item{guildX}{Vector containing the unlabeled abundances of species
+#' in Guild X}
+#' \item{guildY}{Vector containing the unlabeled abundances of species in
+#' Guild Y}
+#' @author Thijs Janzen
+#' @export
+#' @examples
+#' generate.Guilds(theta = 200,
+#' alpha_x = 0.005,
+#' alpha_y = 0.001,
+#' J = 10000)
 generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   if (theta < 1) {
     stop("generate.Guilds: ",
@@ -57,6 +75,7 @@ generate.Guilds <- function(theta, alpha_x, alpha_y, J) {
   return(output)
 }
 
+#' @keywords internal
 polyaeggenberger <- function(theta_x, theta_y, J, N) {
   a <- lgamma(J + 1) # J!
   b <- lgamma(theta_x + theta_y + J) -
@@ -69,6 +88,7 @@ polyaeggenberger <- function(theta_x, theta_y, J, N) {
   return(exp(a - b + c1 + c2 - d))
 }
 
+#' @keywords internal
 localComm <- function(alpha_x,
                       alpha_y,
                       Jx,
@@ -114,6 +134,7 @@ localComm <- function(alpha_x,
   }
 }
 
+#' @keywords internal
 rho <- function(theta, px) {
   a <- lgamma(2 * theta) - 2 * lgamma(theta)
   b <- (theta - 1) * log(px) + (theta - 1) * log((1 - px))
@@ -121,6 +142,7 @@ rho <- function(theta, px) {
   return(output)
 }
 
+#' @keywords internal
 getpx <- function(theta,
                   alpha_x,
                   alpha_y,
@@ -142,6 +164,27 @@ getpx <- function(theta,
   return(sample(px, 1, prob = probs))
 }
 
+
+#' conditional on size, generate artificial data under the guilds model
+#' @title Generate Artificial data under the GUILDS model, conditioned on
+#' Guild size
+#' @description Using this function it is possible to generate a community
+#' dataset consisting of two separate abundance vectors for each guild, where
+#' the data generated adhere to the Guilds model. Data generated is conditioned
+#' on guild size.
+#' @inheritParams default_params_doc
+#' @returns \item{guildX}{Vector containing the unlabeled abundances of species
+#' in Guild X}
+#' \item{guildY}{Vector containing the unlabeled abundances of species in
+#' Guild Y}
+#' @author Thijs Janzen
+#' @export
+#' @examples
+#' generate.Guilds.Cond(theta = 200,
+#'                      alpha_x = 0.005,
+#'                      alpha_y = 0.001,
+#'                      JX = 15000,
+#'                      JY = 5000);
 generate.Guilds.Cond <- function(theta, alpha_x, alpha_y, JX, JY) {
 
   J <- JX + JY
@@ -210,6 +253,23 @@ generate.ZSM <- function(theta, I, J) {
   return(abund)
 }
 
+#' generate under the Etienne Sampling Function
+#' @title Generate community data under the standard neutral model of
+#' biodiversity, using the urn scheme as described in Etienne 2005
+#' @description This function generates community data under the standard
+#' neutral model of biodiversity, using the urn scheme as described in
+#' Etienne 2005
+#' @param theta Fundamental biodiversity number theta
+#' @param I Fundamental dispersal number I
+#' @param J total number of individuals in the local community
+#' @returns Vector containing the unlabeled species abundances in the local
+#' community
+#' @references Etienne, R.S. (2005). A new sampling formula for neutral
+#' biodiversity. Ecology Letters, 8(3), 253-260.
+#' @author Thijs Janzen & Bart Haegeman
+#' @examples
+#' generate.ESF(theta = 42, I = 10, J = 2000)
+#' @export
 generate.ESF <- function(theta, I, J) {
   if (theta < 1) {
     stop("generate.ESF: ",

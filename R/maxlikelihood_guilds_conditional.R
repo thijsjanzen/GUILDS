@@ -1,3 +1,34 @@
+#' maximum likelihood assuming guild structure and conditioning on size
+#' @title Maximization of the loglikelihood under the Guilds Model, conditioned
+#' on guild size.
+#' @description This function computes the maximum likelihood estimates of the
+#' parameters of the guilds model, conditioned on guild size.
+#' @inheritParams default_params_doc
+#' @return The output is a list containing the following:
+#'  \item{par}{a vector containing the parameter values at the maximum
+#'  likelihood}
+#' \item{value}{the likelihood at the corresponding parameter values}
+#' \item{counts}{Number of function evaluations required}
+#' \item{convergence}{
+#'   -2:  invalid input\cr
+#'   -1:  number of maximum function evaluations exceeded \cr
+#'   0:  success: convergence \cr
+#'   1:  limit of machine precision reached \cr
+#' }
+#' \item{message}{A character string giving a diagnostic message from the
+#' optimizer,}
+#' \item{hessian}{Hessian matrix (not implemented for this package)}
+#' @author Thijs Janzen
+#' @export
+#' @examples
+#' theta = 20
+#' alpha = 0.1
+#' initParams <- c(theta, alpha)
+#' maxLikelihood.Guilds.Conditional(initParams,
+#'                                  model = "D0",
+#'                                  sadx  = 1:20,
+#'                                  sady  = 1:20,
+#'                                  verbose = TRUE)
 maxLikelihood.Guilds.Conditional <- function(init_vals, model,
                                              sadx, sady,
                                              verbose = TRUE) {

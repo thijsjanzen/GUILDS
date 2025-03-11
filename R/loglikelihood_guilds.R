@@ -1,3 +1,23 @@
+#' log likelihood using guild structure
+#' @title Likelihood of the Guilds sampling formula
+#' @description This function calculates the likelihood of the guilds model,
+#' provided abundance data and parameter values.
+#' @inheritParams default_params_doc
+#' @return loglikelihood
+#' @author Thijs Janzen
+#' @examples
+#' exampleData <- generate.Guilds(theta = 200,
+#'                                alpha_x = 0.005,
+#'                                alpha_y = 0.001,
+#'                                J = 1000)
+#'        #theta = 200, alpha X = 0.005, alpha Y = 0.001
+#'        parametervals <- c(200, 0.005, 0.001)
+#'  LL = logLikelihood.Guilds(parametervals,
+#'                            model = "D1",
+#'                            exampleData$guildX,
+#'                            exampleData$guildY,
+#'                            verbose = TRUE)
+#' @export
 logLikelihood.Guilds <- function(parameters, model,
                                  sadx, sady,
                                  verbose = TRUE) {
