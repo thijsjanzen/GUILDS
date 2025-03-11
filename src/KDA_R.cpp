@@ -28,15 +28,16 @@ using namespace Rcpp;        // NOLINT [build/namespaces]
 //   J. Chave and F. Jabot
 ///  last update 05-23-2008
 
-void calcLogKDA(std::vector<long double>* K,
-                long double J,
-                int numspecies,
-                std::vector<int> Abund)  {
-  if (Abund.size() < 1) return;
+std::vector<long double> calcLogKDA(int numspecies,
+                                    std::vector<int> Abund)  {
+  std::vector<long double> K;
+
+  if (Abund.size() < 1) return K;
 
   sort(Abund.begin(), Abund.end());
 
-  J = 0;
+
+  long double J = 0;
   long double SPP = numspecies;
   for (int s = 0; s < SPP; s++) {
     J += Abund[s];
@@ -148,25 +149,25 @@ void calcLogKDA(std::vector<long double>* K,
   // SECOND STAGE: compute the K(D,A)
   // I follow Etienne's route. Compute the product of polynomials
   // of length J
-  K->clear();
-  K->resize(J + 2, 0.0); // K = new long double[int(J)+1];
+  K.clear();
+  K.resize(J + 2, 0.0); // K = new long double[int(J)+1];
 
   // long double *poly2 = new long double[int(J)+1];
   std::vector<long double> poly2(J + 1, 0.0);
-  (*K)[0] = 1;
+  K[0] = 1;
   int degree = 0;
 
   for (int i = 0; i < NDA; i++) {    // loop over number of distinct abundances
     for (int j = 0;j < f[i]; j++) {  // loop over abundances per class
       for (int nn = 0;nn <= degree; nn++) {
         for (int mm = 1;mm <= g[i]; mm++) {
-          if ((*K)[nn] > 0) {
-            poly2[nn + mm] += T[i][mm] * (*K)[nn];
+          if (K[nn] > 0) {
+            poly2[nn + mm] += T[i][mm] * K[nn];
           }
         }
         degree += g[i];
         for (int nn = 0; nn <= degree; nn++) {
-          (*K)[nn] = (poly2[nn] / powl(10, (4500.0/SPP)));
+          K[nn] = (poly2[nn] / powl(10, (4500.0/SPP)));
           poly2[nn] = 0.0;
         }
       }
@@ -175,7 +176,7 @@ void calcLogKDA(std::vector<long double>* K,
 
     // now K[A]=ln(K(D,A)/10^4500) in Etienne's paper
     for (int i = static_cast<int>(SPP); i <= J; i++) {
-      (*K)[i] = logl((*K)[i]);
+      K[i] = logl(K[i]);
     }
     // for(i=0;i<NDA;i++) delete[] T[i];
     // delete[] T;
@@ -189,7 +190,7 @@ void calcLogKDA(std::vector<long double>* K,
   long double maxlog = 11333.2;
   bool infinity = false;
   for (int i = SPP; i <= J; i++) {
-    if (((*K)[i] > maxlog) || ((*K)[i] < -maxlog)) {
+    if ((K[i] > maxlog) || (K[i] < -maxlog)) {
       infinity = true;
       break;
     }
@@ -197,7 +198,7 @@ void calcLogKDA(std::vector<long double>* K,
   }    // after that, borneinf=indice next to infinity but before
 
   for (int i = 0; i <= J - SPP; i++){
-    if (((*K)[J - i] > maxlog) || ((*K)[static_cast<int>(J) - i] < -maxlog)) {
+    if ((K[J - i] > maxlog) || (K[static_cast<int>(J) - i] < -maxlog)) {
       infinity = true;
       break;
     }
@@ -217,21 +218,21 @@ void calcLogKDA(std::vector<long double>* K,
 
     // Rcpp::Rcout << "Infinity == 1 !! You made it!\n" ;
 
-    if (borneinf > static_cast<int>(K->size())) return;
-    if (borneinf < 1) return;
-    if (bornesup > static_cast<int>((K->size()-1))) return;
-    if (bornesup < 0) return;
-    long double Kprimeinf = (*K)[borneinf] - (*K)[borneinf - 1];
+    if (borneinf > static_cast<int>(K.size())) return K;
+    if (borneinf < 1) return K;
+    if (bornesup > static_cast<int>((K.size()-1))) return K;
+    if (bornesup < 0) return K;
+    long double Kprimeinf = K[borneinf] - K[borneinf - 1];
 
 
     long double Kprimesup1 = -50.0;   // out of range check
-    if ((bornesup + 1) < static_cast<int>(K->size()))
-        Kprimesup1 = (*K)[bornesup + 1];
+    if ((bornesup + 1) < static_cast<int>(K.size()))
+        Kprimesup1 = K[bornesup + 1];
     long double Kprimesup2 = 0.0;    // out of range check
-    if (bornesup >= 0.0) Kprimesup2 = (*K)[bornesup];
+    if (bornesup >= 0.0) Kprimesup2 = K[bornesup];
 
     // K[bornesup+1]-K[bornesup];
-    long double Kprimesup = Kprimesup1-Kprimesup2;
+    long double Kprimesup = Kprimesup1 - Kprimesup2;
     // definition of the parameters of the fitted polynom aX^3+bX^2+cX+d
     long double a, b, c, d;
     // inversion of the linear system of equations (with the Gauss method)
@@ -246,36 +247,38 @@ void calcLogKDA(std::vector<long double>* K,
 
     long double ld_borneinf = static_cast<long double>(borneinf);
 
-    d = (Kprimesup - 3 * bornesup2 * (*K)[borneinf]/borneinf3 +
+    d = (Kprimesup - 3 * bornesup2 * K[borneinf]/borneinf3 +
       (2 * bornesup / ld_borneinf - 3 * bornesup2 / borneinf2) *
-      (Kprimeinf - 3 * (*K)[borneinf] / ld_borneinf) -
+      (Kprimeinf - 3 * K[borneinf] / ld_borneinf) -
       ((1 + 3 * bornesup2 / borneinf2 - 4 * bornesup/ld_borneinf) /
         (bornesup - 2 * bornesup2 / ld_borneinf +
-          bornesup3 / borneinf2)) * ((*K)[bornesup] - bornesup3 *
-          (*K)[borneinf] / borneinf3 + (bornesup2 / ld_borneinf -
-          bornesup3/borneinf2) * (Kprimeinf - 3 * (*K)[borneinf] /
+          bornesup3 / borneinf2)) * (K[bornesup] - bornesup3 *
+          K[borneinf] / borneinf3 + (bornesup2 / ld_borneinf -
+          bornesup3/borneinf2) * (Kprimeinf - 3 * K[borneinf] /
             ld_borneinf))) / ((6 * bornesup2/borneinf3) -
               (6 * bornesup / borneinf2) - ((1 + 3 * bornesup2/borneinf2 -
               4 * bornesup / ld_borneinf) / (bornesup - 2 * bornesup2 /
                 ld_borneinf + bornesup3 / borneinf2)) * (1 - 3 * bornesup2 /
                   borneinf2 + 2 * bornesup3/borneinf3));
 
-    c = (((*K)[bornesup] - bornesup3 * (*K)[borneinf] / borneinf3 +
+    c = ((K[bornesup] - bornesup3 * K[borneinf] / borneinf3 +
       (bornesup2 / ld_borneinf - bornesup3 / borneinf2) *
-      (Kprimeinf - 3 * (*K)[borneinf] / ld_borneinf)) - d *
+      (Kprimeinf - 3 * K[borneinf] / ld_borneinf)) - d *
       (1 - 3 * bornesup2/borneinf2 + 2 * bornesup3/borneinf3)) /
         (bornesup - 2 * bornesup2 / ld_borneinf +
           bornesup3 / borneinf2);
-    b = (Kprimeinf - 3 * (*K)[borneinf] / ld_borneinf + 2 * c +
+    b = (Kprimeinf - 3 * K[borneinf] / ld_borneinf + 2 * c +
       3 * d / ld_borneinf) / (0.0 - ld_borneinf);
-    a = ((*K)[borneinf] - b * borneinf2 -
+    a = (K[borneinf] - b * borneinf2 -
       c * ld_borneinf - d) / borneinf3;
 
     // reconstruction of K[A] with the fitted polynom
     for (int i = borneinf + 1; i < bornesup; i++) {
-      (*K)[i]=(a * i * i * i + b * i * i + c * i + d);
+      K[i]=(a * i * i * i + b * i * i + c * i + d);
     }
   }
+
+  return K;
 }
 
 
@@ -316,8 +319,7 @@ NumericVector calcKDA(NumericVector A) {
     J += Abund[s];
   }
   // call calcLogKDA
-  std::vector<long double> K;
-  calcLogKDA(K, J, numspecies, Abund);
+  auto K = calcLogKDA(numspecies, Abund);
 
   // int sizeofK =  J + 1; //I hope!
   NumericVector out(K.size());
