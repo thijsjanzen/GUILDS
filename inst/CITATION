@@ -1,0 +1,10 @@
+bibentry(bibtype = "Article",
+         title = "A sampling formula for ecological communities with multiple dispersal syndromes",
+         author = c(person("Thijs", "Janzen"), person("Bart", "Haegeman"), person("Rampal S.", "Etienne")),
+         journal = "Journal of Theoretical Biology",
+         year = 2015,
+         volume = 374,
+         pages = "94--106",
+         doi = "10.1016/j.jtbi.2015.03.018",
+         header = "To cite GUILDS in a publication please use:",
+         textVersion = "Janzen, T., Haegeman, B., & Etienne, R. S. (2015). A sampling formula for ecological communities with multiple dispersal syndromes. Journal of Theoretical Biology, 374, 94-106 https://doi.org/10.1016/j.jtbi.2015.03.018")

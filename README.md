@@ -11,6 +11,10 @@ The GUILDS package combines a range of sampling formulas for the unified neutral
 Furthermore it contains functions to generate data given the guilds model, with or without conditioning on guild size. C++ Code to obtain Sterling numbers of the first kind was adopted from the Tetame program by Jabot et al. (2008). 
 
 ### Updates
+- Version 1.4.7
+  - added CITATION file
+  - cleaned up C++ code
+
 - Version 1.4
   - Cleaner README and Vignettes
   - Extend support to M1 processors where sizeof(long double) < 16
