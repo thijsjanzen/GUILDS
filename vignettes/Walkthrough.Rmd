@@ -34,7 +34,6 @@ combines the universal biodiversity number theta, and the universal dispersal
 number I. Typically, the migration rate is a bit easier to interpret, so we will
 make use of that first, then convert it to I, and then generate the data: 
 ```{r start}
-library(GUILDS)
 set.seed(42)
 theta <- 100
 m <- 0.1
