@@ -288,7 +288,7 @@ std::vector<long double> calcLogKDA(int numspecies,
 
 // [[Rcpp::export]]
 NumericVector calcKDA(NumericVector A) {
-#ifdef __arm64__
+// #ifdef __arm64__
   Rcout << "Using ARM code\n";
   // long doubles are not supported on ARM / M1 CPU
   // so we have to work around this.
@@ -308,6 +308,7 @@ NumericVector calcKDA(NumericVector A) {
   }
 
   return out;
+  /*
 #else
 
   Rcout << "Using intel code\n";
@@ -332,4 +333,5 @@ NumericVector calcKDA(NumericVector A) {
 
   return out;
 #endif
+   */
 }
