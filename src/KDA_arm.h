@@ -209,7 +209,7 @@ std::vector<double> calcLogKDA_arm(
   K_prime[0].set_with_norm(1);
 
   size_t degree = 0;
-  size_t spe = 0;
+ // size_t spe = 0;
   double minus = 4500.0 * log(10) / SPP;
 
   for (size_t i=0;i<NDA;i++) { // loop over number of distinct abundances
@@ -234,7 +234,7 @@ std::vector<double> calcLogKDA_arm(
 
         log_poly2[nn].reset();
       }
-      spe++;
+ //     spe++;
     }
   }
 

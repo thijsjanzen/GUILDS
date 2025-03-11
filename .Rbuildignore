@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.github$
+..Rcheck
+.gitignore
+R/.DS_Store

@@ -1,7 +1,6 @@
 context("expected.SAD")
 
 test_that("expected.SAD: use", {
- # skip_on_cran()
   J <- 10000
   testthat::expect_silent(
     SAD <- expected.SAD(theta = 200, m = 0.09, J)
@@ -9,7 +8,6 @@ test_that("expected.SAD: use", {
 })
 
 test_that("expected.SAD: abuse", {
- # skip_on_cran()
   J <- 10000
   expect_error(
       SAD <- expected.SAD(theta = -20, m = 0.09, J),

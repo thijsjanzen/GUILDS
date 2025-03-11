@@ -134,7 +134,7 @@ void calcLogKDA(std::vector<long double>& K,
     std::vector<long double> poly2(J+1,0.0);//long double *poly2 = new long double[int(J)+1];
     K[0]=1;
     int degree = 0;
-    int spe=0;
+    //int spe=0;
     for(int i=0;i<NDA;i++) // loop over number of distinct abundances
         for(int j=0;j<f[i];j++){ // loop over abundances per class
             for(int nn=0;nn<=degree;nn++)
@@ -149,7 +149,7 @@ void calcLogKDA(std::vector<long double>& K,
                 K[nn] = (poly2[nn]/powl(10,(4500.0/SPP)));
                 poly2[nn] = 0.0;
             }
-            spe++;
+        //    spe++;
         }
 
     for(int i=int(SPP);i<=J;i++){

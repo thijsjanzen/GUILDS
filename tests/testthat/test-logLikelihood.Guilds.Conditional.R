@@ -1,7 +1,6 @@
 context("logLikelihood.Guilds.Conditional")
 
 test_that("logLikelihood.Guilds.Conditional: use", {
-#  skip_on_cran()
   set.seed(666)
   J <- 1000
   theta <- 100
@@ -48,7 +47,6 @@ test_that("logLikelihood.Guilds.Conditional: use", {
 })
 
 test_that("logLikelihood.Guilds.Conditional: abuse", {
-  #skip_on_cran()
   set.seed(666)
   J <- 1000
   theta <- 100
