@@ -325,7 +325,7 @@ std::vector<double> calcLogKDA_arm(size_t numspecies,
     if (bornesup_one < static_cast<int>(K.size()) && bornesup_one >= 0)
       Kprimesup1 = K[bornesup_one];
 
-    double Kprimesup2 = 0.0;   //out of range check
+    double Kprimesup2 = 0.0;   // out of range check
 
     if (static_cast<int>(bornesup) >= 0)
       Kprimesup2 = K[static_cast<int>(bornesup)];

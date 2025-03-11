@@ -11,16 +11,18 @@
 
 #include "KDA_arm.h"          // NOLINT [build/include_subdir]
 
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-
 #include <Rcpp.h>
 #include <stdio.h>
 #include <stdlib.h>   // qsort
 #include <limits.h>
 #include <math.h>
+
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+
+
 
 using namespace std;         // NOLINT [build/namespaces]
 using namespace Rcpp;        // NOLINT [build/namespaces]
@@ -105,8 +107,8 @@ std::vector<long double> calcLogKDA(int numspecies,
       for (int im = 0; im <= n - 1; im++) {
         lS1[im] = lS2[im];
       }
-      lS1[n]=0;
-      for(int im = 2; im <= n; im++) {
+      lS1[n] = 0;
+      for (int im = 2; im <= n; im++) {
         lS2[im] = lS1[im] + lS1[im - 1] * (im - 1) / (n - 1);
       }
     }
@@ -150,7 +152,7 @@ std::vector<long double> calcLogKDA(int numspecies,
   // I follow Etienne's route. Compute the product of polynomials
   // of length J
   K.clear();
-  K.resize(J + 2, 0.0); // K = new long double[int(J)+1];
+  K.resize(J + 2, 0.0);   // K = new long double[int(J)+1];
 
   // long double *poly2 = new long double[int(J)+1];
   std::vector<long double> poly2(J + 1, 0.0);
@@ -158,9 +160,9 @@ std::vector<long double> calcLogKDA(int numspecies,
   int degree = 0;
 
   for (int i = 0; i < NDA; i++) {    // loop over number of distinct abundances
-    for (int j = 0;j < f[i]; j++) {  // loop over abundances per class
+    for (int j = 0; j < f[i]; j++) {  // loop over abundances per class
       for (int nn = 0;nn <= degree; nn++) {
-        for (int mm = 1;mm <= g[i]; mm++) {
+        for (int mm = 1; mm <= g[i]; mm++) {
           if (K[nn] > 0) {
             poly2[nn + mm] += T[i][mm] * K[nn];
           }
@@ -197,7 +199,7 @@ std::vector<long double> calcLogKDA(int numspecies,
     borneinf++;
   }    // after that, borneinf=indice next to infinity but before
 
-  for (int i = 0; i <= J - SPP; i++){
+  for (int i = 0; i <= J - SPP; i++) {
     if ((K[J - i] > maxlog) || (K[static_cast<int>(J) - i] < -maxlog)) {
       infinity = true;
       break;
@@ -205,13 +207,13 @@ std::vector<long double> calcLogKDA(int numspecies,
     bornesup--;
   }    // after that, bornesup=indice next to infinity but after
   if (infinity == true) {
-    // cerr << "WARNING : the sample is too large to compute an exact likelihood,
-    // the program is thus doing approximations. The following results are to
-    // be taken with caution"<<endl;
+    // cerr << "WARNING : the sample is too large to compute an exact
+    // likelihood, the program is thus doing approximations. The following
+    // results are to be taken with caution"<< endl;
     // cerr << "Value of A above which K(D,A) is
-    // computed approximately ="<<borneinf<<endl;
+    // computed approximately ="<< borneinf << endl;
     // cerr << "Value of A below which K(D,A) is
-    // computed approximately ="<<bornesup<<endl;
+    // computed approximately ="<< bornesup << endl;
 
     // fitting of the infinite values of K[A] by a polynom of degree 3
     // computing of the derivatives at the critic points
