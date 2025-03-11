@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - develop
       - dev_rbase
       - quad
 
