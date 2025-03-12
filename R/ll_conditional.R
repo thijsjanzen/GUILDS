@@ -34,8 +34,9 @@ calc_conditional <- function(v, model, Nx, Ny) {
   if (model == "D1" && length(v) != 3) incorrectlength <- TRUE
 
   if (incorrectlength == TRUE) {
-    stop("calcConditional:",
+    warning("calcConditional:",
          "Input vector is of incorrect length\n")
+    return(-Inf)
   }
 
   theta_x <- v[1] * 2
