@@ -1,7 +1,7 @@
 url: https://thijsjanzen.github.io/GUILDS/
 template:
   bootstrap: 5
-  light-switch: true
+  light-switch: false
   bslib:
     bootswatch: united
     pkgdown-navbar-bg: '#ad7325'
