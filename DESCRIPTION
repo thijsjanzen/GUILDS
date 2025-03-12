@@ -21,7 +21,7 @@ Description: A collection of sampling formulas for the unified neutral
     ability (Janzen et al. 2015), and the guilds sampling formula
     conditioned on guild size (Janzen et al. 2015).
 License: GPL-2
-URL: https://github.com/thijsjanzen/GUILDS
+URL: https://thijsjanzen.github.io/GUILDS/
 BugReports: https://github.com/thijsjanzen/GUILDS/issues
 Imports: 
     nloptr,
