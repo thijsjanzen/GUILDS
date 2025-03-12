@@ -22,7 +22,7 @@ class log_val {
  public:
   log_val() {
     is_zero_ = true;
-    log_val_ = -1e10;
+    log_val_ = 0.0;
   }
 
   explicit log_val(double v) : log_val_(v) {
@@ -31,7 +31,7 @@ class log_val {
 
   void reset() {
     is_zero_ = true;
-    log_val_ = -1e10;
+    log_val_ = 0.0;
   }
 
   void set_with_norm(double v) {
@@ -49,7 +49,7 @@ class log_val {
   }
 
   double get_log_val() const {
-    return log_val_;
+    return is_zero_ ? 0.0 : log_val_;
   }
 
   log_val& operator+=(const log_val& other) {

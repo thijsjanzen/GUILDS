@@ -11,8 +11,7 @@ logLikguilds <- function(theta_x, theta_y,
                                J, Sx, Sy, Nx, Ny, KDA_X, KDA_Y))
   }
 
-  maxes <- pracma::fminbnd(f, 0, 1,
-                           maxiter = 500, tol = 1e-4)
+  maxes <- pracma::fminbnd(f, 0, 1, maxiter = 500, tol = 1e-4)
 
   ymax <- -1 * maxes$fmin
   xmax <- maxes$xmin
