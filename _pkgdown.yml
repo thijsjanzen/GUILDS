@@ -1,7 +1,9 @@
 url: https://thijsjanzen.github.io/GUILDS/
 template:
   bootstrap: 5
-  bootswatch: solar
   bslib:
     pkgdown-nav-height: 80px
+    bg: "#d5bc85"
+    fg: "#5c2b0e"
+    primary: "#000000"
 
