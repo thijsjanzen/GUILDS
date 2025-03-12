@@ -5,3 +5,6 @@
 ..Rcheck
 ^\temp_store_man
 ^\.pics
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

@@ -3,3 +3,4 @@
 *.o
 *.so
 tests/testthat/Rplots.pdf
+docs
