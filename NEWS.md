@@ -1,10 +1,3 @@
----
-title: "NEWS"
-author: "Thijs Janzen"
-date: "`r Sys.Date()`"
-output: html_document
----
-
 ## Version 1.4.7
   - added CITATION file
   - cleaned up C++ code
