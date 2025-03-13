@@ -3,5 +3,6 @@ template:
   bootstrap: 5
   light-switch: false
   bslib:
+    bootswatch: united
     pkgdown-navbar-bg: '#ad7325'
 
